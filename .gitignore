@@ -1,0 +1,31 @@
+# Sensitive
+secrets/
+
+# Server / IIS
+logs/
+temp/
+custerr/
+DeviceHealthAttestation/
+iisstart.*
+welcome.png
+
+# Debug
+_debug_*.php
+
+# Node
+node_modules/
+
+# PHP sessions
+sessions/
+sess_*
+
+# Uploads (dynamic files)
+uploads/
+upload/
+
+# Obsidian workspace state (keep plugin/config)
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+
+# Claude
+.claude/
