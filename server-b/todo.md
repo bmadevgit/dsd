@@ -112,12 +112,12 @@
 
 ## สรุปเร็ว: web app ที่ "เป็นแอปจริง" บนเครื่องนี้
 
-| # | App | URL/Endpoint | Stack | บทบาท |
-|---|---|---|---|---|
-| 1 | bma-lake | `/lake/` (Next 3000) | Next.js 14 | Data Lake portal (CKAN+MySQL) |
-| 2 | chatbot | `/chatbot` | PHP 8 + MySQL | Multi-org RAG chatbot + meeting transcribe |
-| 3 | link | `/link/` | PHP + MySQL | Early-childhood data hub / API gateway / audit |
-| 4 | open | `/open/` | PHP + MySQL | Hospital case status tracker + AI analysis |
-| 5 | realtime (FE) | `/realtime/` | Static JS | Realtime transcription UI |
-| 6 | realtime (BE) | `:9120/ws/audio` | Python | Realtime transcription server |
-| 7 | bma-houseid | `/bma-houseid` | IIS rewrite | Reverse proxy → gidapp.bangkok.go.th |
+| #   | App           | URL/Endpoint         | Stack         | บทบาท                                          |
+| --- | ------------- | -------------------- | ------------- | ---------------------------------------------- |
+| 1   | bma-lake      | `/lake/` (Next 3000) | Next.js 14    | Data Lake portal (CKAN+MySQL)                  |
+| 2   | chatbot       | `/chatbot`           | PHP 8 + MySQL | Multi-org RAG chatbot + meeting transcribe     |
+| 3   | link          | `/link/`             | PHP + MySQL   | Early-childhood data hub / API gateway / audit |
+| 4   | open          | `/open/`             | PHP + MySQL   | Hospital case status tracker + AI analysis     |
+| 5   | realtime (FE) | `/realtime/`         | Static JS     | Realtime transcription UI                      |
+| 6   | realtime (BE) | `:9120/ws/audio`     | Python        | Realtime transcription server                  |
+| 7   | bma-houseid   | `/bma-houseid`       | IIS rewrite   | Reverse proxy → gidapp.bangkok.go.th           |
