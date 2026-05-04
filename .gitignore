@@ -29,3 +29,5 @@ upload/
 
 # Claude
 .claude/
+.obsidian/workspace.json
+.obsidian/plugins/obsidian-git/data.json
