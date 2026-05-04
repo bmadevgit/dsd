@@ -1,4 +1,11 @@
 {
   "communityPluginsEnabled": true,
-  "userIgnoreFilters": ["secrets", "logs", "temp", "custerr", "DeviceHealthAttestation", ".claude"]
+  "userIgnoreFilters": [
+    "secrets",
+    "logs",
+    "temp",
+    "custerr",
+    "DeviceHealthAttestation",
+    ".claude"
+  ]
 }
