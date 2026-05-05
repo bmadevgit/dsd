@@ -1,14 +1,14 @@
 # vLLM Monitoring Status
 
-**Generated at:** 2026-05-05 13:02:14 +07
+**Generated at:** 2026-05-05 13:02:27 +07
 
 ## Server Metrics
 
 | Metric | Value |
 |---|---|
-| CPU Load (1m / 5m / 15m) | 0.63 / 0.48 / 0.45 |
-| RAM (Used / Total) | 11357 MiB / 64300 MiB |
-| RAM Free | 16989 MiB |
+| CPU Load (1m / 5m / 15m) | 0.57 / 0.47 / 0.45 |
+| RAM (Used / Total) | 11363 MiB / 64300 MiB |
+| RAM Free | 16981 MiB |
 | Disk / (Used / Total) | 247G / 489G |
 | Disk / Available | 217G |
 | Disk / Usage | 54% |
@@ -19,7 +19,7 @@
 
 ## All IP Addresses
 
-No global IP addresses found.
+| Interface | Family | Address |\n|---|---|---|\n| ens33 | inet | 172.27.15.60/24 |\n| tailscale0 | inet | 100.99.107.27/32 |\n| tailscale0 | inet6 | fd7a:115c:a1e0::5f01:6bb1/128 |\n| docker0 | inet | 172.17.0.1/16 |\n| br-a035af8c183a | inet | 172.18.0.1/16 |\n
 
 ## Listening Services and Ports
 
