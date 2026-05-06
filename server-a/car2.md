@@ -1,4 +1,4 @@
-# car2 — ระบบบริหารจัดการยานพาหนะ BMA
+﻿# car2 — ระบบบริหารจัดการยานพาหนะ BMA
 
 **Path:** `C:\inetpub\wwwroot\car2`
 **Stack:** PHP 8 · MySQL · PHPSpreadsheet · PHPWord
@@ -27,3 +27,20 @@
 ## Status
 
 **Production** — ใช้งานจริง อยู่ระหว่าง maintenance
+
+---
+
+## Recent Activity
+
+_auto-updated 
+
+### Files changed recently
+
+- `api_ai_chat.php` 2026-04-28 17:02
+- `api_ai_search.php` 2026-04-28 17:02
+- `.env` 2026-04-28 16:58
+- `index.php` 2026-04-17 18:16
+- `api_search.php` 2026-04-17 18:15
+- `api_search_departments.php` 2026-04-17 18:15
+- `unit_dashboard.php` 2026-04-17 18:15
+- `unit_cars_toggle.php` 2026-04-17 18:14

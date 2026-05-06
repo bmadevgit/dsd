@@ -1,4 +1,4 @@
-# exam/vhv — ระบบจัดการอาสาสมัครสาธารณสุข (อสส.)
+﻿# exam/vhv — ระบบจัดการอาสาสมัครสาธารณสุข (อสส.)
 
 **Path:** `C:\inetpub\wwwroot\exam\vhv`
 **Stack:** PHP 8 · MySQL 8 · Bootstrap 5 · Chart.js · jQuery · Composer
@@ -27,3 +27,20 @@
 ## Status
 
 **Active development** — ใช้งานจริง ยังพัฒนาต่อ
+
+---
+
+## Recent Activity
+
+_auto-updated 
+
+### Files changed recently
+
+- `sessions\sess_drst1ot84oop77bcacr8mle7bd` 2026-05-06 08:08
+- `sessions\sess_og4lvp110cf6evntqbassqqpk1` 2026-05-06 08:08
+- `sessions\sess_1dl5gtlgr1f68k3fg6dn7cire6` 2026-05-06 08:08
+- `sessions\sess_ppvp4dkh1o8nv06psi7lklrgfr` 2026-05-06 08:08
+- `sessions\sess_9685vk9pvre687i3lbp4m043kd` 2026-05-06 08:07
+- `sessions\sess_7gv8rmnai47jsesrt4ujl28sst` 2026-05-06 08:06
+- `sessions\sess_osaduh8807n7fmd3svv65q7g4j` 2026-05-06 08:06
+- `uploads\photos\vhv_13170_1778029559.jpg` 2026-05-06 08:05

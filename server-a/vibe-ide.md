@@ -1,4 +1,4 @@
-# vibe-ide — AI-Powered Web IDE
+﻿# vibe-ide — AI-Powered Web IDE
 
 **Path:** `C:\inetpub\vibe-ide`
 **Stack:** ASP.NET Core 8 · C# · EF Core · SQLite · React 19 · TypeScript · Vite · Monaco Editor · SignalR · JWT
@@ -48,3 +48,20 @@
 ## Status
 
 **Production (Phase 5)** — ใช้งานได้เต็มรูปแบบ
+
+---
+
+## Recent Activity
+
+_auto-updated 
+
+### Files changed recently
+
+- `frontend\dist\index.html` 2026-04-23 05:59
+- `frontend\dist\assets\index-ANxN7sou.css` 2026-04-23 05:59
+- `frontend\dist\assets\index-CcUcVzAT.js` 2026-04-23 05:59
+- `frontend\src\index.css` 2026-04-23 05:59
+- `frontend\src\pages\WorkspacePage.tsx` 2026-04-23 05:59
+- `frontend\src\components\WorkspaceStatusBanner.tsx` 2026-04-23 05:59
+- `frontend\src\hooks\useWorkspaceChat.ts` 2026-04-23 05:59
+- `frontend\src\hooks\useWorkspaceFiles.ts` 2026-04-23 05:59

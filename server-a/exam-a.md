@@ -1,4 +1,4 @@
-# exam/a — BMA Alert Data Explorer
+﻿# exam/a — BMA Alert Data Explorer
 
 **Path:** `C:\inetpub\wwwroot\exam\a`
 **Stack:** PHP · PDO · MySQL · Python (worker + scraper)
@@ -24,3 +24,20 @@
 ## Status
 
 **Active** — ใช้งานจริง ยังพัฒนาต่อ
+
+---
+
+## Recent Activity
+
+_auto-updated 
+
+### Files changed recently
+
+- `worker\worker.log` 2026-05-05 06:56
+- `worker\ai_worker.py` 2026-05-04 13:59
+- `worker\config.env` 2026-05-04 13:29
+- `map.php` 2026-04-12 16:28
+- `api.php` 2026-04-12 16:27
+- `index.php` 2026-04-11 10:56
+- `worker\install_task.ps1` 2026-04-03 19:55
+- `worker\requirements.txt` 2026-04-03 10:17

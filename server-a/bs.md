@@ -1,4 +1,4 @@
-# bs — LINE Chatbot (Hybrid RAG)
+﻿# bs — LINE Chatbot (Hybrid RAG)
 
 **Path:** `C:\inetpub\wwwroot\bs`
 **Stack:** PHP 8 · Python 3.11 · MySQL · Qdrant · Ollama (Qwen) · Gemini API
@@ -28,3 +28,20 @@
 ## Status
 
 **Production** — ใช้งานจริง ส่งมอบแล้ว 2026-05-03
+
+---
+
+## Recent Activity
+
+_auto-updated 
+
+### Files changed recently
+
+- `uploads\612445385515860160.pdf` 2026-05-04 13:46
+- `uploads\612418698602349173.jpg` 2026-05-04 09:21
+- `logs\worker.log` 2026-05-03 14:46
+- `rag-worker\app\secretary.py` 2026-05-03 14:33
+- `README_SECRETARY_COMMANDS.md` 2026-05-03 14:33
+- `migrations\20260503_secretary_schedules.sql` 2026-05-03 14:33
+- `webhook.php` 2026-05-03 14:32
+- `rag-worker\app\jobs.py` 2026-05-03 14:32

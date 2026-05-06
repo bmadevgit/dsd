@@ -1,4 +1,4 @@
-# exam/ai — ASP.NET Core 8 RESTful API
+﻿# exam/ai — ASP.NET Core 8 RESTful API
 
 **Path:** `C:\inetpub\wwwroot\exam\ai`
 **Stack:** ASP.NET Core 8 · C# · Entity Framework Core · SQLite · JWT · Swagger/OpenAPI
@@ -33,3 +33,20 @@ API นี้คือ compiled output ที่ publish มาจาก `vibe-i
 ## Status
 
 **Production** — deployed และ running อยู่
+
+---
+
+## Recent Activity
+
+_auto-updated 
+
+### Files changed recently
+
+- `data\app.db` 2026-04-23 06:39
+- `my-ai-website\src\faq.html` 2026-04-23 06:33
+- `web.config` 2026-04-23 04:59
+- `wwwroot\index.html` 2026-04-23 04:58
+- `wwwroot\assets\index-DuaDk1VM.css` 2026-04-23 04:58
+- `wwwroot\assets\index-CVCaS-tg.js` 2026-04-23 04:58
+- `VibeCodingIde.Api.exe` 2026-04-23 04:58
+- `VibeCodingIde.Api.dll` 2026-04-23 04:58

@@ -1,4 +1,4 @@
-# bmapoll — Traffy Bangkok Data Explorer
+﻿# bmapoll — Traffy Bangkok Data Explorer
 
 **Path:** `C:\inetpub\wwwroot\bmapoll`
 **Stack:** PHP 8 · MySQL · Tailwind CSS · Google Maps API · Ollama (Typhoon 2.5)
@@ -22,3 +22,18 @@
 ## Status
 
 **Production** — deployed ใช้งานจริง
+
+---
+
+## Recent Activity
+
+_auto-updated 
+
+### Files changed recently
+
+- `index.php` 2026-03-27 07:03
+- `includes\db.php` 2026-03-27 06:38
+- `web.config` 2026-03-26 22:18
+- `api\index.php` 2026-03-26 21:53
+- `includes\config.php` 2026-03-26 17:37
+- `README.md` 2026-03-26 17:04

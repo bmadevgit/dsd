@@ -1,4 +1,4 @@
-# exam/map — Pin Survey & Location Mapping
+﻿# exam/map — Pin Survey & Location Mapping
 
 **Path:** `C:\inetpub\wwwroot\exam\map`
 **Stack:** PHP · MySQL · Google Maps API · AI URL parser
@@ -24,3 +24,20 @@
 ## Status
 
 **Production** — deployed ใช้งานจริง
+
+---
+
+## Recent Activity
+
+_auto-updated 
+
+### Files changed recently
+
+- `admin\index.php` 2026-04-12 13:21
+- `admin\login.php` 2026-04-12 13:16
+- `config\config.php` 2026-04-12 13:15
+- `admin\thai-fix.js` 2026-04-12 09:43
+- `README.md` 2026-04-12 09:28
+- `api\import_sheet.php` 2026-04-12 09:21
+- `includes\bootstrap.php` 2026-04-12 09:20
+- `includes\auth.php` 2026-04-12 09:20
