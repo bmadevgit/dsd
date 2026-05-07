@@ -1,45 +1,35 @@
-# Realtime Thai Transcribe — Backend (Machine A)
+﻿# Realtime Thai Transcribe - Backend
 
+- **Slug:** `realtime-backend`
 - **Path:** `C:\apps\realtime-thai-transcribe`
-- **Stack:** Python + FastAPI + uvicorn (in `.venv`)
-- **Entry:** `app.main:app` ([app/main.py](C:/apps/realtime-thai-transcribe/app/main.py))
-- **Port:** `9120` (TLS เปิดอยู่ → WSS)
-- **WebSocket:** `wss://172.27.15.6:9120/ws/audio`
-- **Health:** `https://127.0.0.1:9120/health`
+- **URL:** wss://172.27.15.6:9120/ws/audio
+- **Stack:** Python (FastAPI + uvicorn, .venv)
+- **Process:** uvicorn :9120 (TLS WSS)
+- **DB:** -
 
-> [realtime-thai-transcribe/README.md](C:/apps/realtime-thai-transcribe/README.md)
+- **Files (excl node_modules/.next/.venv/logs/.git/tmp_):** 15 files, 0.8 MB
 
-## หน้าที่
+## Activity (จากการสแกน file mtime)
 
-รับ audio binary frame จาก [realtime frontend](realtime-frontend.md), ทำ VAD → ASR (faster-whisper) → ส่ง partial/final transcript กลับ + เรียก vLLM ทำ summary เป็นช่วง
+### วันนี้ (2026-05-07): 0 ไฟล์
 
-## Start / Stop
+  (ไม่มีไฟล์แก้ไขวันนี้)
 
-```powershell
-powershell -ExecutionPolicy Bypass -File C:\apps\realtime-thai-transcribe\scripts\start-backend.ps1
-powershell -ExecutionPolicy Bypass -File C:\apps\realtime-thai-transcribe\scripts\stop-backend.ps1
-```
+### 7 วันล่าสุด (ไม่รวมวันนี้): 0 ไฟล์
 
-## Logs
+  (ไม่มีไฟล์แก้ไขในช่วง 7 วัน)
 
-- `C:\apps\realtime-thai-transcribe\logs\backend.out.log`
-- `C:\apps\realtime-thai-transcribe\logs\backend.err.log`
+### 8-30 วันก่อน: 15 ไฟล์ (ดูสรุป)
 
-## Environment (จาก .env.example)
+- **2026-04-21**: 4 ไฟล์
+- **2026-04-19**: 11 ไฟล์
 
-| Group | คีย์สำคัญ |
-|---|---|
-| Server | `HOST=0.0.0.0`, `PORT=9120` |
-| Session | `SESSION_TTL_SEC=900`, `CLEANUP_INTERVAL_SEC=30` |
-| Audio | `AUDIO_SAMPLE_RATE=16000`, `AUDIO_CHANNELS=1` |
-| VAD | `VAD_AGGRESSIVENESS=2`, `VAD_FRAME_MS=30`, `VAD_ENDPOINT_SILENCE_SEC=1.0`, `MIN_UTTERANCE_SEC=0.7` |
-| ASR | `ASR_MODEL_SIZE=small`, `ASR_DEVICE=cpu`, `ASR_COMPUTE_TYPE=int8`, `ASR_LANGUAGE=th`, `PARTIAL_INTERVAL_SEC=1.6` |
-| Summary | `SUMMARY_ENABLED=true`, `SUMMARY_INTERVAL_SEC=12`, `SUMMARY_MIN_NEW_CHARS=120`, `SUMMARY_MIN_TOTAL_CHARS=80`, `SUMMARY_MODEL=Qwen/Qwen3-14B` |
-| vLLM | `VLLM_BASE_URL=http://172.27.15.60:8000/v1`, `VLLM_API_KEY=EMPTY`, `SUMMARY_REQUEST_TIMEOUT_SEC=35` |
-| TLS | `ENABLE_WSS_TLS=true`, `TLS_CERT_FILE=C:\apps\realtime-thai-transcribe\certs\realtime-172.27.15.6-cert.pem`, `TLS_KEY_FILE=...key.pem` |
+## Source docs / config (อยู่ใน project)
 
-## Migration bundle
+- [README.md](C:/apps/realtime-thai-transcribe/README.md) - last modified 2026-04-19 19:04
+- [.env.example](C:/apps/realtime-thai-transcribe/.env.example) - last modified 2026-04-19 19:40
+- [requirements.txt](C:/apps/realtime-thai-transcribe/requirements.txt) - last modified 2026-04-21 21:02
 
-`C:\codex\migration-realtime-172.27.15.59` + `migration-realtime-172.27.15.59.zip` — bundle ย้ายไปเครื่อง `172.27.15.59` (Ubuntu, ดูได้จาก SSH workspace ใน VS Code)
+---
+*Auto-generated 2026-05-07 13:08 by `server-b/refresh-server-b.ps1` (disk scan)*
 
-ดู `C:\codex\tmp_realtime_ubuntu_bundle*` สำหรับ Linux deploy

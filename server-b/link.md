@@ -1,70 +1,71 @@
-# BMA Early-Childhood Data Hub / API Gateway (`link`)
+﻿# BMA Early-Childhood Data Hub / API Gateway
 
+- **Slug:** `link`
 - **Path:** `C:\inetpub\wwwroot\link`
-- **URL:** `/link/` (entry redirect → `/admin/login.php`)
-- **Stack:** PHP (no framework, custom OOP) · MySQL · Bootstrap 5 admin UI
+- **URL:** /link/ (redirect -> /admin/login.php)
+- **Stack:** PHP (custom OOP, no framework) + MySQL + Bootstrap 5
+- **Process:** IIS PHP
+- **DB:** MySQL (core_fields, agencies, child_records, audit_logs, ...)
 
-## หน้าที่
+- **Files (excl node_modules/.next/.venv/logs/.git/tmp_):** 95 files, 0.9 MB
 
-ระบบกลางสำหรับ **ข้อมูลเด็กปฐมวัย** ของ กทม. — รวม core fields, mapping จากแต่ละสำนัก/ระบบต้นทาง, ingestion (CSV/XLSX), validation, data-quality monitoring, masking ตาม sensitivity level, audit log สำหรับ API requests
+## Activity (จากการสแกน file mtime)
 
-## Structure
+### วันนี้ (2026-05-07): 0 ไฟล์
 
-```
-link/
-├── src/                      # core services (PSR-style classes)
-│   ├── bootstrap.php         # require services + Security::startSession
-│   ├── Database.php
-│   ├── Security.php · Auth.php
-│   ├── ApiGateway.php        # public API entry
-│   ├── AuditLogger.php
-│   ├── FieldPolicyEngine.php
-│   ├── MaskingService.php
-│   ├── ValidationService.php
-│   ├── DataQualityService.php
-│   ├── ChildIndexService.php
-│   ├── MappingService.php
-│   ├── IngestionService.php
-│   ├── CsvImporter.php · XlsxImporter.php · TabularImporter.php
-│   └── helpers.php
-├── admin/                    # admin pages (PHP)
-│   ├── login.php · logout.php · change_password.php
-│   ├── dashboard.php         # KPI + recent audit logs
-│   ├── core_fields.php · agencies.php · source_systems.php
-│   ├── mappings.php · field_policies.php
-│   ├── ingestion.php · sample_data.php
-│   ├── data_quality.php
-│   ├── audit_logs.php · access_requests.php · api_clients.php
-│   ├── users.php · setup_admin.php · manual.php
-│   └── _common.php
-├── public/                   # public web entry + API
-│   ├── api/
-│   ├── assets/
-│   └── index.php
-├── config/                   # config.php + security.php (require'd by bootstrap)
-├── database/
-├── docs/
-├── storage/
-└── web.config
-```
+  (ไม่มีไฟล์แก้ไขวันนี้)
 
-## Core domain
+### 7 วันล่าสุด (ไม่รวมวันนี้): 49 ไฟล์
 
-| Table | บทบาท |
-|---|---|
-| `core_fields` | นิยาม field กลาง (มี `sensitivity_level`: Internal · Confidential · Sensitive Personal Data) |
-| `agencies` | สำนัก/หน่วยงาน |
-| `source_systems` | ระบบต้นทางของแต่ละสำนัก |
-| `child_records` | ข้อมูลเด็ก (sample/test) |
-| `audit_logs` | ทุก API request, มี `blocked_fields_json`, `blocked_reason`, `api_client_id` |
-| `data_quality_errors` | error จาก ValidationService |
+- **2026-05-01** (11 ไฟล์):
+  - 08:34 `admin/field_policies.php.20260501_083617.bak`
+  - 08:34 `admin/field_policies.php`
+  - 08:21 `docs/SYSTEM_DIAGRAM_TH.html`
+  - 06:32 `admin/audit_logs.php`
+  - 06:26 `admin/manual.php`
+  - 06:25 `docs/INSTALL_IIS.md`
+  - 06:25 `docs/AGENCY_PLAYBOOKS_TH.md`
+  - 06:25 `docs/AGENCY_MANUAL_TH.md`
+  - ... (+3 more)
+- **2026-04-30** (38 ไฟล์):
+  - 19:49 `src/XlsxImporter.php`
+  - 19:47 `storage/backups/ADMIN_MANUAL_TH_20260501_062311.md`
+  - 19:47 `storage/backups/USER_MANUAL_TH_20260501_062311.md`
+  - 19:46 `storage/backups/INSTALL_IIS_20260501_062311.md`
+  - 19:46 `database/migrations/010_phase3_data_quality.sql`
+  - 19:46 `admin/data_quality.php`
+  - 19:46 `src/DataQualityService.php`
+  - 19:44 `docs/API_SPEC.md`
+  - ... (+30 more)
 
-Mapping reference: [BMA_EarlyChildhood_CoreDataset_Mapping.xlsx](C:/codex/BMA_EarlyChildhood_CoreDataset_Mapping.xlsx)
+### 8-30 วันก่อน: 46 ไฟล์ (ดูสรุป)
 
-## Dashboard KPI (จาก admin/dashboard.php)
+- **2026-04-30**: 27 ไฟล์
+- **2026-04-29**: 19 ไฟล์
 
-จำนวน core_fields · agencies · source_systems · child_records · mapped/unmapped fields · sensitive/confidential/internal · API requests · blocked fields · data_quality_errors
+## Backup files ที่พบ (บ่งบอกว่ามีการแก้ไขย้อนหลัง)
 
-## Entry flow
+- `admin/field_policies.php.20260501_083617.bak` (2026-05-01 08:34)
+- `storage/backups/ADMIN_MANUAL_TH_20260501_062311.md` (2026-04-30 19:47)
+- `storage/backups/USER_MANUAL_TH_20260501_062311.md` (2026-04-30 19:47)
+- `storage/backups/INSTALL_IIS_20260501_062311.md` (2026-04-30 19:46)
+- `storage/backups/FieldPolicyEngine_20260430_193001.php` (2026-04-30 19:10)
+- `storage/backups/field_policies_20260430_190832.php` (2026-04-30 19:04)
+- `storage/backups/FieldPolicyEngine_20260430_190832.php` (2026-04-30 18:39)
+- `storage/backups/mappings_20260430_193001.php` (2026-04-30 15:32)
+- `storage/backups/_common_20260430_193001.php` (2026-04-30 14:16)
+- `storage/backups/app_css_20260430_183830.css` (2026-04-30 14:15)
+- `storage/backups/field_policies_20260430_183830.php` (2026-04-30 14:15)
+- `storage/backups/field_policies_20260430_141205.php` (2026-04-30 13:56)
+- `storage/backups/ingestion_20260430_193001.php` (2026-04-30 12:09)
+- `storage/backups/dashboard_20260430_193001.php` (2026-04-30 11:48)
+- `storage/backups/helpers_20260430_193001.php` (2026-04-30 11:39)
 
-`index.php` → `redirect_to('/admin/login.php')` (ดู [src/bootstrap.php](C:/inetpub/wwwroot/link/src/bootstrap.php) สำหรับลำดับ require)
+## Source docs / config (อยู่ใน project)
+
+- [web.config](C:/inetpub/wwwroot/link/web.config) - last modified 2026-04-30 11:50
+- [src/bootstrap.php](C:/inetpub/wwwroot/link/src/bootstrap.php) - last modified 2026-04-30 19:32
+
+---
+*Auto-generated 2026-05-07 13:08 by `server-b/refresh-server-b.ps1` (disk scan)*
+

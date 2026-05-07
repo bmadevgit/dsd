@@ -1,40 +1,37 @@
-# Realtime Thai Meeting Transcription — Frontend (`realtime`)
+﻿# Realtime Thai Meeting Transcription - Frontend
 
+- **Slug:** `realtime-frontend`
 - **Path:** `C:\inetpub\wwwroot\realtime`
-- **URL:** `http://172.27.15.6/realtime`
-- **Stack:** Static HTML + vanilla JS (ไม่มี build, ไม่มี framework)
+- **URL:** http://172.27.15.6/realtime
+- **Stack:** Static HTML + vanilla JS (no build)
+- **Process:** IIS static
+- **DB:** -
 
-> [realtime/README.md](C:/inetpub/wwwroot/realtime/README.md) มีคู่มือใช้งาน
+- **Files (excl node_modules/.next/.venv/logs/.git/tmp_):** 5 files, 0 MB
 
-## หน้าที่
+## Activity (จากการสแกน file mtime)
 
-Frontend สำหรับระบบถอดเสียงประชุมแบบเรียลไทม์ (on-prem) — เปิดไมค์ → downsample 16kHz mono PCM Int16 → ส่งเข้า WebSocket binary frame → แสดง partial/final transcript + summary
+### วันนี้ (2026-05-07): 0 ไฟล์
 
-## Files
+  (ไม่มีไฟล์แก้ไขวันนี้)
 
-| ไฟล์ | บทบาท |
-|---|---|
-| `index.html` | โครงหน้า (สถานะ connection, panel transcript, summary) |
-| `styles.css` | theme + responsive |
-| `audio-utils.js` | downsample → 16kHz mono PCM Int16 |
-| `app.js` | mic, websocket, transcript, summary, auto-reconnect |
+### 7 วันล่าสุด (ไม่รวมวันนี้): 0 ไฟล์
 
-## Backend ที่เรียก
+  (ไม่มีไฟล์แก้ไขในช่วง 7 วัน)
 
-- WebSocket default: `ws://<host>/ws/audio`
-- จริงบนเครื่องนี้ ชี้ไป backend port 9120 (ดู [realtime-backend.md](realtime-backend.md))
+### 8-30 วันก่อน: 5 ไฟล์ (ดูสรุป)
 
-## Message protocol (JSON ที่รับจาก WS)
+- **2026-04-21**: 3 ไฟล์
+- **2026-04-19**: 2 ไฟล์
 
-| `type` | ฟิลด์ที่ใช้ |
-|---|---|
-| `partial_transcript` | `text` (fallback `partial`) |
-| `final_transcript` | `text` (fallback `final`) |
-| `summary_update` | `summary`, `key_points[]`, `decisions[]`, `action_items[]`, `risks_or_followups[]` |
-| `error` | `message` |
+## Source docs / config (อยู่ใน project)
 
-## ข้อจำกัด
+- [README.md](C:/inetpub/wwwroot/realtime/README.md) - last modified 2026-04-19 17:45
+- [app.js](C:/inetpub/wwwroot/realtime/app.js) - last modified 2026-04-21 21:41
+- [audio-utils.js](C:/inetpub/wwwroot/realtime/audio-utils.js) - last modified 2026-04-19 17:45
+- [styles.css](C:/inetpub/wwwroot/realtime/styles.css) - last modified 2026-04-21 21:22
+- [index.html](C:/inetpub/wwwroot/realtime/index.html) - last modified 2026-04-21 21:41
 
-- **ไม่เรียก vLLM โดยตรงจาก browser** (ไม่มี OpenAI client ฝั่ง client)
-- Audio ส่งเป็น binary frame (`ArrayBuffer`) ไม่ใช่ base64
-- มี auto-reconnect เมื่อ WebSocket หลุดระหว่างกำลังอัด
+---
+*Auto-generated 2026-05-07 13:08 by `server-b/refresh-server-b.ps1` (disk scan)*
+

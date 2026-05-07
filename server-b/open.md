@@ -1,59 +1,38 @@
-# OPEN — Hospital Case Status Tracker (`open`)
+﻿# OPEN - Hospital Case Status Tracker
 
+- **Slug:** `open`
 - **Path:** `C:\inetpub\wwwroot\open`
-- **Public URL:** `https://exam.bangkok.go.th/open/`
-- **Stack:** PHP (no framework, `mysqli` ตรง) · MariaDB/MySQL · CSS เดียวที่ `assets/style.css`
+- **URL:** https://exam.bangkok.go.th/open/
+- **Stack:** PHP (no framework, mysqli) + MariaDB/MySQL
+- **Process:** IIS PHP
+- **DB:** MySQL `open`
 
-> มี handoff doc ที่ [open/PROJECT_HANDOFF.md](C:/inetpub/wwwroot/open/PROJECT_HANDOFF.md) และ UAT ที่ [open/UAT_TEST_DOCUMENT.md](C:/inetpub/wwwroot/open/UAT_TEST_DOCUMENT.md)
+- **Files (excl node_modules/.next/.venv/logs/.git/tmp_):** 18 files, 0.1 MB
 
-## หน้าที่
+## Activity (จากการสแกน file mtime)
 
-- **Public:** ค้นหาสถานะเคส/เอกสาร/การเงินจาก `invoice_no` หรือ `ref_no` + 4 หลักท้าย TAX ID, filter ตามโรงพยาบาล แสดงข้อมูลเคส + การเงิน + สถานะเอกสาร + timeline จาก `case_status_logs`
-- **Admin:** login/logout, KPI dashboard, CRUD case, filter, sync log placeholder ไป MIS, **AI analysis dashboard** (ยิงไป Qwen2.5-32B-Instruct-AWQ ที่ `http://100.99.107.27:8000/v1`)
+### วันนี้ (2026-05-07): 0 ไฟล์
 
-## Structure
+  (ไม่มีไฟล์แก้ไขวันนี้)
 
-```
-open/
-├── admin/index.php
-├── assets/style.css
-├── config/config.php
-├── includes/
-│   ├── common.php
-│   └── db.php
-├── sql/
-│   ├── schema.sql
-│   └── get_sample_cases.php
-├── api.asp                   # legacy ASP endpoint
-├── guide.php
-├── index.php                 # public search
-├── install.php               # setup เครื่องใหม่
-├── sync.php                  # MIS sync placeholder
-├── PROJECT_HANDOFF.md
-├── UAT_TEST_DOCUMENT.md
-└── web.config
-```
+### 7 วันล่าสุด (ไม่รวมวันนี้): 0 ไฟล์
 
-## Config (config/config.php)
+  (ไม่มีไฟล์แก้ไขในช่วง 7 วัน)
 
-```php
-'base_path' => '/open',
-'ai' => [
-    'base_url' => 'http://100.99.107.27:8000/v1',
-    'model'    => 'Qwen/Qwen2.5-32B-Instruct-AWQ',
-    'timeout_seconds' => 60,
-],
-'db' => [
-    'host' => '127.0.0.1', 'port' => 3306,
-    'database' => 'open', 'username' => 'open',
-    'charset' => 'utf8mb4',
-],
-```
+### 8-30 วันก่อน: 18 ไฟล์ (ดูสรุป)
 
-## Install (เครื่องใหม่)
+- **2026-04-16**: 8 ไฟล์
+- **2026-04-14**: 10 ไฟล์
 
-`install.php` → สร้าง DB `open` + tables + seed 11 โรงพยาบาล + admin เริ่มต้น (`admin / 1234`) + dummy 100+ cases
+## Source docs / config (อยู่ใน project)
 
-## ย้าย path
+- [PROJECT_HANDOFF.md](C:/inetpub/wwwroot/open/PROJECT_HANDOFF.md) - last modified 2026-04-14 21:20
+- [UAT_TEST_DOCUMENT.md](C:/inetpub/wwwroot/open/UAT_TEST_DOCUMENT.md) - last modified 2026-04-14 21:20
+- [config/config.php](C:/inetpub/wwwroot/open/config/config.php) - last modified 2026-04-14 22:09
+- [sql/schema.sql](C:/inetpub/wwwroot/open/sql/schema.sql) - last modified 2026-04-14 21:51
+- [web.config](C:/inetpub/wwwroot/open/web.config) - last modified 2026-04-14 21:20
+- [install.php](C:/inetpub/wwwroot/open/install.php) - last modified 2026-04-16 09:14
 
-ถ้าย้ายไป root อื่น (เช่น `/exam-open` หรือ `/`) ต้องแก้ `base_path` ใน `config/config.php`
+---
+*Auto-generated 2026-05-07 13:08 by `server-b/refresh-server-b.ps1` (disk scan)*
+

@@ -1,33 +1,32 @@
-# BMA HouseID Reverse Proxy (`bma-houseid`)
+﻿# BMA HouseID Reverse Proxy
 
-- **Path:** `C:\inetpub\bma-houseid-proxy` (เป็น IIS Application นอก wwwroot)
-- **URL:** `/bma-houseid` ผ่าน Default Web Site
-- **Type:** ไม่ใช่แอป — เป็น **URL Rewrite reverse proxy**
+- **Slug:** `bma-houseid-proxy`
+- **Path:** `C:\inetpub\bma-houseid-proxy`
+- **URL:** /bma-houseid -> https://gidapp.bangkok.go.th/bma-houseid/{R:1}
+- **Stack:** IIS URL Rewrite (no app code)
+- **Process:** IIS rewrite
+- **DB:** -
 
-## หน้าที่
+- **Files (excl node_modules/.next/.venv/logs/.git/tmp_):** 1 files, 0 MB
 
-แค่ rewrite ทุก request ไปที่ปลายทางจริง:
+## Activity (จากการสแกน file mtime)
 
-```xml
-<rule name="BMA HouseID Reverse Proxy" stopProcessing="true">
-  <match url="(.*)" />
-  <action type="Rewrite"
-          url="https://gidapp.bangkok.go.th/bma-houseid/{R:1}"
-          appendQueryString="true"
-          logRewrittenUrl="true" />
-</rule>
-```
+### วันนี้ (2026-05-07): 0 ไฟล์
 
-ดู [bma-houseid-proxy/web.config](C:/inetpub/bma-houseid-proxy/web.config)
+  (ไม่มีไฟล์แก้ไขวันนี้)
 
-## Tooling/data ที่เกี่ยวข้อง (อยู่ใน `C:\codex`)
+### 7 วันล่าสุด (ไม่รวมวันนี้): 0 ไฟล์
 
-- `export_bma_houseid_full.ps1` — export เต็มจากต้นทาง
-- `run_bma_houseid_chunked.ps1` — รันแบบแบ่ง chunk
-- `bma-houseid-all-full.csv` + `.gaps.json` — output ฉบับเต็ม
-- `bma-houseid-test-1005-v1.csv`, `bma-houseid-test-1028-{v1..v5}.csv` (+ `.gaps.json`) — test snapshots
-- `bma-houseid-index-data.csv`
+  (ไม่มีไฟล์แก้ไขในช่วง 7 วัน)
 
-## ต้องการ ARR
+### 8-30 วันก่อน: 1 ไฟล์ (ดูสรุป)
 
-IIS Application Request Routing + URL Rewrite extension ต้องเปิด proxy mode (`Server Farms` → `Application Request Routing Cache` → enable proxy)
+- **2026-04-24**: 1 ไฟล์
+
+## Source docs / config (อยู่ใน project)
+
+- [web.config](C:/inetpub/bma-houseid-proxy/web.config) - last modified 2026-04-24 22:16
+
+---
+*Auto-generated 2026-05-07 13:08 by `server-b/refresh-server-b.ps1` (disk scan)*
+

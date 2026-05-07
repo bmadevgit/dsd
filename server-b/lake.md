@@ -1,54 +1,69 @@
-# BMA Data Lake Portal (`bma-lake`)
+﻿# BMA Data Lake Portal
 
+- **Slug:** `lake`
 - **Path:** `C:\inetpub\wwwroot\lake`
-- **Public URL:** `https://172.27.15.6/lake/`
-- **Stack:** Next.js 14 · React 18 · Tailwind 3 · TypeScript 5
-- **Process:** PM2 (`bma-lake`, port 3000) → IIS ARR proxy
-- **DB:** dual — CKAN PostgreSQL (read-only, `pg`) + lake MySQL (write, `mysql2`)
-- **Auth:** NextAuth + bcrypt
-- **AI:** vLLM gateway `http://172.27.15.60:8000/v1`, model `Qwen/Qwen3-14B`
+- **URL:** https://172.27.15.6/lake/
+- **Stack:** Next.js 14 + React 18 + TypeScript + Tailwind
+- **Process:** PM2 (bma-lake :3000) -> IIS ARR
+- **DB:** CKAN PostgreSQL (read) + lake MySQL (write)
 
-## Structure
+- **Files (excl node_modules/.next/.venv/logs/.git/tmp_):** 72 files, 0.4 MB
 
-```
-src/app/
-├── (public)/        # public routes
-│   ├── datasets/
-│   ├── organizations/
-│   └── page.tsx
-├── admin/           # admin console
-│   ├── datasets/
-│   ├── login/
-│   ├── organizations/
-│   └── source-checks/
-├── api/             # route handlers
-│   ├── ai/
-│   ├── auth/        # NextAuth
-│   ├── datasets/
-│   ├── files/
-│   ├── organizations/
-│   ├── resources/
-│   └── stats/
-└── layout.tsx
-```
+## Activity (จากการสแกน file mtime)
 
-## Run
+### วันนี้ (2026-05-07): 0 ไฟล์
 
-```powershell
-# Build
-cd C:\inetpub\wwwroot\lake
-npm run build
+  (ไม่มีไฟล์แก้ไขวันนี้)
 
-# Start (already managed by PM2)
-pm2 restart bma-lake
-pm2 logs bma-lake
-```
+### 7 วันล่าสุด (ไม่รวมวันนี้): 39 ไฟล์
 
-PM2 config: [ecosystem.config.js](C:/inetpub/wwwroot/lake/ecosystem.config.js)
-- Output dir: `.next/standalone/server.js`
-- Logs: `C:\inetpub\lake-data\pm2-{out,error}.log`
-- Env: `NEXTAUTH_URL=https://172.27.15.6/lake`, `AI_GATEWAY_URL`, `AI_MODEL=Qwen/Qwen3-14B`
+- **2026-05-06** (20 ไฟล์):
+  - 10:31 `src/app/admin/settings/page.tsx`
+  - 10:31 `src/app/admin/layout.tsx`
+  - 10:30 `src/components/ui/Navbar.tsx`
+  - 10:30 `src/app/api/admin/settings/map-menu/route.ts`
+  - 10:30 `src/app/api/public/settings/route.ts`
+  - 10:30 `src/lib/settings.ts`
+  - 10:15 `src/components/map/DatasetMap.tsx`
+  - 10:13 `src/lib/map-utils.ts`
+  - ... (+12 more)
+- **2026-05-05** (3 ไฟล์):
+  - 21:12 `tsconfig.tsbuildinfo`
+  - 16:35 `src/app/(public)/datasets/lake/[name]/page.tsx`
+  - 16:34 `src/app/(public)/datasets/ckan/[name]/page.tsx`
+- **2026-05-04** (5 ไฟล์):
+  - 14:19 `src/app/admin/source-checks/page.tsx`
+  - 13:39 `package-lock.json`
+  - 13:39 `package.json`
+  - 13:34 `next.config.js`
+  - 13:23 `scripts/check-sources.mjs`
+- **2026-05-03** (5 ไฟล์):
+  - 22:12 `scripts/install-task.ps1`
+  - 18:33 `src/lib/queries/lake.ts`
+  - 18:33 `scripts/001-source-checks.sql`
+  - 15:51 `src/components/admin/ResourceManager.tsx`
+  - 15:50 `src/app/api/resources/route.ts`
+- **2026-05-01** (1 ไฟล์):
+  - 13:15 `web.config`
+- **2026-04-30** (5 ไฟล์):
+  - 21:50 `src/components/admin/DatasetForm.tsx`
+  - 21:50 `src/app/api/datasets/[id]/route.ts`
+  - 21:50 `src/app/api/datasets/route.ts`
+  - 19:27 `src/lib/db-lake.ts`
+  - 14:25 `src/components/Providers.tsx`
 
-## IIS reverse proxy
+### 8-30 วันก่อน: 33 ไฟล์ (ดูสรุป)
 
-[lake/web.config](C:/inetpub/wwwroot/lake/web.config) — Force HTTPS + URL rewrite ทุก path ไป `http://localhost:3000/lake/...`, มี outbound rule แก้ `Location` header
+- **2026-04-29**: 33 ไฟล์
+
+## Source docs / config (อยู่ใน project)
+
+- [RUNBOOK.md](C:/inetpub/wwwroot/lake/RUNBOOK.md) - last modified 2026-05-06 08:51
+- [package.json](C:/inetpub/wwwroot/lake/package.json) - last modified 2026-05-04 13:39
+- [ecosystem.config.js](C:/inetpub/wwwroot/lake/ecosystem.config.js) - last modified 2026-05-06 08:50
+- [web.config](C:/inetpub/wwwroot/lake/web.config) - last modified 2026-05-01 13:15
+- [next.config.js](C:/inetpub/wwwroot/lake/next.config.js) - last modified 2026-05-04 13:34
+
+---
+*Auto-generated 2026-05-07 13:08 by `server-b/refresh-server-b.ps1` (disk scan)*
+
