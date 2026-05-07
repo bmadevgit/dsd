@@ -65,5 +65,5 @@
 - [next.config.js](C:/inetpub/wwwroot/lake/next.config.js) - last modified 2026-05-04 13:34
 
 ---
-*Auto-generated 2026-05-07 13:08 by `server-b/refresh-server-b.ps1` (disk scan)*
+*Auto-generated 2026-05-07 13:49 by `server-b/refresh-server-b.ps1` (disk scan)*
 

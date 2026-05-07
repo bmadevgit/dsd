@@ -330,22 +330,29 @@ if ($totalToday -eq 0) {
 $todoPath = Join-Path $ServerBDir 'todo.md'
 $sb.ToString() | Set-Content -Path $todoPath -Encoding utf8
 
-# Git: stage server-b/ only, commit, push
+# Git: stage server-b/ only, commit, push.
+# IMPORTANT: do NOT redirect git stderr (2>&1) in PS 5.1 — it wraps each line
+# as a NativeCommandError and trips $ErrorActionPreference='Stop' on benign
+# warnings (e.g., LF->CRLF). Just let stderr go to the host.
 Set-Location $NotesRoot
+$prevEAP = $ErrorActionPreference
+$ErrorActionPreference = 'Continue'
 try {
-    & git pull --ff-only origin main 2>&1 | Out-Null
-} catch {
-    Write-Warning "git pull failed (may have local changes): $_"
-}
+    & git pull --ff-only origin main | Out-Null
+    if ($LASTEXITCODE -ne 0) { Write-Warning "git pull --ff-only failed (exit $LASTEXITCODE)" }
 
-& git add server-b/ 2>&1 | Out-Null
+    & git add server-b/ | Out-Null
 
-$dirty = & git status --porcelain server-b/
-if ($dirty) {
-    $commitMsg = "auto: server-b refresh {0}" -f $Now.ToString('yyyy-MM-dd HH:mm')
-    & git commit -m $commitMsg server-b/ 2>&1 | Out-Null
-    & git push origin main 2>&1 | Out-Null
-    Write-Host "[OK] Pushed: $commitMsg"
-} else {
-    Write-Host "[OK] No changes in server-b/"
+    $dirty = & git status --porcelain server-b/
+    if ($dirty) {
+        $commitMsg = "auto: server-b refresh {0}" -f $Now.ToString('yyyy-MM-dd HH:mm')
+        & git commit -m $commitMsg -- server-b/ | Out-Null
+        & git push origin main | Out-Null
+        if ($LASTEXITCODE -ne 0) { Write-Warning "git push failed (exit $LASTEXITCODE)" }
+        else { Write-Host "[OK] Pushed: $commitMsg" }
+    } else {
+        Write-Host "[OK] No changes in server-b/"
+    }
+} finally {
+    $ErrorActionPreference = $prevEAP
 }
