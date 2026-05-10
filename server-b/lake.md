@@ -7,16 +7,25 @@
 - **Process:** PM2 (bma-lake :3000) -> IIS ARR
 - **DB:** CKAN PostgreSQL (read) + lake MySQL (write)
 
-- **Files (excl node_modules/.next/.venv/logs/.git/tmp_):** 72 files, 0.4 MB
+- **Files (excl node_modules/.next/.venv/logs/.git/tmp_):** 74 files, 0.4 MB
 
 ## Activity (จากการสแกน file mtime)
 
-### วันนี้ (2026-05-10): 0 ไฟล์
+### วันนี้ (2026-05-11): 0 ไฟล์
 
   (ไม่มีไฟล์แก้ไขวันนี้)
 
-### 7 วันล่าสุด (ไม่รวมวันนี้): 33 ไฟล์
+### 7 วันล่าสุด (ไม่รวมวันนี้): 36 ไฟล์
 
+- **2026-05-10** (8 ไฟล์):
+  - 22:18 `src/components/admin/OrgForm.tsx`
+  - 22:18 `src/components/admin/DatasetForm.tsx`
+  - 22:17 `src/app/api/organizations/[id]/route.ts`
+  - 22:17 `src/app/api/organizations/route.ts`
+  - 22:17 `src/app/api/datasets/[id]/route.ts`
+  - 22:17 `src/app/api/datasets/route.ts`
+  - 22:16 `src/lib/types.ts`
+  - 22:16 `src/lib/utils.ts`
 - **2026-05-06** (20 ไฟล์):
   - 10:31 `src/app/admin/settings/page.tsx`
   - 10:31 `src/app/admin/layout.tsx`
@@ -37,18 +46,13 @@
   - 13:39 `package.json`
   - 13:34 `next.config.js`
   - 13:23 `scripts/check-sources.mjs`
-- **2026-05-03** (5 ไฟล์):
-  - 22:12 `scripts/install-task.ps1`
-  - 18:33 `src/lib/queries/lake.ts`
-  - 18:33 `scripts/001-source-checks.sql`
-  - 15:51 `src/components/admin/ResourceManager.tsx`
-  - 15:50 `src/app/api/resources/route.ts`
 
-### 8-30 วันก่อน: 39 ไฟล์ (ดูสรุป)
+### 8-30 วันก่อน: 38 ไฟล์ (ดูสรุป)
 
+- **2026-05-03**: 5 ไฟล์
 - **2026-05-01**: 1 ไฟล์
-- **2026-04-30**: 5 ไฟล์
-- **2026-04-29**: 33 ไฟล์
+- **2026-04-30**: 2 ไฟล์
+- **2026-04-29**: 30 ไฟล์
 
 ## Source docs / config (อยู่ใน project)
 
@@ -59,5 +63,5 @@
 - [next.config.js](C:/inetpub/wwwroot/lake/next.config.js) - last modified 2026-05-04 13:34
 
 ---
-*Auto-generated 2026-05-10 02:00 by `server-b/refresh-server-b.ps1` (disk scan)*
+*Auto-generated 2026-05-11 02:00 by `server-b/refresh-server-b.ps1` (disk scan)*
 
