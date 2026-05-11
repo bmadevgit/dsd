@@ -1,0 +1,25 @@
+model:
+  provider: custom
+  base_url: http://100.99.107.27:8000/v1
+  api_key: ${HERMES_API_KEY}
+  model: Qwen/Qwen3-14B
+
+api_server:
+  enabled: true
+  port: 8080
+  host: 0.0.0.0
+
+compression:
+  enabled: true
+  threshold: 0.50
+  target_ratio: 0.20
+
+memory:
+  memory_enabled: true
+  memory_char_limit: 2200
+
+security:
+  tirith_enabled: true
+
+approvals:
+  mode: smart
