@@ -6,9 +6,10 @@
 #>
 
 $TaskName   = "Hermes Gateway"
-$TaskDesc   = "Hermes Agent gateway service — API port 8080 (NousResearch)"
+$TaskDesc   = "Hermes Agent gateway service - API port 8080 (NousResearch)"
 $BatFile    = "$PSScriptRoot\hermes-gateway.bat"
-$HermesPath = (Get-Command hermes -ErrorAction SilentlyContinue)?.Source
+$HermesCmd  = Get-Command hermes -ErrorAction SilentlyContinue
+$HermesPath = if ($HermesCmd) { $HermesCmd.Source } else { $null }
 
 if (-not (Test-Path $BatFile)) {
     Write-Error "hermes-gateway.bat not found at $BatFile"
@@ -23,8 +24,8 @@ if (Get-ScheduledTask -TaskName $TaskName -ErrorAction SilentlyContinue) {
 
 $action  = New-ScheduledTaskAction -Execute "cmd.exe" -Argument "/c `"$BatFile`""
 $trigger = @(
-    New-ScheduledTaskTrigger -AtStartup,
-    New-ScheduledTaskTrigger -AtLogOn -User "Administrator"
+    (New-ScheduledTaskTrigger -AtStartup),
+    (New-ScheduledTaskTrigger -AtLogOn -User "Administrator")
 )
 $settings = New-ScheduledTaskSettingsSet `
     -ExecutionTimeLimit ([TimeSpan]::Zero) `
@@ -51,4 +52,4 @@ Write-Host "     Restart : up to 5 times with 1-min interval"
 
 # Start immediately
 Start-ScheduledTask -TaskName $TaskName
-Write-Host "[OK] Task started — Hermes Gateway running on port 8080" -ForegroundColor Green
+Write-Host "[OK] Task started - Hermes Gateway running on port 8080" -ForegroundColor Green

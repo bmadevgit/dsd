@@ -3,11 +3,11 @@ model:
   base_url: http://100.99.107.27:8000/v1
   api_key: ${HERMES_API_KEY}
   model: Qwen/Qwen3-14B
+  context_length: 65536
 
-api_server:
-  enabled: true
-  port: 8080
-  host: 0.0.0.0
+auxiliary:
+  compression:
+    context_length: 65536
 
 compression:
   enabled: true
