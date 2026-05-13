@@ -1,6 +1,6 @@
----
+﻿---
 name: MySQL Monitor
-description: ตรวจสอบสถานะ MySQL 8.0 บน Windows Server — connections, uptime, databases (read-only)
+description: เธ•เธฃเธงเธเธชเธญเธเธชเธ–เธฒเธเธฐ MySQL 8.0 เธเธ Windows Server โ€” connections, uptime, databases (read-only)
 version: 1.0.0
 category: server-monitoring
 platforms:
@@ -9,28 +9,28 @@ platforms:
 
 # MySQL Monitor Skill
 
-ตรวจสอบสถานะ MySQL server บนเครื่องนี้โดยใช้ read-only queries เท่านั้น ไม่แก้ไข data หรือ schema ใดๆ
+เธ•เธฃเธงเธเธชเธญเธเธชเธ–เธฒเธเธฐ MySQL server เธเธเน€เธเธฃเธทเนเธญเธเธเธตเนเนเธ”เธขเนเธเน read-only queries เน€เธ—เนเธฒเธเธฑเนเธ เนเธกเนเนเธเนเนเธ data เธซเธฃเธทเธญ schema เนเธ”เน
 
 ## Usage
 
-เรียกใช้ด้วยคำเช่น:
+เน€เธฃเธตเธขเธเนเธเนเธ”เนเธงเธขเธเธณเน€เธเนเธ:
 - "check MySQL status"
-- "ตรวจ MySQL"
+- "เธ•เธฃเธงเธ MySQL"
 - "how many MySQL connections"
 - "show databases"
 
 ## MySQL Connection
 
-MySQL รันที่ port 3306 บนเครื่องนี้
+MySQL เธฃเธฑเธเธ—เธตเน port 3306 เธเธเน€เธเธฃเธทเนเธญเธเธเธตเน
 
 ```powershell
-# ใช้ mysql client (ต้องอยู่ใน PATH หรือระบุ full path)
-$mysql = "mysql"   # หรือ "C:\MySQL\bin\mysql.exe"
+# เนเธเน mysql client (เธ•เนเธญเธเธญเธขเธนเนเนเธ PATH เธซเธฃเธทเธญเธฃเธฐเธเธธ full path)
+$mysql = "mysql"   # เธซเธฃเธทเธญ "C:\MySQL\bin\mysql.exe"
 ```
 
 ## How to Check MySQL Status
 
-### 1. Server uptime และ basic status
+### 1. Server uptime เนเธฅเธฐ basic status
 ```powershell
 & mysql -u root --execute="SHOW STATUS LIKE 'Uptime%'; SHOW STATUS LIKE 'Threads_connected'; SHOW STATUS LIKE 'Questions';" 2>&1
 ```
@@ -62,15 +62,16 @@ Get-Process mysqld -ErrorAction SilentlyContinue | Select-Object Id, CPU, Workin
 
 ## Output Format
 
-แสดงผลเป็น markdown:
+เนเธชเธ”เธเธเธฅเน€เธเนเธ markdown:
 - Uptime: X hours
 - Active connections: N / max N
-- Databases: รายชื่อ + ขนาด
+- Databases: เธฃเธฒเธขเธเธทเนเธญ + เธเธเธฒเธ”
 - Slow queries: N
-- Warning ถ้า connections > 80% ของ max
+- Warning เธ–เนเธฒ connections > 80% เธเธญเธ max
 
 ## Constraints
 
-- ใช้เฉพาะ SELECT, SHOW, EXPLAIN (read-only)
-- ห้าม INSERT, UPDATE, DELETE, DROP, ALTER, CREATE
-- ห้ามแก้ไข user permissions หรือ configuration
+- เนเธเนเน€เธเธเธฒเธฐ SELECT, SHOW, EXPLAIN (read-only)
+- เธซเนเธฒเธก INSERT, UPDATE, DELETE, DROP, ALTER, CREATE
+- เธซเนเธฒเธกเนเธเนเนเธ user permissions เธซเธฃเธทเธญ configuration
+

@@ -1,6 +1,6 @@
 model:
   provider: custom
-  base_url: http://100.99.107.27:8000/v1
+  base_url: http://100.99.107.27:8001/v1
   api_key: ${HERMES_API_KEY}
   model: Qwen/Qwen3-14B
   # vLLM /v1/models reports max_model_len=32768 but Hermes requires >=64K minimum.
