@@ -3,10 +3,14 @@ model:
   base_url: http://100.99.107.27:8000/v1
   api_key: ${HERMES_API_KEY}
   model: Qwen/Qwen3-14B
+  # vLLM /v1/models reports max_model_len=32768 but Hermes requires >=64K minimum.
+  # Override here; actual usable context is capped by vLLM's max_model_len.
   context_length: 65536
 
 auxiliary:
   compression:
+    provider: "main"
+    model: "Qwen/Qwen3-14B"
     context_length: 65536
 
 compression:

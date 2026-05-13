@@ -121,8 +121,24 @@ Invoke-WebRequest http://localhost:8080/health
 # ใน hermes chat: "check MySQL status"
 ```
 
+## ข้อกำหนด vLLM Server (สำคัญ)
+
+Hermes ต้องการ **tool calling** — vLLM ที่ 100.99.107.27 ต้อง start ด้วย flags เพิ่มเติม:
+
+```bash
+python -m vllm.entrypoints.openai.api_server \
+  --model Qwen/Qwen3-14B \
+  --port 8000 \
+  --enable-auto-tool-choice \
+  --tool-call-parser hermes \
+  --max-model-len 65536
+```
+
+> ไม่เปิด `--enable-auto-tool-choice` → Hermes error: `"auto" tool choice requires --enable-auto-tool-choice`
+
 ## ข้อควรระวัง
 
 - Hermes ใช้ port **8080** เท่านั้น ไม่ชนกับ IIS (80/443) หรือ MySQL (3306)
 - Skills เป็น read-only ทั้งหมด ไม่แก้ IIS config / MySQL data
 - Hermes ติดตั้งใน `%LOCALAPPDATA%\hermes\` แยกออกจาก `C:\inetpub\`
+- vLLM จริงรองรับ 32K tokens แต่ config.yaml ตั้ง 65536 เพื่อ bypass Hermes minimum check
