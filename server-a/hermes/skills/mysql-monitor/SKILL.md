@@ -1,7 +1,7 @@
-﻿---
+---
 name: MySQL Monitor
-description: เธ•เธฃเธงเธเธชเธญเธเธชเธ–เธฒเธเธฐ MySQL 8.0 เธเธ Windows Server โ€” connections, uptime, databases (read-only)
-version: 1.0.0
+description: ตรวจสอบสถานะ MySQL 8.0 บน Windows Server — connections, uptime, databases (read-only)
+version: 1.1.0
 category: server-monitoring
 platforms:
   - windows
@@ -9,69 +9,49 @@ platforms:
 
 # MySQL Monitor Skill
 
-เธ•เธฃเธงเธเธชเธญเธเธชเธ–เธฒเธเธฐ MySQL server เธเธเน€เธเธฃเธทเนเธญเธเธเธตเนเนเธ”เธขเนเธเน read-only queries เน€เธ—เนเธฒเธเธฑเนเธ เนเธกเนเนเธเนเนเธ data เธซเธฃเธทเธญ schema เนเธ”เน
+ตรวจสอบสถานะ MySQL server บนเครื่องนี้ โดยใช้ read-only queries เท่านั้น
 
 ## Usage
 
-เน€เธฃเธตเธขเธเนเธเนเธ”เนเธงเธขเธเธณเน€เธเนเธ:
-- "check MySQL status"
-- "เธ•เธฃเธงเธ MySQL"
+- "check MySQL status" / "ตรวจ MySQL"
 - "how many MySQL connections"
 - "show databases"
 
-## MySQL Connection
+## Important: Terminal Shell
 
-MySQL เธฃเธฑเธเธ—เธตเน port 3306 เธเธเน€เธเธฃเธทเนเธญเธเธเธตเน
+Hermes terminal ใช้ **bash** บน Windows ต้องเรียก PowerShell ผ่าน `powershell.exe -NonInteractive -Command "..."`
 
-```powershell
-# เนเธเน mysql client (เธ•เนเธญเธเธญเธขเธนเนเนเธ PATH เธซเธฃเธทเธญเธฃเธฐเธเธธ full path)
-$mysql = "mysql"   # เธซเธฃเธทเธญ "C:\MySQL\bin\mysql.exe"
-```
+MySQL executable อยู่ที่: `C:\Program Files\MySQL\MySQL Server 8.0\bin\mysql.exe`
 
 ## How to Check MySQL Status
 
-### 1. Server uptime เนเธฅเธฐ basic status
-```powershell
-& mysql -u root --execute="SHOW STATUS LIKE 'Uptime%'; SHOW STATUS LIKE 'Threads_connected'; SHOW STATUS LIKE 'Questions';" 2>&1
+### 1. Server uptime และ basic status
+```bash
+powershell.exe -NonInteractive -Command "& 'C:\Program Files\MySQL\MySQL Server 8.0\bin\mysql.exe' -u root --execute='SHOW STATUS LIKE Uptime%; SHOW STATUS LIKE Threads_connected;' 2>&1"
 ```
 
 ### 2. Connection statistics
-```powershell
-& mysql -u root --execute="SHOW STATUS WHERE Variable_name IN ('Threads_connected','Max_used_connections','Connection_errors_total','Aborted_connects');" 2>&1
+```bash
+powershell.exe -NonInteractive -Command "& 'C:\Program Files\MySQL\MySQL Server 8.0\bin\mysql.exe' -u root --execute='SHOW STATUS WHERE Variable_name IN (Threads_connected,Max_used_connections,Aborted_connects);' 2>&1"
 ```
 
 ### 3. List databases and sizes
-```powershell
-& mysql -u root --execute="SELECT table_schema AS 'Database', ROUND(SUM(data_length + index_length) / 1024 / 1024, 2) AS 'Size (MB)' FROM information_schema.TABLES GROUP BY table_schema ORDER BY 2 DESC;" 2>&1
+```bash
+powershell.exe -NonInteractive -Command "& 'C:\Program Files\MySQL\MySQL Server 8.0\bin\mysql.exe' -u root --execute='SELECT table_schema AS DB, ROUND(SUM(data_length+index_length)/1024/1024,2) AS MB FROM information_schema.TABLES GROUP BY table_schema ORDER BY 2 DESC;' 2>&1"
 ```
 
-### 4. Active processes (running queries)
-```powershell
-& mysql -u root --execute="SHOW FULL PROCESSLIST;" 2>&1
+### 4. Active processes
+```bash
+powershell.exe -NonInteractive -Command "& 'C:\Program Files\MySQL\MySQL Server 8.0\bin\mysql.exe' -u root --execute='SHOW FULL PROCESSLIST;' 2>&1"
 ```
 
-### 5. Slow query count
-```powershell
-& mysql -u root --execute="SHOW STATUS LIKE 'Slow_queries';" 2>&1
+### 5. Check MySQL process (fallback ถ้า CLI ไม่ work)
+```bash
+powershell.exe -NonInteractive -Command "Get-Process mysqld -ErrorAction SilentlyContinue | Select-Object Id, CPU, WorkingSet | Format-Table -AutoSize"
 ```
-
-### 6. Check if MySQL process is running (PowerShell fallback if no CLI access)
-```powershell
-Get-Process mysqld -ErrorAction SilentlyContinue | Select-Object Id, CPU, WorkingSet | Format-Table -AutoSize
-```
-
-## Output Format
-
-เนเธชเธ”เธเธเธฅเน€เธเนเธ markdown:
-- Uptime: X hours
-- Active connections: N / max N
-- Databases: เธฃเธฒเธขเธเธทเนเธญ + เธเธเธฒเธ”
-- Slow queries: N
-- Warning เธ–เนเธฒ connections > 80% เธเธญเธ max
 
 ## Constraints
 
-- เนเธเนเน€เธเธเธฒเธฐ SELECT, SHOW, EXPLAIN (read-only)
-- เธซเนเธฒเธก INSERT, UPDATE, DELETE, DROP, ALTER, CREATE
-- เธซเนเธฒเธกเนเธเนเนเธ user permissions เธซเธฃเธทเธญ configuration
-
+- ใช้เฉพาะ SELECT, SHOW, EXPLAIN (read-only)
+- ห้าม INSERT, UPDATE, DELETE, DROP, ALTER, CREATE
+- ห้ามแก้ไข user permissions หรือ configuration

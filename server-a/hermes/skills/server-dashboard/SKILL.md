@@ -1,7 +1,7 @@
 ---
 name: Server Dashboard
 description: สรุปสถานะ server ครบทุกด้าน — IIS, MySQL, Disk, Memory, CPU, Processes
-version: 1.0.0
+version: 1.1.0
 category: server-monitoring
 platforms:
   - windows
@@ -13,79 +13,45 @@ platforms:
 
 ## Usage
 
-เรียกใช้ด้วยคำเช่น:
-- "check server"
-- "server status"
-- "dashboard"
-- "/dashboard"
-- "สถานะ server"
-- "ตรวจเซิร์ฟเวอร์"
+- "check server" / "สถานะ server" / "ตรวจเซิร์ฟเวอร์"
+- "server status" / "dashboard" / "/dashboard"
 
-## Dashboard Sections
+## Important: Terminal Shell
 
-รัน PowerShell commands ต่อไปนี้และ format เป็น markdown report:
+Hermes terminal ใช้ **bash** บน Windows ต้องเรียก PowerShell ผ่าน `powershell.exe -NonInteractive -Command "..."`
+
+## Dashboard Commands
+
+รันทีละ section แล้วรวม format เป็น markdown report:
 
 ### Section 1: System Overview
-```powershell
-$os = Get-CimInstance Win32_OperatingSystem
-$cpu = Get-CimInstance Win32_Processor | Measure-Object -Property LoadPercentage -Average
-[PSCustomObject]@{
-    Hostname    = $env:COMPUTERNAME
-    OS          = $os.Caption
-    Uptime      = (Get-Date) - $os.LastBootUpTime | Select-Object -ExpandProperty Days | ForEach-Object { "$_ days" }
-    CPU_Pct     = "$($cpu.Average)%"
-    RAM_Free_GB = [math]::Round($os.FreePhysicalMemory / 1MB, 1)
-    RAM_Total_GB= [math]::Round($os.TotalVisibleMemorySize / 1MB, 1)
-} | Format-List
+```bash
+powershell.exe -NonInteractive -Command "\$os = Get-CimInstance Win32_OperatingSystem; \$cpu = (Get-CimInstance Win32_Processor | Measure-Object -Property LoadPercentage -Average).Average; Write-Output \"Hostname: \$env:COMPUTERNAME\"; Write-Output \"OS: \$(\$os.Caption)\"; Write-Output \"Uptime: \$(([DateTime]::Now - \$os.LastBootUpTime).Days) days\"; Write-Output \"CPU: \$cpu%\"; Write-Output \"RAM Free: \$([math]::Round(\$os.FreePhysicalMemory/1MB,1)) / \$([math]::Round(\$os.TotalVisibleMemorySize/1MB,1)) GB\""
 ```
 
 ### Section 2: Disk Usage
-```powershell
-Get-PSDrive -PSProvider FileSystem | Where-Object { $_.Used -gt 0 } |
-    Select-Object Name,
-        @{n='Used GB';e={[math]::Round($_.Used/1GB,1)}},
-        @{n='Free GB';e={[math]::Round($_.Free/1GB,1)}},
-        @{n='Total GB';e={[math]::Round(($_.Used+$_.Free)/1GB,1)}},
-        @{n='Used %';e={[math]::Round($_.Used/($_.Used+$_.Free)*100,0)}} |
-    Format-Table -AutoSize
+```bash
+powershell.exe -NonInteractive -Command "Get-PSDrive -PSProvider FileSystem | Where-Object { \$_.Used -gt 0 } | Select-Object Name, @{n='UsedGB';e={[math]::Round(\$_.Used/1GB,1)}}, @{n='FreeGB';e={[math]::Round(\$_.Free/1GB,1)}}, @{n='Pct';e={[math]::Round(\$_.Used/(\$_.Used+\$_.Free)*100,0)}} | Format-Table -AutoSize"
 ```
 
 ### Section 3: IIS Sites
-```powershell
-Import-Module WebAdministration -ErrorAction SilentlyContinue
-Get-WebSite | Select-Object Name, State,
-    @{n='Bindings';e={($_.Bindings.Collection | Select-Object -First 1 -ExpandProperty BindingInformation)}} |
-    Format-Table -AutoSize
+```bash
+powershell.exe -NonInteractive -Command "Import-Module WebAdministration; Get-WebSite | Select-Object Name, State | Format-Table -AutoSize"
 ```
 
 ### Section 4: Key Processes
-```powershell
-$procs = @("mysqld","w3wp","hermes","node","python","php-cgi")
-foreach ($p in $procs) {
-    $r = Get-Process $p -ErrorAction SilentlyContinue
-    if ($r) {
-        $count = ($r | Measure-Object).Count
-        $mem   = [math]::Round(($r | Measure-Object WorkingSet -Sum).Sum / 1MB, 1)
-        Write-Output "${p}: ${count} process(es), ${mem} MB RAM"
-    } else {
-        Write-Output "${p}: not running"
-    }
-}
+```bash
+powershell.exe -NonInteractive -Command "foreach (\$p in @('mysqld','w3wp','hermes','node','python','php-cgi')) { \$r = Get-Process \$p -ErrorAction SilentlyContinue; if (\$r) { \$m = [math]::Round((\$r | Measure-Object WorkingSet -Sum).Sum/1MB,1); Write-Output \"\$p: \$((\$r|Measure-Object).Count) proc, \$m MB\" } else { Write-Output \"\$p: not running\" } }"
 ```
 
-### Section 5: Port Summary (key services)
-```powershell
-$ports = @(80, 443, 3306, 8080, 11434, 8000)
-foreach ($port in $ports) {
-    $conn = Get-NetTCPConnection -LocalPort $port -State Listen -ErrorAction SilentlyContinue
-    $label = switch ($port) {
-        80     { "IIS HTTP" }; 443   { "IIS HTTPS" }; 3306  { "MySQL" }
-        8080   { "Hermes API" }; 11434 { "Ollama" }; 8000  { "AI Gateway" }
-        default { "Unknown" }
-    }
-    if ($conn) { Write-Output "  :${port} ($label) — LISTENING" }
-    else        { Write-Output "  :${port} ($label) — not listening" }
-}
+### Section 5: Port Summary
+```bash
+powershell.exe -NonInteractive -Command "foreach (\$port in @(80,443,3306,8080,8001)) { \$c = Get-NetTCPConnection -LocalPort \$port -State Listen -ErrorAction SilentlyContinue; \$label = @{80='IIS HTTP';443='IIS HTTPS';3306='MySQL';8080='Hermes API';8001='vLLM'}[\$port]; if (\$c) { Write-Output \":\$port (\$label) LISTENING\" } else { Write-Output \":\$port (\$label) not listening\" } }"
+```
+
+### Section 6: MySQL Quick Check
+```bash
+powershell.exe -NonInteractive -Command "& 'C:\Program Files\MySQL\MySQL Server 8.0\bin\mysql.exe' -u root --execute='SHOW STATUS WHERE Variable_name IN (Uptime,Threads_connected,Questions);' 2>&1"
 ```
 
 ## Output Format
@@ -94,34 +60,22 @@ foreach ($port in $ports) {
 # Server Dashboard — [hostname] — [timestamp]
 
 ## System
-| Metric  | Value |
-|---------|-------|
-| OS      | ...   |
-| Uptime  | X days |
-| CPU     | X%    |
-| RAM     | X.X / X.X GB |
+OS: Windows Server 2025
+Uptime: X days | CPU: X% | RAM: X.X/X.X GB
 
 ## Disk
-| Drive | Used GB | Free GB | Used % |
-...
+C: Used X.X GB / Free X.X GB (X%)
 
-## IIS Sites (X running)
-| Site | State | Binding |
-...
+## IIS (X sites)
+site1: Started | site2: Stopped
 
-## Services
-- mysqld: running (X MB)
-- w3wp: X instances (X MB)
-- hermes: running (X MB)
+## Processes
+mysqld: running X MB | w3wp: X instances | hermes: running
 
 ## Ports
-- :80 IIS HTTP — LISTENING
-- :8080 Hermes API — LISTENING
-...
+:80 IIS HTTP LISTENING | :443 IIS HTTPS LISTENING | :3306 MySQL LISTENING | :8080 Hermes API LISTENING
 ```
 
 ## Constraints
 
-- ทุก command เป็น read-only
-- ไม่ restart หรือแก้ไข service ใดๆ
-- รายงานข้อมูลเท่านั้น ไม่ดำเนินการแก้ไข
+- ทุก command เป็น read-only ไม่ restart หรือแก้ไข service ใดๆ

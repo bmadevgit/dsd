@@ -23,7 +23,11 @@ memory:
   memory_char_limit: 2200
 
 security:
-  tirith_enabled: true
+  tirith_enabled: false   # tirith not installed on this server
+
+terminal:
+  backend: "local"
+  cwd: "C:/Users/Administrator"
 
 approvals:
   mode: smart
