@@ -1,7 +1,7 @@
 ﻿# todo - server-b
 
 > Auto-generated overview of web apps on this machine (172.27.15.6)
-> Snapshot: **2026-05-14 02:00**
+> Snapshot: **2026-05-15 02:00**
 > Refresh: daily at 02:00 via Task Scheduler
 
 ## IIS Sites
@@ -27,9 +27,8 @@
 
 ## Activity (24 ชั่วโมงล่าสุด)
 
-- **lake**: 8 ไฟล์
-- **link**: 30 ไฟล์
+- **link**: 23 ไฟล์
 
 ---
-*Auto-generated 2026-05-14 02:00 by `server-b/refresh-server-b.ps1`*
+*Auto-generated 2026-05-15 02:00 by `server-b/refresh-server-b.ps1`*
 

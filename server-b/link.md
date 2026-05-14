@@ -7,32 +7,44 @@
 - **Process:** IIS PHP
 - **DB:** MySQL (core_fields, agencies, child_records, audit_logs, ...)
 
-- **Files (excl node_modules/.next/.venv/logs/.git/tmp_):** 105 files, 1.1 MB
+- **Files (excl node_modules/.next/.venv/logs/.git/tmp_):** 113 files, 175.8 MB
 
 ## Activity (จากการสแกน file mtime)
 
-### วันนี้ (2026-05-14): 0 ไฟล์
+### วันนี้ (2026-05-15): 0 ไฟล์
 
   (ไม่มีไฟล์แก้ไขวันนี้)
 
-### 7 วันล่าสุด (ไม่รวมวันนี้): 30 ไฟล์
+### 7 วันล่าสุด (ไม่รวมวันนี้): 42 ไฟล์
 
-- **2026-05-13** (30 ไฟล์):
-  - 16:17 `admin/dataview.php`
-  - 16:15 `admin/_common.php`
+- **2026-05-14** (23 ไฟล์):
+  - 20:27 `database/migrations/018_remove_bma_po_workbook_artifacts.sql`
+  - 20:27 `docs/INSTALL_IIS.md`
+  - 20:26 `docs/ADMIN_MANUAL_TH.md`
+  - 20:24 `src/bootstrap.php`
+  - 20:24 `admin/datasets.php`
+  - 20:11 `admin/data_quality.php`
+  - 15:19 `src/DataViewService.php`
+  - 14:51 `admin/dataview.php`
+  - ... (+15 more)
+- **2026-05-13** (18 ไฟล์):
   - 15:55 `admin/sample_data.php`
   - 13:04 `database/migrations/015_seed_digi_health_access_except_pid_hash.sql`
   - 12:59 `admin/dashboard.php`
   - 12:46 `src/Auth.php`
   - 12:46 `admin/logout.php`
   - 12:46 `admin/change_password.php`
-  - ... (+22 more)
+  - 12:46 `admin/login.php`
+  - 12:41 `src/helpers.php`
+  - ... (+10 more)
+- **2026-05-12** (1 ไฟล์):
+  - 15:14 `storage/uploads/incoming/health/vr_school_hygiene_20260512_hash.csv`
 
-### 8-30 วันก่อน: 75 ไฟล์ (ดูสรุป)
+### 8-30 วันก่อน: 71 ไฟล์ (ดูสรุป)
 
 - **2026-05-01**: 5 ไฟล์
-- **2026-04-30**: 51 ไฟล์
-- **2026-04-29**: 19 ไฟล์
+- **2026-04-30**: 48 ไฟล์
+- **2026-04-29**: 18 ไฟล์
 
 ## Backup files ที่พบ (บ่งบอกว่ามีการแก้ไขย้อนหลัง)
 
@@ -55,8 +67,8 @@
 ## Source docs / config (อยู่ใน project)
 
 - [web.config](C:/inetpub/wwwroot/link/web.config) - last modified 2026-04-30 11:50
-- [src/bootstrap.php](C:/inetpub/wwwroot/link/src/bootstrap.php) - last modified 2026-05-13 11:55
+- [src/bootstrap.php](C:/inetpub/wwwroot/link/src/bootstrap.php) - last modified 2026-05-14 20:24
 
 ---
-*Auto-generated 2026-05-14 02:00 by `server-b/refresh-server-b.ps1` (disk scan)*
+*Auto-generated 2026-05-15 02:00 by `server-b/refresh-server-b.ps1` (disk scan)*
 
