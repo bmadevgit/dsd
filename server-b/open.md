@@ -11,7 +11,7 @@
 
 ## Activity (จากการสแกน file mtime)
 
-### วันนี้ (2026-05-16): 0 ไฟล์
+### วันนี้ (2026-05-18): 0 ไฟล์
 
   (ไม่มีไฟล์แก้ไขวันนี้)
 
@@ -19,9 +19,7 @@
 
   (ไม่มีไฟล์แก้ไขในช่วง 7 วัน)
 
-### 8-30 วันก่อน: 8 ไฟล์ (ดูสรุป)
-
-- **2026-04-16**: 8 ไฟล์
+### 8-30 วันก่อน: 0 ไฟล์ (ดูสรุป)
 
 ## Source docs / config (อยู่ใน project)
 
@@ -33,5 +31,5 @@
 - [install.php](C:/inetpub/wwwroot/open/install.php) - last modified 2026-04-16 09:14
 
 ---
-*Auto-generated 2026-05-16 02:00 by `server-b/refresh-server-b.ps1` (disk scan)*
+*Auto-generated 2026-05-18 02:00 by `server-b/refresh-server-b.ps1` (disk scan)*
 
