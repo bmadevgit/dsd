@@ -45,9 +45,10 @@ function Invoke-AISummary {
     if (-not $script:AI_ENDPOINT) { return $null }
     if (-not $ChangedFiles -or $ChangedFiles.Count -eq 0) { return $null }
 
-    # Build context: list changed files + small excerpts of top 5 text files
-    $maxExcerptFiles = 5
-    $excerptCharsPerFile = 1500
+    # Build context: list changed files + small excerpts of top 3 text files
+    # Keep modest because vLLM context window can be tight; aim < 3500 tokens total.
+    $maxExcerptFiles = 3
+    $excerptCharsPerFile = 800
     $sortedFiles = $ChangedFiles | Sort-Object LastWriteTime -Descending
 
     $fileList = ($sortedFiles | Select-Object -First 30 | ForEach-Object {
@@ -98,9 +99,12 @@ $excerptText
             @{ role = 'system'; content = $systemPrompt }
             @{ role = 'user';   content = $userPrompt }
         )
-        max_tokens = 800
+        max_tokens = 600
         temperature = 0.2
     } | ConvertTo-Json -Depth 6 -Compress
+
+    # Drop "thinking" content tags that Qwen prepends (vLLM Qwen3 emits <think>...</think>)
+    # We don't want that in our markdown. Handled after response.
 
     $headers = @{
         Authorization = "Bearer $script:AI_KEY"
@@ -110,9 +114,12 @@ $excerptText
     foreach ($modelTry in @($script:AI_MODEL, $script:AI_FALLBACK_MODEL)) {
         try {
             $bodyMod = $body -replace '"model":"[^"]+"', ('"model":"' + $modelTry + '"')
-            $resp = Invoke-RestMethod -Uri $script:AI_ENDPOINT -Method POST -Headers $headers -Body $bodyMod -TimeoutSec 60
+            $resp = Invoke-RestMethod -Uri $script:AI_ENDPOINT -Method POST -Headers $headers -Body $bodyMod -TimeoutSec 90
             $content = $resp.choices[0].message.content
             if ($content) {
+                # Strip Qwen "<think>...</think>" prelude if present
+                $content = [regex]::Replace($content, '(?s)<think>.*?</think>\s*', '')
+                $content = $content.Trim()
                 return "$content`n`n*(model: $modelTry, $($ChangedFiles.Count) files analyzed)*"
             }
         } catch {

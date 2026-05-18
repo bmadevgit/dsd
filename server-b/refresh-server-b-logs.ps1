@@ -134,9 +134,13 @@ $context
     foreach ($modelTry in @($script:AI_MODEL, $script:AI_FALLBACK_MODEL)) {
         try {
             $bodyMod = $body -replace '"model":"[^"]+"', ('"model":"' + $modelTry + '"')
-            $resp = Invoke-RestMethod -Uri $script:AI_ENDPOINT -Method POST -Headers $headers -Body $bodyMod -TimeoutSec 90
+            $resp = Invoke-RestMethod -Uri $script:AI_ENDPOINT -Method POST -Headers $headers -Body $bodyMod -TimeoutSec 120
             $content = $resp.choices[0].message.content
-            if ($content) { return @{ Text = $content; Model = $modelTry } }
+            if ($content) {
+                $content = [regex]::Replace($content, '(?s)<think>.*?</think>\s*', '')
+                $content = $content.Trim()
+                return @{ Text = $content; Model = $modelTry }
+            }
         } catch {
             Write-Warning "AI call failed for $ProjectSlug with $modelTry : $($_.Exception.Message)"
         }
