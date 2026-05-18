@@ -13,11 +13,106 @@ $Today       = $Now.Date
 
 $ExcludePattern = '\\(node_modules|\.next|\.venv|__pycache__|logs|\.git|tmp_)\\'
 
+# Load AI credentials (gitignored)
+$ConfigPath = Join-Path $ServerBDir '.config.ps1'
+if (Test-Path $ConfigPath) { . $ConfigPath } else {
+    Write-Warning "No .config.ps1 found - AI summary will be skipped"
+    $script:AI_ENDPOINT = $null
+}
+
 function Get-ProjectFiles {
     param([string]$Path)
     if (-not (Test-Path $Path)) { return @() }
     Get-ChildItem $Path -Recurse -File -Force -ErrorAction SilentlyContinue |
         Where-Object { $_.FullName -notmatch $ExcludePattern }
+}
+
+# AI summarization of recent changes for a project (called only if files changed in last 24h).
+# Returns markdown string for the "### AI Summary" section, or $null on failure.
+function Invoke-AISummary {
+    param(
+        [string]$ProjectTitle,
+        [string]$ProjectPath,
+        [object[]]$ChangedFiles  # FileInfo array
+    )
+    if (-not $script:AI_ENDPOINT) { return $null }
+    if (-not $ChangedFiles -or $ChangedFiles.Count -eq 0) { return $null }
+
+    # Build context: list changed files + small excerpts of top 5 text files
+    $maxExcerptFiles = 5
+    $excerptCharsPerFile = 1500
+    $sortedFiles = $ChangedFiles | Sort-Object LastWriteTime -Descending
+
+    $fileList = ($sortedFiles | Select-Object -First 30 | ForEach-Object {
+        $rel = Get-RelPath -Full $_.FullName -Base $ProjectPath
+        "{0:yyyy-MM-dd HH:mm}  {1,8:N0}B  {2}" -f $_.LastWriteTime, $_.Length, $rel
+    }) -join "`n"
+
+    $textExtensions = '\.(php|js|jsx|ts|tsx|py|sql|json|md|html|css|sh|ps1|conf|env|yml|yaml|xml|txt|ini)$'
+    $excerptFiles = $sortedFiles |
+        Where-Object { $_.Name -match $textExtensions -and $_.Length -lt 200000 } |
+        Select-Object -First $maxExcerptFiles
+
+    $excerpts = foreach ($f in $excerptFiles) {
+        $rel = Get-RelPath -Full $f.FullName -Base $ProjectPath
+        try {
+            $content = Get-Content $f.FullName -Raw -ErrorAction SilentlyContinue
+            if (-not $content) { continue }
+            if ($content.Length -gt $excerptCharsPerFile) {
+                $content = $content.Substring(0, $excerptCharsPerFile) + ("`n... [truncated, full file {0} bytes]" -f $f.Length)
+            }
+            "----- FILE: $rel -----`n$content`n"
+        } catch { }
+    }
+    $excerptText = ($excerpts -join "`n") -replace "`r`n", "`n"
+
+    $systemPrompt = @"
+คุณเป็นผู้ช่วยที่สรุปการเปลี่ยนแปลงของโปรเจกต์ใน 24 ชั่วโมงล่าสุด ตอบเป็นภาษาไทย กระชับ มี 2 ส่วน:
+1) **สรุปการเปลี่ยนแปลง** - bullet list สั้นๆ ว่าทำอะไรไป (อนุมานจากชื่อไฟล์ + เนื้อหา)
+2) **ข้อควรระวัง** - bullet list สิ่งที่ควรตรวจสอบ/เสี่ยง (เช่น migration ที่ต้องรัน, file backup ที่ค้าง, แก้ security/auth, config เปลี่ยน, schema เปลี่ยน)
+
+ห้ามเดาเกินหลักฐาน ถ้าหลักฐานไม่พอบอกตรงๆ ตอบเฉพาะ markdown ไม่มี preamble
+"@
+
+    $userPrompt = @"
+โปรเจกต์: $ProjectTitle
+Path: $ProjectPath
+
+ไฟล์ที่เปลี่ยนแปลงใน 24 ชั่วโมง (เรียงใหม่สุดก่อน):
+$fileList
+
+ตัวอย่างเนื้อหาบางไฟล์:
+$excerptText
+"@
+
+    $body = @{
+        model = $script:AI_MODEL
+        messages = @(
+            @{ role = 'system'; content = $systemPrompt }
+            @{ role = 'user';   content = $userPrompt }
+        )
+        max_tokens = 800
+        temperature = 0.2
+    } | ConvertTo-Json -Depth 6 -Compress
+
+    $headers = @{
+        Authorization = "Bearer $script:AI_KEY"
+        'Content-Type' = 'application/json'
+    }
+
+    foreach ($modelTry in @($script:AI_MODEL, $script:AI_FALLBACK_MODEL)) {
+        try {
+            $bodyMod = $body -replace '"model":"[^"]+"', ('"model":"' + $modelTry + '"')
+            $resp = Invoke-RestMethod -Uri $script:AI_ENDPOINT -Method POST -Headers $headers -Body $bodyMod -TimeoutSec 60
+            $content = $resp.choices[0].message.content
+            if ($content) {
+                return "$content`n`n*(model: $modelTry, $($ChangedFiles.Count) files analyzed)*"
+            }
+        } catch {
+            Write-Warning "AI call failed for $ProjectTitle with $modelTry : $($_.Exception.Message)"
+        }
+    }
+    return $null
 }
 
 function Get-RelPath {
@@ -173,6 +268,24 @@ foreach ($p in $projects) {
         $todayFiles  = @($files | Where-Object { $_.LastWriteTime.Date -eq $Today })
         $last7Files  = @($files | Where-Object { $_.LastWriteTime -gt $Now.AddDays(-7)  -and $_.LastWriteTime.Date -ne $Today })
         $last30Files = @($files | Where-Object { $_.LastWriteTime -gt $Now.AddDays(-30) -and $_.LastWriteTime -le $Now.AddDays(-7) })
+        $last24hFiles = @($files | Where-Object { $_.LastWriteTime -gt $Now.AddHours(-24) })
+
+        # ---- AI Summary section (only if there are changes in last 24h) ----
+        if ($last24hFiles.Count -gt 0 -and $script:AI_ENDPOINT) {
+            Write-Host ("[AI] Summarizing {0} ({1} files in 24h)..." -f $p.Slug, $last24hFiles.Count)
+            $aiSummary = Invoke-AISummary -ProjectTitle $p.Title -ProjectPath $p.Path -ChangedFiles $last24hFiles
+            if ($aiSummary) {
+                [void]$sb.AppendLine("### AI Summary (24 ชั่วโมงล่าสุด)")
+                [void]$sb.AppendLine("")
+                [void]$sb.AppendLine($aiSummary)
+                [void]$sb.AppendLine("")
+            } else {
+                [void]$sb.AppendLine("### AI Summary (24 ชั่วโมงล่าสุด)")
+                [void]$sb.AppendLine("")
+                [void]$sb.AppendLine("*(AI call failed - skipped)*")
+                [void]$sb.AppendLine("")
+            }
+        }
 
         [void]$sb.AppendLine(("### วันนี้ ({0}): {1} ไฟล์" -f $Today.ToString('yyyy-MM-dd'), $todayFiles.Count))
         [void]$sb.AppendLine("")
