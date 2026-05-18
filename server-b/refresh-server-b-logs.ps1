@@ -192,7 +192,7 @@ foreach ($entry in $projectLogPaths.GetEnumerator()) {
         [void]$sb.AppendLine("")
         [void]$sb.AppendLine($ai.Text)
         [void]$sb.AppendLine("")
-        [void]$sb.AppendLine(("*(model: {0}, {1} log files analyzed)*" -f $ai.Model, $logEntries.Count))
+        [void]$sb.AppendLine(("*(model: {0}, {1} log files analyzed)*" -f $ai.Model, @($logEntries).Count))
         [void]$sb.AppendLine("")
     } else {
         [void]$sb.AppendLine("## AI Analysis")
