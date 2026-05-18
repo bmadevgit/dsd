@@ -107,15 +107,19 @@ $excerptText
     # We don't want that in our markdown. Handled after response.
 
     $headers = @{
-        Authorization = "Bearer $script:AI_KEY"
-        'Content-Type' = 'application/json'
+        Authorization  = "Bearer $script:AI_KEY"
+        'Content-Type' = 'application/json; charset=utf-8'
     }
 
     foreach ($modelTry in @($script:AI_MODEL, $script:AI_FALLBACK_MODEL)) {
         try {
             $bodyMod = $body -replace '"model":"[^"]+"', ('"model":"' + $modelTry + '"')
-            $resp = Invoke-RestMethod -Uri $script:AI_ENDPOINT -Method POST -Headers $headers -Body $bodyMod -TimeoutSec 90
-            $content = $resp.choices[0].message.content
+            # IMPORTANT: PS 5.1 Invoke-RestMethod sends string body as Windows-1252,
+            # mangling Thai chars. Pass UTF-8 bytes explicitly via Invoke-WebRequest.
+            $bytes = [System.Text.Encoding]::UTF8.GetBytes($bodyMod)
+            $resp = Invoke-WebRequest -Uri $script:AI_ENDPOINT -Method POST -Headers $headers -Body $bytes -UseBasicParsing -TimeoutSec 90
+            $json = $resp.Content | ConvertFrom-Json
+            $content = $json.choices[0].message.content
             if ($content) {
                 # Strip Qwen "<think>...</think>" prelude if present
                 $content = [regex]::Replace($content, '(?s)<think>.*?</think>\s*', '')

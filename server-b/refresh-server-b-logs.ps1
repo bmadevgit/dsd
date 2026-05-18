@@ -127,15 +127,17 @@ $context
     } | ConvertTo-Json -Depth 6 -Compress
 
     $headers = @{
-        Authorization = "Bearer $script:AI_KEY"
-        'Content-Type' = 'application/json'
+        Authorization  = "Bearer $script:AI_KEY"
+        'Content-Type' = 'application/json; charset=utf-8'
     }
 
     foreach ($modelTry in @($script:AI_MODEL, $script:AI_FALLBACK_MODEL)) {
         try {
             $bodyMod = $body -replace '"model":"[^"]+"', ('"model":"' + $modelTry + '"')
-            $resp = Invoke-RestMethod -Uri $script:AI_ENDPOINT -Method POST -Headers $headers -Body $bodyMod -TimeoutSec 120
-            $content = $resp.choices[0].message.content
+            $bytes = [System.Text.Encoding]::UTF8.GetBytes($bodyMod)
+            $resp = Invoke-WebRequest -Uri $script:AI_ENDPOINT -Method POST -Headers $headers -Body $bytes -UseBasicParsing -TimeoutSec 120
+            $json = $resp.Content | ConvertFrom-Json
+            $content = $json.choices[0].message.content
             if ($content) {
                 $content = [regex]::Replace($content, '(?s)<think>.*?</think>\s*', '')
                 $content = $content.Trim()

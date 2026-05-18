@@ -13,7 +13,12 @@
 
 ### AI Summary (168 ชั่วโมงล่าสุด)
 
-*(AI call failed - skipped)*
+**à¸ªà¸£à¸¸à¸à¸à¸²à¸£à¹à¸à¸¥à¸µà¹à¸¢à¸à¹à¸à¸¥à¸**  
+- à¸­à¸±à¸à¹à¸à¸ middleware à¸ªà¸³à¸«à¸£à¸±à¸ MCP transport (src/middleware.ts)  
+- à¸à¸£à¸±à¸à¸à¸£à¸¸à¸à¸«à¸à¹à¸² MCP admin à¹à¸¥à¸° API endpoint à¸ªà¸³à¸«à¸£à¸±à¸ MCP tools (src/app/admin/mcp/page.tsx, src/app/api/mcp/v1/route.ts)  
+- à¹à¸à¸´à¹à¸¡/à¹à¸à¹à¹à¸à¸à¸²à¸£à¸à¸±à¸à¸à¸²à¸£ API keys (src/lib/api-key.ts, sql/004
+
+*(model: claude-sonnet-4-5, 43 files analyzed)*
 
 ### วันนี้ (2026-05-18): 0 ไฟล์
 
@@ -71,5 +76,5 @@
 - [next.config.js](C:/inetpub/wwwroot/lake/next.config.js) - last modified 2026-05-12 05:22
 
 ---
-*Auto-generated 2026-05-18 11:40 by `server-b/refresh-server-b.ps1` (disk scan)*
+*Auto-generated 2026-05-18 11:42 by `server-b/refresh-server-b.ps1` (disk scan)*
 
