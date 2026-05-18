@@ -215,9 +215,9 @@ foreach ($entry in $projectLogPaths.GetEnumerator()) {
     foreach ($le in $logEntries) {
         [void]$sb.AppendLine(("### ``{0}``" -f $le.Path))
         [void]$sb.AppendLine("")
-        [void]$sb.AppendLine("```")
+        [void]$sb.AppendLine('```')
         [void]$sb.AppendLine($le.Tail)
-        [void]$sb.AppendLine("```")
+        [void]$sb.AppendLine('```')
         [void]$sb.AppendLine("")
     }
 
