@@ -11,6 +11,10 @@
 
 ## Activity (จากการสแกน file mtime)
 
+### AI Summary (168 ชั่วโมงล่าสุด)
+
+*(AI call failed - skipped)*
+
 ### วันนี้ (2026-05-18): 0 ไฟล์
 
   (ไม่มีไฟล์แก้ไขวันนี้)
@@ -89,5 +93,5 @@
 - [src/bootstrap.php](C:/inetpub/wwwroot/link/src/bootstrap.php) - last modified 2026-05-14 20:24
 
 ---
-*Auto-generated 2026-05-18 11:37 by `server-b/refresh-server-b.ps1` (disk scan)*
+*Auto-generated 2026-05-18 11:39 by `server-b/refresh-server-b.ps1` (disk scan)*
 
