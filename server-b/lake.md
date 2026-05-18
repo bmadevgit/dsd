@@ -11,25 +11,6 @@
 
 ## Activity (จากการสแกน file mtime)
 
-### AI Summary (168 ชั่วโมงล่าสุด)
-
-**สรุปการเปลี่ยนแปลง**  
-- อัปเดต `middleware.ts` สำหรับการจัดการ MCP transport และ API key  
-- แก้ไขหน้า admin MCP (`page.tsx`) และ API endpoint `/api/mcp/v1` สำหรับ MCP server  
-- เพิ่ม/แก้ไข API route สำหรับการจัดการ API keys (`/api/admin/api-keys/[id]`, `/api/mcp/call`)  
-- อัปเดต SQL script (`004-api-keys.sql`) สำหรับฐานข้อมูล API keys  
-- ปรับปรุงโค้ด UI สำหรับ AI chat (`AIChat.tsx`, `HomeAIChat.tsx`) และ component ที่เกี่ยวข้อง  
-- แก้ไข config ทั่วไป (`next.config.js`) และไฟล์ instrumentation  
-
-**ข้อควรระวัง**  
-- ตรวจสอบการเปลี่ยนแปลง schema ฐานข้อมูลจาก `004-api-keys.sql` อาจต้องรัน migration  
-- ทดสอบการรับ-ส่ง API key ใหม่ใน `middleware.ts` และ `/api/mcp/v1/route.ts`  
-- ตรวจสอบความเข้ากันได้ของ MCP client กับการอัปเดต `/api/mcp/v1`  
-- ตรวจสอบการใช้งาน AI chat features ที่อาจมีการเปลี่ยนแปลงใน `AIChat.tsx`  
-- ตรวจสอบ config ใน `next.config.js` ที่อาจส่งผลต่อ build/deploy
-
-*(model: claude-sonnet-4-5, 43 files analyzed)*
-
 ### วันนี้ (2026-05-18): 0 ไฟล์
 
   (ไม่มีไฟล์แก้ไขวันนี้)
@@ -86,5 +67,5 @@
 - [next.config.js](C:/inetpub/wwwroot/lake/next.config.js) - last modified 2026-05-12 05:22
 
 ---
-*Auto-generated 2026-05-18 11:46 by `server-b/refresh-server-b.ps1` (disk scan)*
+*Auto-generated 2026-05-18 11:51 by `server-b/refresh-server-b.ps1` (disk scan)*
 
