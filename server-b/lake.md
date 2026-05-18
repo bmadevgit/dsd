@@ -13,10 +13,11 @@
 
 ### AI Summary (168 ชั่วโมงล่าสุด)
 
-**à¸ªà¸£à¸¸à¸à¸à¸²à¸£à¹à¸à¸¥à¸µà¹à¸¢à¸à¹à¸à¸¥à¸**  
-- à¸­à¸±à¸à¹à¸à¸ middleware à¸ªà¸³à¸«à¸£à¸±à¸ MCP transport (src/middleware.ts)  
-- à¸à¸£à¸±à¸à¸à¸£à¸¸à¸à¸«à¸à¹à¸² MCP admin à¹à¸¥à¸° API endpoint à¸ªà¸³à¸«à¸£à¸±à¸ MCP tools (src/app/admin/mcp/page.tsx, src/app/api/mcp/v1/route.ts)  
-- à¹à¸à¸´à¹à¸¡/à¹à¸à¹à¹à¸à¸à¸²à¸£à¸à¸±à¸à¸à¸²à¸£ API keys (src/lib/api-key.ts, sql/004
+**สรุปการเปลี่ยนแปลง**  
+- อัปเดตการจัดการ MCP (Model Context Protocol) ผ่านไฟล์ `middleware.ts`, `api/mcp/v1/route.ts`, และ `app/admin/mcp/page.tsx`  
+- เพิ่ม/แก้ไขระบบ API Key ด้วยไฟล์ `api-key.ts`, `sql/004-api-keys.sql`, และ API ที่เกี่ยวข้อง (`api/admin/api-keys/[id]/route.ts`)  
+- ปรับปรุงฟีเจอร์ AI Chat ด้วยไฟล์ `AIChat.tsx`, `HomeAIChat.tsx`, และ API ที่เกี่ยวข้อง (`api/ai/chat/route.ts`, `api/ai/dataset-chat/route.ts`)  
+- แก้ไขโค้ด UI/UX ทั่วไป เช่น `Navbar.tsx`, `Footer.tsx`, และหน้า
 
 *(model: claude-sonnet-4-5, 43 files analyzed)*
 
@@ -76,5 +77,5 @@
 - [next.config.js](C:/inetpub/wwwroot/lake/next.config.js) - last modified 2026-05-12 05:22
 
 ---
-*Auto-generated 2026-05-18 11:42 by `server-b/refresh-server-b.ps1` (disk scan)*
+*Auto-generated 2026-05-18 11:44 by `server-b/refresh-server-b.ps1` (disk scan)*
 

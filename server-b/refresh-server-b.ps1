@@ -118,7 +118,10 @@ $excerptText
             # mangling Thai chars. Pass UTF-8 bytes explicitly via Invoke-WebRequest.
             $bytes = [System.Text.Encoding]::UTF8.GetBytes($bodyMod)
             $resp = Invoke-WebRequest -Uri $script:AI_ENDPOINT -Method POST -Headers $headers -Body $bytes -UseBasicParsing -TimeoutSec 90
-            $json = $resp.Content | ConvertFrom-Json
+            # Decode response bytes as UTF-8 (Invoke-WebRequest's .Content may use wrong charset)
+            $respBytes = $resp.RawContentStream.ToArray()
+            $respText  = [System.Text.Encoding]::UTF8.GetString($respBytes)
+            $json = $respText | ConvertFrom-Json
             $content = $json.choices[0].message.content
             if ($content) {
                 # Strip Qwen "<think>...</think>" prelude if present

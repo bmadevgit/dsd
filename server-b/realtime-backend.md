@@ -31,5 +31,5 @@
 - [requirements.txt](C:/apps/realtime-thai-transcribe/requirements.txt) - last modified 2026-04-21 21:02
 
 ---
-*Auto-generated 2026-05-18 11:42 by `server-b/refresh-server-b.ps1` (disk scan)*
+*Auto-generated 2026-05-18 11:44 by `server-b/refresh-server-b.ps1` (disk scan)*
 

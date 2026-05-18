@@ -136,7 +136,9 @@ $context
             $bodyMod = $body -replace '"model":"[^"]+"', ('"model":"' + $modelTry + '"')
             $bytes = [System.Text.Encoding]::UTF8.GetBytes($bodyMod)
             $resp = Invoke-WebRequest -Uri $script:AI_ENDPOINT -Method POST -Headers $headers -Body $bytes -UseBasicParsing -TimeoutSec 120
-            $json = $resp.Content | ConvertFrom-Json
+            $respBytes = $resp.RawContentStream.ToArray()
+            $respText  = [System.Text.Encoding]::UTF8.GetString($respBytes)
+            $json = $respText | ConvertFrom-Json
             $content = $json.choices[0].message.content
             if ($content) {
                 $content = [regex]::Replace($content, '(?s)<think>.*?</think>\s*', '')
