@@ -36,11 +36,11 @@ _auto-updated
 
 ### Files changed recently
 
-- `api_ai_chat.php` 2026-04-28 17:02
+- `ai_chat.php` 2026-05-11 20:59
+- `api_ai_chat.php` 2026-05-11 20:59
+- `manual_admin.php` 2026-05-10 22:24
+- `manual_user.php` 2026-05-10 22:23
+- `mcp_docs.php` 2026-05-10 22:16
+- `mcp.php` 2026-05-10 22:04
+- `.env` 2026-05-10 22:03
 - `api_ai_search.php` 2026-04-28 17:02
-- `.env` 2026-04-28 16:58
-- `index.php` 2026-04-17 18:16
-- `api_search.php` 2026-04-17 18:15
-- `api_search_departments.php` 2026-04-17 18:15
-- `unit_dashboard.php` 2026-04-17 18:15
-- `unit_cars_toggle.php` 2026-04-17 18:14
