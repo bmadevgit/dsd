@@ -11,6 +11,22 @@
 
 ## Activity (จากการสแกน file mtime)
 
+### AI Summary (168 ชั่วโมงล่าสุด)
+
+**สรุปการเปลี่ยนแปลง**  
+- อัปเดตการจัดการ MCP (Model Context Protocol) ผ่าน `middleware.ts`, `api/mcp/v1/route.ts`, และ `admin/mcp/page.tsx`  
+- เพิ่ม/แก้ไขระบบจัดการ API Key ใน `api-key.ts`, `sql/004-api-keys.sql`, และ API ที่เกี่ยวข้อง  
+- ปรับปรุงส่วน AI Chat ด้วยไฟล์ `AIChat.tsx`, `HomeAIChat.tsx`, และ API ที่เกี่ยวข้อง  
+- แก้ไขส่วน UI เช่น `Navbar.tsx`, `Footer.tsx`, และหน้าช่วยเหลือ (`help/page.tsx`)  
+
+**ข้อควรระวัง**  
+- ตรวจสอบว่า migration `sql/004-api-keys.sql` ถูกประมวลผลแล้วหรือไม่ (อาจมีการเปลี่ยนแปลง schema ของตาราง api_keys)  
+- ตรวจสอบการรีไวท์ URL ใน `middleware.ts` อาจส่งผลต่อการทำงานของ MCP client  
+- ตรวจสอบความปลอดภัยใน `api-key.ts` (เช่น การตรวจสอบสิทธิ์, การบันทึกเหตุการณ์)  
+- ทดสอบการทำงานของ API ที่เกี่ยวข้องกับ MCP และ API Key หลังอัปเดต
+
+*(model: Qwen/Qwen3-14B, 43 files analyzed)*
+
 ### วันนี้ (2026-05-18): 0 ไฟล์
 
   (ไม่มีไฟล์แก้ไขวันนี้)
@@ -67,5 +83,5 @@
 - [next.config.js](C:/inetpub/wwwroot/lake/next.config.js) - last modified 2026-05-12 05:22
 
 ---
-*Auto-generated 2026-05-18 11:51 by `server-b/refresh-server-b.ps1` (disk scan)*
+*Auto-generated 2026-05-18 11:54 by `server-b/refresh-server-b.ps1` (disk scan)*
 

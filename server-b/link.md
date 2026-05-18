@@ -11,6 +11,21 @@
 
 ## Activity (จากการสแกน file mtime)
 
+### AI Summary (168 ชั่วโมงล่าสุด)
+
+**สรุปการเปลี่ยนแปลง**  
+- ปรับปรุงไฟล์ CSS/JS หน้าหลัก (`app.css`, `app.js`) สำหรับ UI/UX เช่น เพิ่มฟังก์ชันยืนยันการลบและ Hover Effect  
+- อัปเดตไฟล์ Admin (`_common.php`, `audit_logs.php`, `dataview.php`) สำหรับการจัดการเมนู, ตรวจสอบสิทธิ์ผู้ใช้ (Super Admin), และเพิ่มฟีเจอร์การดู Log  
+- เพิ่ม/ปรับปรุงไฟล์ทดสอบ UAT ใน `tests-md/` สำหรับโมดูลต่างๆ เช่น Security, API Key, Data Quality, Accessibility  
+
+**ข้อควรระวัง**  
+- ตรวจสอบการเปลี่ยนแปลงสิทธิ์การเข้าถึงใน `audit_logs.php` ที่จำกัดเฉพาะ Super Admin  
+- ทดสอบฟังก์ชันใหม่ใน Admin Panel (เช่น `dataview.php`) เพื่อความถูกต้องของข้อมูล  
+- ตรวจสอบความสอดคล้องของไฟล์ทดสอบ UAT (`tests-md/*.md`) กับฟีเจอร์ที่ปรับปรุงล่าสุด  
+- สำรองข้อมูลก่อนอัปเดตไฟล์ที่เกี่ยวข้องกับการตรวจสอบสิทธิ์ (เช่น `Auth::requireLogin()`)
+
+*(model: Qwen/Qwen3-14B, 86 files analyzed)*
+
 ### วันนี้ (2026-05-18): 0 ไฟล์
 
   (ไม่มีไฟล์แก้ไขวันนี้)
@@ -89,5 +104,5 @@
 - [src/bootstrap.php](C:/inetpub/wwwroot/link/src/bootstrap.php) - last modified 2026-05-14 20:24
 
 ---
-*Auto-generated 2026-05-18 11:51 by `server-b/refresh-server-b.ps1` (disk scan)*
+*Auto-generated 2026-05-18 11:54 by `server-b/refresh-server-b.ps1` (disk scan)*
 
