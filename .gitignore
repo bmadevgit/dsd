@@ -3,6 +3,7 @@ secrets/
 
 # Server / IIS
 logs/
+!server-a/logs/
 temp/
 custerr/
 DeviceHealthAttestation/

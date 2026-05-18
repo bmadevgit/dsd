@@ -101,7 +101,7 @@ foreach ($name in $projects.Keys) {
         $sizeKB   = [math]::Round($lf.Length / 1KB, 1)
         $modified = $lf.LastWriteTime.ToString("yyyy-MM-dd HH:mm")
 
-        $logMeta.Add("- $($bt)$rel$($bt) — $($sizeKB) KB, modified $modified")
+        $logMeta.Add("- $($bt)$rel$($bt) - $($sizeKB) KB, modified $modified")
 
         # Read last 200 lines
         $lines = Get-Content -Path $lf.FullName -Tail 200 -Encoding UTF8 -ErrorAction SilentlyContinue
