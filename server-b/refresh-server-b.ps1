@@ -1,6 +1,13 @@
 ﻿# refresh-server-b.ps1
 # Regenerate C:\notes\server-b\*.md from disk scan, then commit+push (server-b/ only).
 # Run daily at 02:00 via Windows Task Scheduler.
+#
+# Optional: -WindowHours N changes the "recent activity" lookback window used for
+# the AI Summary section. Default is 24 (matches the daily 02:00 cadence).
+# Use a larger value for a one-off manual demo:  .\refresh-server-b.ps1 -WindowHours 168
+
+[CmdletBinding()]
+param([int]$WindowHours = 24)
 
 $ErrorActionPreference = 'Stop'
 
@@ -268,23 +275,21 @@ foreach ($p in $projects) {
         $todayFiles  = @($files | Where-Object { $_.LastWriteTime.Date -eq $Today })
         $last7Files  = @($files | Where-Object { $_.LastWriteTime -gt $Now.AddDays(-7)  -and $_.LastWriteTime.Date -ne $Today })
         $last30Files = @($files | Where-Object { $_.LastWriteTime -gt $Now.AddDays(-30) -and $_.LastWriteTime -le $Now.AddDays(-7) })
-        $last24hFiles = @($files | Where-Object { $_.LastWriteTime -gt $Now.AddHours(-24) })
+        $recentFiles = @($files | Where-Object { $_.LastWriteTime -gt $Now.AddHours(-$WindowHours) })
 
-        # ---- AI Summary section (only if there are changes in last 24h) ----
-        if ($last24hFiles.Count -gt 0 -and $script:AI_ENDPOINT) {
-            Write-Host ("[AI] Summarizing {0} ({1} files in 24h)..." -f $p.Slug, $last24hFiles.Count)
-            $aiSummary = Invoke-AISummary -ProjectTitle $p.Title -ProjectPath $p.Path -ChangedFiles $last24hFiles
+        # ---- AI Summary section (only if there are changes in lookback window) ----
+        $windowLabel = if ($WindowHours -eq 24) { "24 ชั่วโมงล่าสุด" } else { "${WindowHours} ชั่วโมงล่าสุด" }
+        if ($recentFiles.Count -gt 0 -and $script:AI_ENDPOINT) {
+            Write-Host ("[AI] Summarizing {0} ({1} files in {2}h)..." -f $p.Slug, $recentFiles.Count, $WindowHours)
+            $aiSummary = Invoke-AISummary -ProjectTitle $p.Title -ProjectPath $p.Path -ChangedFiles $recentFiles
+            [void]$sb.AppendLine(("### AI Summary ({0})" -f $windowLabel))
+            [void]$sb.AppendLine("")
             if ($aiSummary) {
-                [void]$sb.AppendLine("### AI Summary (24 ชั่วโมงล่าสุด)")
-                [void]$sb.AppendLine("")
                 [void]$sb.AppendLine($aiSummary)
-                [void]$sb.AppendLine("")
             } else {
-                [void]$sb.AppendLine("### AI Summary (24 ชั่วโมงล่าสุด)")
-                [void]$sb.AppendLine("")
                 [void]$sb.AppendLine("*(AI call failed - skipped)*")
-                [void]$sb.AppendLine("")
             }
+            [void]$sb.AppendLine("")
         }
 
         [void]$sb.AppendLine(("### วันนี้ ({0}): {1} ไฟล์" -f $Today.ToString('yyyy-MM-dd'), $todayFiles.Count))

@@ -32,3 +32,10 @@ upload/
 .claude/
 .obsidian/workspace.json
 .obsidian/plugins/obsidian-git/data.json
+
+# Local secrets (AI keys etc) - sourced by server-b refresh scripts
+server-b/.config.ps1
+
+# Re-include server-b/logs/ (AI-generated log analysis - want this in git)
+!server-b/logs/
+!server-b/logs/**
