@@ -1,23 +1,29 @@
 ﻿# Log analysis: iis-shared
 
-> Snapshot: 2026-05-18 11:55  ·  log files modified in last 24h: **2**
+> Snapshot: 2026-05-19 03:00  ·  log files modified in last 24h: **2**
 
 ## AI Analysis
 
 1) **สถานะรวม**  
-ระบบดูปกติ ไม่มี error หรือ warning ที่พบใน log ทั้งหมด ทุก request สำเร็จ (status 200) และไม่มีข้อผิดพลาดที่บ่งชี้ถึงปัญหา  
+ระบบทำงานปกติโดยรวม แต่มีการเกิด error 401 Unauthorized 1 ครั้ง ซึ่งอาจบ่งชี้ปัญหาด้านการตรวจสอบสิทธิ์ (เขียว-เหลือง)
 
 2) **Error/Warning ที่ต้องสนใจ**  
-- ไม่พบ error หรือ warning ใดๆ ใน log ทั้งหมด  
+- `401 Unauthorized` ที่ `/testx/api/auth/login` (ไฟล์: `u_ex260518.log`, เวลา: 2026-05-18 19:00:10)  
+  ความเสี่ยง: ผู้ใช้ไม่สามารถเข้าสู่ระบบได้ อาจเกิดจากข้อมูลการรับรองไม่ถูกต้องหรือระบบตรวจสอบสิทธิ์มีปัญหา  
+- `307 Temporary Redirect` ที่ `/testx/api/auth/logout` (ไฟล์: `u_ex260518.log`, เวลา: 2026-05-18 19:00:09)  
+  ความเสี่ยง: อาจเป็นพฤติกรรมปกติ แต่ควรตรวจสอบว่าการ redirect นี้ส่งผลต่อการทำงานจริงหรือไม่
 
 3) **คำแนะนำเบื้องต้น**  
-- ไม่มีการกระทำที่จำเป็นต้องทำจาก log นี้ แต่ควรติดตามการเข้าถึง endpoint `/lake/admin/mcp` ที่มีความถี่สูง (เช่น ตรวจสอบว่าเป็น traffic ปกติหรือไม่) หากมีความกังวลเพิ่มเติม อาจตรวจสอบ firewall หรือ application logs เพิ่มเติม
+- ตรวจสอบระบบตรวจสอบสิทธิ์ (เช่น ตรวจสอบ token, ค่า config ของ API)  
+- ตรวจสอบ log ของ backend service เพิ่มเติมเพื่อหาสาเหตุ 401  
+- ทดสอบการเข้าสู่ระบบด้วย credential ที่ถูกต้องเพื่อยืนยันปัญหา  
+- ตรวจสอบว่า `307 Redirect` ที่เกิดขึ้นเป็นไปตามที่คาดหรือไม่ (เช่น ตรวจสอบ redirect ไปยัง URL ที่ถูกต้อง)
 
 *(model: Qwen/Qwen3-14B, 2 log files analyzed)*
 
 ## Log files seen (24h)
 
-- `C:\inetpub\logs\LogFiles\W3SVC1\u_ex260518.log` (2026-05-18 11:52, 4,891,911 bytes)
+- `C:\inetpub\logs\LogFiles\W3SVC1\u_ex260518.log` (2026-05-19 02:00, 31,273,212 bytes)
 - `C:\inetpub\logs\LogFiles\W3SVC1\u_ex260517.log` (2026-05-18 07:00, 12,656,040 bytes)
 
 ## Raw log excerpts
@@ -26,39 +32,23 @@
 
 ```
 ... [truncated head]
-dmin/mcp X-ARR-CACHE-HIT=0&X-ARR-LOG-ID=fb4474df-68c7-41f5-beb7-f4c928c5303b&SERVER-STATUS=200 443 - 172.31.171.82 node - 200 0 0 538 476 5
-2026-05-18 04:55:09 172.27.15.6 GET /lake/admin/mcp X-ARR-CACHE-HIT=0&X-ARR-LOG-ID=29662be5-9cfb-42a0-bba0-3473c8d83bec&SERVER-STATUS=200 443 - 172.31.171.82 node - 200 0 0 538 476 5
-2026-05-18 04:55:09 172.27.15.6 GET /lake/admin/mcp X-ARR-CACHE-HIT=0&X-ARR-LOG-ID=5113bc78-f53f-4599-bbdb-d5f234be0917&SERVER-STATUS=200 443 - 172.31.171.82 node - 200 0 0 538 476 8
-2026-05-18 04:55:11 172.27.15.6 GET /lake/admin/mcp X-ARR-CACHE-HIT=0&X-ARR-LOG-ID=dc185da4-3773-4822-8ae0-b7c691447f0c&SERVER-STATUS=200 443 - 172.31.171.82 node - 200 0 0 538 476 5
-2026-05-18 04:55:11 172.27.15.6 GET /lake/admin/mcp X-ARR-CACHE-HIT=0&X-ARR-LOG-ID=a02909bc-db88-4137-8b1b-d6c7cde9482a&SERVER-STATUS=200 443 - 172.31.171.82 node - 200 0 0 538 476 5
-2026-05-18 04:55:12 172.27.15.6 GET /lake/admin/mcp X-ARR-CACHE-HIT=0&X-ARR-LOG-ID=a4ef08fb-4e19-4df6-9e60-63e9bfa3d7ed&SERVER-STATUS=200 443 - 172.31.171.82 node - 200 0 0 538 476 5
-2026-05-18 04:55:12 172.27.15.6 GET /lake/admin/mcp X-ARR-CACHE-HIT=0&X-ARR-LOG-ID=f2ed860c-7cbb-4edc-9ea8-14f28bb421d3&SERVER-STATUS=200 443 - 172.31.171.82 node - 200 0 0 538 476 8
-2026-05-18 04:55:13 172.27.15.6 GET /lake/admin/mcp X-ARR-CACHE-HIT=0&X-ARR-LOG-ID=09f01b4e-8bf7-46bc-8ecb-481c3a6fda7b&SERVER-STATUS=200 443 - 172.31.171.82 node - 200 0 0 538 476 7
-2026-05-18 04:55:13 172.27.15.6 GET /lake/admin/mcp X-ARR-CACHE-HIT=0&X-ARR-LOG-ID=0879091a-951c-45af-99a3-73327f737a0b&SERVER-STATUS=200 443 - 172.31.171.82 node - 200 0 0 538 476 39
-2026-05-18 04:55:14 172.27.15.6 GET /lake/admin/mcp X-ARR-CACHE-HIT=0&X-ARR-LOG-ID=e2d53407-9c0d-43d4-a55a-7f8f8176f23f&SERVER-STATUS=200 443 - 172.31.171.82 node - 200 0 0 538 476 8
-2026-05-18 04:55:14 172.27.15.6 GET /lake/admin/mcp X-ARR-CACHE-HIT=0&X-ARR-LOG-ID=c95f3385-6c04-49b2-8df4-20859aa59df9&SERVER-STATUS=200 443 - 172.31.171.82 node - 200 0 0 538 476 5
-2026-05-18 04:55:15 172.27.15.6 GET /lake/admin/mcp X-ARR-CACHE-HIT=0&X-ARR-LOG-ID=f08902d0-9c55-40f7-a56a-8c447e6c41d8&SERVER-STATUS=200 443 - 172.31.171.82 node - 200 0 0 538 476 9
-2026-05-18 04:55:15 172.27.15.6 GET /lake/admin/mcp X-ARR-CACHE-HIT=0&X-ARR-LOG-ID=4d171b8b-a567-4d67-a0ea-0e2a94924e6d&SERVER-STATUS=200 443 - 172.31.171.82 node - 200 0 0 538 476 4
-2026-05-18 04:55:16 172.27.15.6 GET /lake/admin/mcp X-ARR-CACHE-HIT=0&X-ARR-LOG-ID=aade7985-2045-41af-a88c-998e465143c0&SERVER-STATUS=200 443 - 172.31.171.82 node - 200 0 0 538 476 6
-2026-05-18 04:55:16 172.27.15.6 GET /lake/admin/mcp X-ARR-CACHE-HIT=0&X-ARR-LOG-ID=59f81d48-4968-456d-ab73-4e887693a7c5&SERVER-STATUS=200 443 - 172.31.171.82 node - 200 0 0 538 476 47
-2026-05-18 04:55:17 172.27.15.6 GET /lake/admin/mcp X-ARR-CACHE-HIT=0&X-ARR-LOG-ID=266d5c86-34eb-4b94-a3f0-feab9e3c4721&SERVER-STATUS=200 443 - 172.31.171.82 node - 200 0 0 538 476 7
-2026-05-18 04:55:17 172.27.15.6 GET /lake/admin/mcp X-ARR-CACHE-HIT=0&X-ARR-LOG-ID=216671e1-acad-4da4-9368-8ef02f246c61&SERVER-STATUS=200 443 - 172.31.171.82 node - 200 0 0 538 476 8
-2026-05-18 04:55:18 172.27.15.6 GET /lake/admin/mcp X-ARR-CACHE-HIT=0&X-ARR-LOG-ID=aeb110fb-4361-4bb8-a69b-cf9461d44dff&SERVER-STATUS=200 443 - 172.31.171.82 node - 200 0 0 538 476 8
-2026-05-18 04:55:18 172.27.15.6 GET /lake/admin/mcp X-ARR-CACHE-HIT=0&X-ARR-LOG-ID=779b8bb2-3071-4303-b99f-debef56f218f&SERVER-STATUS=200 443 - 172.31.171.82 node - 200 0 0 538 476 6
-2026-05-18 04:55:19 172.27.15.6 GET /lake/admin/mcp X-ARR-CACHE-HIT=0&X-ARR-LOG-ID=1cf7faa8-7920-4c1b-9e91-8bda39aae1dc&SERVER-STATUS=200 443 - 172.31.171.82 node - 200 0 0 538 476 9
-2026-05-18 04:55:19 172.27.15.6 GET /lake/admin/mcp X-ARR-CACHE-HIT=0&X-ARR-LOG-ID=b266dc97-828f-4f6e-8e83-28ce0d929c6b&SERVER-STATUS=200 443 - 172.31.171.82 node - 200 0 0 538 476 28
-2026-05-18 04:55:20 172.27.15.6 GET /lake/admin/mcp X-ARR-CACHE-HIT=0&X-ARR-LOG-ID=225b3648-eb65-4ae5-8a1c-f4fc8198039a&SERVER-STATUS=200 443 - 172.31.171.82 node - 200 0 0 538 476 8
-2026-05-18 04:55:20 172.27.15.6 GET /lake/admin/mcp X-ARR-CACHE-HIT=0&X-ARR-LOG-ID=4d382eb6-1fee-4c88-a221-e64019052a71&SERVER-STATUS=200 443 - 172.31.171.82 node - 200 0 0 538 476 4
-2026-05-18 04:55:21 172.27.15.6 GET /lake/admin/mcp X-ARR-CACHE-HIT=0&X-ARR-LOG-ID=1de387f6-a479-4e8b-b5f4-d5a815465a8f&SERVER-STATUS=200 443 - 172.31.171.82 node - 200 0 0 538 476 11
-2026-05-18 04:55:21 172.27.15.6 GET /lake/admin/mcp X-ARR-CACHE-HIT=0&X-ARR-LOG-ID=fa077d6d-d364-43c7-a08e-1c7b03181abc&SERVER-STATUS=200 443 - 172.31.171.82 node - 200 0 0 538 476 5
-2026-05-18 04:55:22 172.27.15.6 GET /lake/admin/mcp X-ARR-CACHE-HIT=0&X-ARR-LOG-ID=1c6ce2ec-3050-42bc-916a-7bede50f25ba&SERVER-STATUS=200 443 - 172.31.171.82 node - 200 0 0 538 476 8
-2026-05-18 04:55:22 172.27.15.6 GET /lake/admin/mcp X-ARR-CACHE-HIT=0&X-ARR-LOG-ID=72dcd250-dd07-4a88-8ccd-ed98af711bb9&SERVER-STATUS=200 443 - 172.31.171.82 node - 200 0 0 538 476 10
-2026-05-18 04:55:23 172.27.15.6 GET /lake/admin/mcp X-ARR-CACHE-HIT=0&X-ARR-LOG-ID=ea6113fb-3df5-4e78-9118-4e5a3ba0a236&SERVER-STATUS=200 443 - 172.31.171.82 node - 200 0 0 538 476 8
-2026-05-18 04:55:23 172.27.15.6 GET /lake/admin/mcp X-ARR-CACHE-HIT=0&X-ARR-LOG-ID=eda313c2-bf80-4825-a627-537a1f85b241&SERVER-STATUS=200 443 - 172.31.171.82 node - 200 0 0 538 476 9
-2026-05-18 04:55:24 172.27.15.6 GET /lake/admin/mcp X-ARR-CACHE-HIT=0&X-ARR-LOG-ID=5f3e8643-cd03-4765-bd19-e4d52d833f97&SERVER-STATUS=200 443 - 172.31.171.82 node - 200 0 0 538 476 9
-2026-05-18 04:55:24 172.27.15.6 GET /lake/admin/mcp X-ARR-CACHE-HIT=0&X-ARR-LOG-ID=1805b7c9-f287-4842-b82f-e65c23ae19f3&SERVER-STATUS=200 443 - 172.31.171.82 node - 200 0 0 538 476 6
-2026-05-18 04:55:25 172.27.15.6 GET /lake/admin/mcp X-ARR-CACHE-HIT=0&X-ARR-LOG-ID=405c521d-c878-40b3-bf2b-331bf54af063&SERVER-STATUS=200 443 - 172.31.171.82 node - 200 0 0 538 476 9
-2026-05-18 04:55:25 172.27.15.6 GET /lake/admin/mcp X-ARR-CACHE-HIT=0&X-ARR-LOG-ID=01810598-8e93-4218-811a-0f723836775f&SERVER-STATUS=200 443 - 172.31.171.82 node - 200 0 0 538 476 8
+f84bf7223034.js X-ARR-CACHE-HIT=0&X-ARR-LOG-ID=1ed43aac-bf31-4231-b333-865a6f45ef4f&SERVER-STATUS=200 80 - 172.27.15.6 Mozilla/5.0+(Windows+NT+10.0;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+HeadlessChrome/148.0.7778.96+Safari/537.36 http://172.27.15.6/testx/admin/login 200 0 0 3801 338 0
+2026-05-18 19:00:09 172.27.15.6 GET /testx/_next/static/chunks/app/layout-e48f3fc146641c64.js X-ARR-CACHE-HIT=0&X-ARR-LOG-ID=60d1266a-db51-4a5a-8d72-77de9a401f29&SERVER-STATUS=200 80 - 172.27.15.6 Mozilla/5.0+(Windows+NT+10.0;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+HeadlessChrome/148.0.7778.96+Safari/537.36 http://172.27.15.6/testx/admin/login 200 0 0 1737 346 0
+2026-05-18 19:00:09 172.27.15.6 POST /testx/api/auth/login X-ARR-CACHE-HIT=0&X-ARR-LOG-ID=1a7d6c09-95c0-4880-8e91-259a080ca54c&SERVER-STATUS=200 80 - 172.27.15.6 Mozilla/5.0+(Windows+NT+10.0;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+HeadlessChrome/148.0.7778.96+Safari/537.36 http://172.27.15.6/testx/admin/login 200 0 0 404 415 9
+2026-05-18 19:00:09 172.27.15.6 GET /testx/admin/dashboard X-ARR-CACHE-HIT=0&X-ARR-LOG-ID=a08ac002-e16d-4053-ac96-038dfc776e37&SERVER-STATUS=200 80 - 172.27.15.6 Mozilla/5.0+(Windows+NT+10.0;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+HeadlessChrome/148.0.7778.96+Safari/537.36 http://172.27.15.6/testx/admin/login 200 0 0 5437 558 38
+2026-05-18 19:00:09 172.27.15.6 GET /testx/_next/static/chunks/app/admin/dashboard/page-81b69b1d54b6432c.js X-ARR-CACHE-HIT=0&X-ARR-LOG-ID=9588931b-960b-4be3-8f9c-48388ddd8cf4&SERVER-STATUS=200 80 - 172.27.15.6 Mozilla/5.0+(Windows+NT+10.0;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+HeadlessChrome/148.0.7778.96+Safari/537.36 http://172.27.15.6/testx/admin/dashboard 200 0 0 1961 449 0
+2026-05-18 19:00:09 172.27.15.6 GET /testx/api/auth/logout X-ARR-CACHE-HIT=0&X-ARR-LOG-ID=9929e696-adce-4df2-937d-481eb03edc0b&SERVER-STATUS=307 80 - 172.27.15.6 Mozilla/5.0+(Windows+NT+10.0;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+HeadlessChrome/148.0.7778.96+Safari/537.36 - 307 0 0 315 511 5
+2026-05-18 19:00:09 172.27.15.6 GET /testx/admin/login X-ARR-CACHE-HIT=0&X-ARR-LOG-ID=a624bcce-2132-435d-bd60-5c6d753dfef5&SERVER-STATUS=304 80 - 172.27.15.6 Mozilla/5.0+(Windows+NT+10.0;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+HeadlessChrome/148.0.7778.96+Safari/537.36 - 304 0 0 294 454 5
+2026-05-18 19:00:10 172.27.15.6 GET /testx/admin/login X-ARR-CACHE-HIT=0&X-ARR-LOG-ID=cc7656d0-089c-4970-bc4c-e5475f87a16a&SERVER-STATUS=200 80 - 172.27.15.6 Mozilla/5.0+(Windows+NT+10.0;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+HeadlessChrome/148.0.7778.96+Safari/537.36 - 200 0 0 2903 422 7
+2026-05-18 19:00:10 172.27.15.6 GET /testx/_next/static/css/e3f71bc912c93ead.css X-ARR-CACHE-HIT=0&X-ARR-LOG-ID=c4816f1c-e5d2-413a-9c8d-f951fffdb6c3&SERVER-STATUS=200 80 - 172.27.15.6 Mozilla/5.0+(Windows+NT+10.0;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+HeadlessChrome/148.0.7778.96+Safari/537.36 http://172.27.15.6/testx/admin/login 200 0 0 3956 348 0
+2026-05-18 19:00:10 172.27.15.6 GET /testx/_next/static/chunks/webpack-6283abe281eca2d1.js X-ARR-CACHE-HIT=0&X-ARR-LOG-ID=ad97ba59-49b1-4d0f-bdf3-346d9ab25075&SERVER-STATUS=200 80 - 172.27.15.6 Mozilla/5.0+(Windows+NT+10.0;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+HeadlessChrome/148.0.7778.96+Safari/537.36 http://172.27.15.6/testx/admin/login 200 0 0 2106 343 0
+2026-05-18 19:00:10 172.27.15.6 GET /testx/_next/static/chunks/fd9d1056-87da80e0c187477b.js X-ARR-CACHE-HIT=0&X-ARR-LOG-ID=53e4b568-2d9c-425b-8735-4a4e3ee090ad&SERVER-STATUS=200 80 - 172.27.15.6 Mozilla/5.0+(Windows+NT+10.0;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+HeadlessChrome/148.0.7778.96+Safari/537.36 http://172.27.15.6/testx/admin/login 200 0 0 54116 344 1
+2026-05-18 19:00:10 172.27.15.6 GET /testx/_next/static/chunks/main-app-6a17828942593d20.js X-ARR-CACHE-HIT=0&X-ARR-LOG-ID=7e761bbf-6982-48b5-b283-b6222352506b&SERVER-STATUS=200 80 - 172.27.15.6 Mozilla/5.0+(Windows+NT+10.0;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+HeadlessChrome/148.0.7778.96+Safari/537.36 http://172.27.15.6/testx/admin/login 200 0 0 807 344 1
+2026-05-18 19:00:10 172.27.15.6 GET /testx/_next/static/chunks/117-cd24e094a43c1bcf.js X-ARR-CACHE-HIT=0&X-ARR-LOG-ID=cdc46ddb-ba37-42ca-93ad-ef57c9eca994&SERVER-STATUS=200 80 - 172.27.15.6 Mozilla/5.0+(Windows+NT+10.0;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+HeadlessChrome/148.0.7778.96+Safari/537.36 http://172.27.15.6/testx/admin/login 200 0 0 32241 339 1
+2026-05-18 19:00:10 172.27.15.6 GET /testx/_next/static/chunks/app/admin/login/page-671d6df78d1dc1ed.js X-ARR-CACHE-HIT=0&X-ARR-LOG-ID=119eb004-4714-4d56-8727-d9506e70a8fc&SERVER-STATUS=200 80 - 172.27.15.6 Mozilla/5.0+(Windows+NT+10.0;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+HeadlessChrome/148.0.7778.96+Safari/537.36 http://172.27.15.6/testx/admin/login 200 0 0 1420 356 0
+2026-05-18 19:00:10 172.27.15.6 GET /testx/_next/static/chunks/29-d649f84bf7223034.js X-ARR-CACHE-HIT=0&X-ARR-LOG-ID=1ed43aac-bf31-4231-b333-865a6f45ef4f&SERVER-STATUS=200 80 - 172.27.15.6 Mozilla/5.0+(Windows+NT+10.0;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+HeadlessChrome/148.0.7778.96+Safari/537.36 http://172.27.15.6/testx/admin/login 200 0 0 3801 338 0
+2026-05-18 19:00:10 172.27.15.6 GET /testx/_next/static/chunks/app/layout-e48f3fc146641c64.js X-ARR-CACHE-HIT=0&X-ARR-LOG-ID=60d1266a-db51-4a5a-8d72-77de9a401f29&SERVER-STATUS=200 80 - 172.27.15.6 Mozilla/5.0+(Windows+NT+10.0;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+HeadlessChrome/148.0.7778.96+Safari/537.36 http://172.27.15.6/testx/admin/login 200 0 0 1737 346 0
+2026-05-18 19:00:10 172.27.15.6 POST /testx/api/auth/login X-ARR-CACHE-HIT=0&X-ARR-LOG-ID=af22e207-c325-4bd8-87d2-26b766aa4819&SERVER-STATUS=401 80 - 172.27.15.6 Mozilla/5.0+(Windows+NT+10.0;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+HeadlessChrome/148.0.7778.96+Safari/537.36 http://172.27.15.6/testx/admin/login 401 0 0 287 424 414
 ```
 
 ### `C:\inetpub\logs\LogFiles\W3SVC1\u_ex260517.log`
@@ -101,5 +91,5 @@ min/mcp X-ARR-CACHE-HIT=0&X-ARR-LOG-ID=c6de044e-eeee-4886-9d69-f85111310e6c&SERV
 ```
 
 ---
-*Auto-generated 2026-05-18 11:55 by `server-b/refresh-server-b-logs.ps1`*
+*Auto-generated 2026-05-19 03:00 by `server-b/refresh-server-b-logs.ps1`*
 
