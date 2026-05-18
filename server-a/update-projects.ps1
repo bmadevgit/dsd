@@ -1,10 +1,35 @@
 # update-projects.ps1
-# Survey git history + file dates of all projects, update .md files
+# Survey git history + file dates of all projects, update .md files with AI analysis
 # Scheduled: daily 02:00 AM
 
 $notesDir  = "C:\notes\server-a"
 $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm"
 $bt        = [char]96  # backtick for markdown inline code
+
+$AI_BASE_URL = "http://100.99.107.27:8000/v1"
+$AI_API_KEY  = "bon8ihWaS8jqebRIBTt8M3_qV1MLqKbHTnhvaQuHRYm92cVe"
+
+function Invoke-AIAnalysis {
+    param([string]$Prompt, [int]$MaxTokens = 200)
+    $headers = @{
+        "Authorization" = "Bearer $AI_API_KEY"
+        "Content-Type"  = "application/json"
+    }
+    $bodyObj = @{
+        model                 = "Qwen/Qwen3-14B"
+        messages              = @(@{ role = "user"; content = $Prompt })
+        max_tokens            = $MaxTokens
+        chat_template_kwargs  = @{ enable_thinking = $false }
+    }
+    $body = $bodyObj | ConvertTo-Json -Depth 5 -Compress
+    try {
+        $r = Invoke-RestMethod -Uri "$AI_BASE_URL/chat/completions" `
+             -Method Post -Headers $headers -Body $body -TimeoutSec 30
+        return $r.choices[0].message.content.Trim()
+    } catch {
+        return "(AI unavailable: $($_.Exception.Message))"
+    }
+}
 
 $projects = [ordered]@{
     "bs"           = "C:\inetpub\wwwroot\bs"
@@ -25,6 +50,8 @@ $projects = [ordered]@{
     "exam-server"  = "C:\inetpub\wwwroot\exam\server"
     "exam-vhv"     = "C:\inetpub\wwwroot\exam\vhv"
 }
+
+$cutoff = (Get-Date).AddHours(-24)
 
 foreach ($name in $projects.Keys) {
     $path   = $projects[$name]
@@ -54,6 +81,22 @@ foreach ($name in $projects.Keys) {
         if ($raw) { $gitLines = ($raw -split "`n") | Where-Object { $_.Trim() -ne "" } }
     }
 
+    # Build file list text for AI prompt
+    $fileListText = ($recentFiles | ForEach-Object {
+        $rel  = $_.FullName.Substring($path.Length).TrimStart('\')
+        $date = $_.LastWriteTime.ToString("yyyy-MM-dd HH:mm")
+        "  - $rel ($date)"
+    }) -join "`n"
+
+    $activeFiles = $recentFiles | Where-Object { $_.LastWriteTime -gt $cutoff }
+
+    # AI Summary — only call when there are files changed in last 24h
+    $aiSummary = ""
+    if ($activeFiles.Count -gt 0) {
+        $prompt = "Project: $name`nFiles changed recently:`n$fileListText`n`nสรุปสั้น ๆ (2-3 ประโยค ภาษาไทย) ว่า project นี้กำลังทำอะไร มีการเปลี่ยนแปลงอะไร และมีอะไรต้องระวังหรือไม่"
+        $aiSummary = Invoke-AIAnalysis -Prompt $prompt -MaxTokens 200
+    }
+
     # Build Recent Activity section
     $lines = [System.Collections.Generic.List[string]]::new()
     $lines.Add("")
@@ -62,6 +105,14 @@ foreach ($name in $projects.Keys) {
     $lines.Add("## Recent Activity")
     $lines.Add("")
     $lines.Add("_auto-updated $timestamp_")
+
+    if ($aiSummary) {
+        $lines.Add("")
+        $lines.Add("### AI Summary")
+        $lines.Add("")
+        $lines.Add($aiSummary)
+    }
+
     $lines.Add("")
     $lines.Add("### Files changed recently")
     $lines.Add("")
