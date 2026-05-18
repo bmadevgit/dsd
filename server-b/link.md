@@ -14,8 +14,14 @@
 ### AI Summary (168 ชั่วโมงล่าสุด)
 
 **สรุปการเปลี่ยนแปลง**  
-- อัปเดตไฟล์ `app.js` และ `app.css` ในหน้า public สำหรับปรับปรุง UI/UX  
-- แก้ไขไฟล์ `admin/_common.php` สำหรับเมนูหรือการตรวจสอบ
+- ปรับปรุงไฟล์ CSS/JS สำหรับ UI (app.css, app.js) เช่น เพิ่มฟีเจอร์ hover บนตาราง และการยืนยันการคลิก  
+- อัปเดตไฟล์ admin หลายหน้า เช่น _common.php (เมนู/การตรวจสอบสิทธิ์), audit_logs.php (การตรวจสอบสิทธิ์ super admin), dataview.php (ฟังก์ชัน DataView)  
+- เพิ่ม/ปรับปรุงไฟล์ทดสอบ (tests-md/*.md) สำหรับโมดูลต่างๆ เช่น API Gateway, ความปลอดภัย, คุณภาพข้อมูล  
+
+**ข้อควรระวัง**  
+- ตรวจสอบการเข้าถึงไฟล์ audit_logs.php ที่จำกัดเฉพาะ super admin อาจส่งผลต่อการทดสอบ/ใช้งาน  
+- ไฟล์ tests-md หลายไฟล์มีการอัปเดต ควรตรวจสอบว่าการทดสอบใหม่ส่งผลต่อระบบหรือไม่  
+- ไม่พบหลักฐานชัดเจนเกี่ยวกับ migration/schema change หรือการสำรองข้อมูลที่ค้างอยู่
 
 *(model: claude-sonnet-4-5, 86 files analyzed)*
 
@@ -97,5 +103,5 @@
 - [src/bootstrap.php](C:/inetpub/wwwroot/link/src/bootstrap.php) - last modified 2026-05-14 20:24
 
 ---
-*Auto-generated 2026-05-18 11:44 by `server-b/refresh-server-b.ps1` (disk scan)*
+*Auto-generated 2026-05-18 11:46 by `server-b/refresh-server-b.ps1` (disk scan)*
 

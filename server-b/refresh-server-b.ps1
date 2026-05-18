@@ -99,7 +99,7 @@ $excerptText
             @{ role = 'system'; content = $systemPrompt }
             @{ role = 'user';   content = $userPrompt }
         )
-        max_tokens = 600
+        max_tokens = 1500
         temperature = 0.2
     } | ConvertTo-Json -Depth 6 -Compress
 
