@@ -11,11 +11,11 @@
 
 ## Activity (จากการสแกน file mtime)
 
-### วันนี้ (2026-05-19): 0 ไฟล์
+### วันนี้ (2026-05-20): 0 ไฟล์
 
   (ไม่มีไฟล์แก้ไขวันนี้)
 
-### 7 วันล่าสุด (ไม่รวมวันนี้): 86 ไฟล์
+### 7 วันล่าสุด (ไม่รวมวันนี้): 85 ไฟล์
 
 - **2026-05-16** (52 ไฟล์):
   - 18:53 `public/assets/js/app.js`
@@ -56,11 +56,10 @@
   - 12:14 `src/IngestionService.php`
   - 12:13 `src/DatasetService.php`
   - ... (+5 more)
-- **2026-05-12** (1 ไฟล์):
-  - 15:14 `storage/uploads/incoming/health/vr_school_hygiene_20260512_hash.csv`
 
-### 8-30 วันก่อน: 62 ไฟล์ (ดูสรุป)
+### 8-30 วันก่อน: 63 ไฟล์ (ดูสรุป)
 
+- **2026-05-12**: 1 ไฟล์
 - **2026-05-01**: 1 ไฟล์
 - **2026-04-30**: 44 ไฟล์
 - **2026-04-29**: 17 ไฟล์
@@ -89,5 +88,5 @@
 - [src/bootstrap.php](C:/inetpub/wwwroot/link/src/bootstrap.php) - last modified 2026-05-14 20:24
 
 ---
-*Auto-generated 2026-05-19 02:00 by `server-b/refresh-server-b.ps1` (disk scan)*
+*Auto-generated 2026-05-20 02:00 by `server-b/refresh-server-b.ps1` (disk scan)*
 

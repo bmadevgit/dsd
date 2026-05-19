@@ -11,7 +11,7 @@
 
 ## Activity (จากการสแกน file mtime)
 
-### วันนี้ (2026-05-19): 0 ไฟล์
+### วันนี้ (2026-05-20): 0 ไฟล์
 
   (ไม่มีไฟล์แก้ไขวันนี้)
 
@@ -19,10 +19,9 @@
 
   (ไม่มีไฟล์แก้ไขในช่วง 7 วัน)
 
-### 8-30 วันก่อน: 15 ไฟล์ (ดูสรุป)
+### 8-30 วันก่อน: 4 ไฟล์ (ดูสรุป)
 
 - **2026-04-21**: 4 ไฟล์
-- **2026-04-19**: 11 ไฟล์
 
 ## Source docs / config (อยู่ใน project)
 
@@ -31,5 +30,5 @@
 - [requirements.txt](C:/apps/realtime-thai-transcribe/requirements.txt) - last modified 2026-04-21 21:02
 
 ---
-*Auto-generated 2026-05-19 02:00 by `server-b/refresh-server-b.ps1` (disk scan)*
+*Auto-generated 2026-05-20 02:00 by `server-b/refresh-server-b.ps1` (disk scan)*
 
