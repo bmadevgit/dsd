@@ -7,37 +7,40 @@
 - **Process:** PM2 (bma-lake :3000) -> IIS ARR
 - **DB:** CKAN PostgreSQL (read) + lake MySQL (write)
 
-- **Files (excl node_modules/.next/.venv/logs/.git/tmp_):** 106 files, 0.5 MB
+- **Files (excl node_modules/.next/.venv/logs/.git/tmp_):** 112 files, 0.6 MB
 
 ## Activity (จากการสแกน file mtime)
 
 ### AI Summary (24 ชั่วโมงล่าสุด)
 
 **สรุปการเปลี่ยนแปลง**  
-- อัปเดตหน้าหลัก (`page.tsx`) และคอมโพเนนต์ค้นหา (`HeroSearch.tsx`)  
-- ปรับปรุง API ค้นหาข้อมูล (`search/smart/route.ts`) และตรรกะการค้นหา (`dataset-search.ts`)  
-- เพิ่มสคริปต์ตรวจสอบแหล่งข้อมูล (`check-sources.mjs`)  
-- ปรับปรุงคอมโพเนนต์จัดการแหล่งข้อมูลในส่วน Admin (`SourceChecksClient.tsx`)  
-- เพิ่มฟีเจอร์แชท AI หลายหน้า (`DatasetChat.tsx`, `AIChat.tsx`, `HomeAIChat.tsx`)  
-- อัปเดต API สำหรับแชท AI (`ai/dataset-chat/route.ts`, `ai/chat/route.ts`)  
-- ปรับปรุงไลบรารี AI (`ai.ts`) และตั้งค่า `.env.local`  
+- อัปเดตไฟล์บันทึกการพัฒนา (`DEVLOG.md`, `devlog.html`) ซึ่งระบุฟีเจอร์ที่เสร็จสิ้นจนถึงวันที่ 11 พ.ค. 2026  
+- แก้ไขโค้ดใน `page.tsx` สำหรับหน้าแสดงข้อมูล datasets ของ Lake และ CKAN  
+- ปรับปรุงไฟล์ `jsonld.ts` ที่เกี่ยวข้องกับโครงสร้างข้อมูล JSON-LD  
+- อัปเดตไฟล์ `robots.ts` และ `sitemap.ts` สำหรับการตั้งค่า SEO  
 
 **ข้อควรระวัง**  
-- ตรวจสอบการทำงานของ AI fallback ใน API ค้นหา (`search/smart/route.ts`) กรณีไม่พบผลลัพธ์  
-- ตรวจสอบประสิทธิภาพตรรกะค้นหา (`dataset-search.ts`) หลังอัปเดต  
-- รันสคริปต์ `check-sources.mjs` เพื่อตรวจสอบความถูกต้องของแหล่งข้อมูล  
-- ตรวจสอบสิทธิ์การเข้าถึงคอมโพเนนต์ Admin (`SourceChecksClient.tsx`)  
-- ตรวจสอบความปลอดภัยของฟีเจอร์แชท AI (เช่น การป้องกันการโจมตีผ่านอินพุต)  
-- ตรวจสอบค่าตัวแปรใน `.env.local` ว่าตรงกับสภาพแวดล้อมปัจจุบันหรือไม่
+- ตรวจสอบว่าการเปลี่ยนแปลงใน `page.tsx` ของ datasets ไม่ส่งผลต่อการแสดงข้อมูลเดิม  
+- ตรวจสอบความถูกต้องของ `jsonld.ts` ที่อาจส่งผลต่อการค้นหาผ่านเครื่องมือค้นหา  
+- ยืนยันว่า `robots.ts` และ `sitemap.ts` ถูกตั้งค่าให้สอดคล้องกับนโยบาย SEO ปัจจุบัน
 
-*(model: Qwen/Qwen3-14B, 14 files analyzed)*
+*(model: Qwen/Qwen3-14B, 8 files analyzed)*
 
-### วันนี้ (2026-05-20): 0 ไฟล์
+### วันนี้ (2026-05-21): 0 ไฟล์
 
   (ไม่มีไฟล์แก้ไขวันนี้)
 
 ### 7 วันล่าสุด (ไม่รวมวันนี้): 22 ไฟล์
 
+- **2026-05-20** (8 ไฟล์):
+  - 09:50 `public/devlog.html`
+  - 09:48 `public/DEVLOG.md`
+  - 09:48 `DEVLOG.md`
+  - 08:51 `src/app/(public)/datasets/lake/[name]/page.tsx`
+  - 08:51 `src/app/(public)/datasets/ckan/[name]/page.tsx`
+  - 08:50 `src/lib/jsonld.ts`
+  - 08:50 `src/app/robots.ts`
+  - 08:50 `src/app/sitemap.ts`
 - **2026-05-19** (14 ไฟล์):
   - 18:02 `src/app/(public)/page.tsx`
   - 18:01 `src/components/HeroSearch.tsx`
@@ -48,20 +51,12 @@
   - 14:46 `src/components/DatasetChat.tsx`
   - 14:46 `src/components/AIChat.tsx`
   - ... (+6 more)
-- **2026-05-13** (8 ไฟล์):
-  - 10:49 `src/middleware.ts`
-  - 10:29 `src/app/admin/mcp/page.tsx`
-  - 10:29 `src/app/api/mcp/v1/route.ts`
-  - 10:03 `src/app/api/mcp/call/route.ts`
-  - 10:03 `src/lib/api-key.ts`
-  - 09:58 `src/app/api/admin/api-keys/[id]/route.ts`
-  - 09:58 `src/app/api/admin/api-keys/route.ts`
-  - 09:57 `sql/004-api-keys.sql`
 
-### 8-30 วันก่อน: 84 ไฟล์ (ดูสรุป)
+### 8-30 วันก่อน: 90 ไฟล์ (ดูสรุป)
 
+- **2026-05-13**: 8 ไฟล์
 - **2026-05-12**: 5 ไฟล์
-- **2026-05-11**: 20 ไฟล์
+- **2026-05-11**: 18 ไฟล์
 - **2026-05-10**: 8 ไฟล์
 - **2026-05-06**: 17 ไฟล์
 - **2026-05-05**: 1 ไฟล์
@@ -80,5 +75,5 @@
 - [next.config.js](C:/inetpub/wwwroot/lake/next.config.js) - last modified 2026-05-12 05:22
 
 ---
-*Auto-generated 2026-05-20 02:00 by `server-b/refresh-server-b.ps1` (disk scan)*
+*Auto-generated 2026-05-21 02:00 by `server-b/refresh-server-b.ps1` (disk scan)*
 
