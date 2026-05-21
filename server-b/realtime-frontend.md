@@ -11,7 +11,7 @@
 
 ## Activity (จากการสแกน file mtime)
 
-### วันนี้ (2026-05-21): 0 ไฟล์
+### วันนี้ (2026-05-22): 0 ไฟล์
 
   (ไม่มีไฟล์แก้ไขวันนี้)
 
@@ -19,9 +19,7 @@
 
   (ไม่มีไฟล์แก้ไขในช่วง 7 วัน)
 
-### 8-30 วันก่อน: 3 ไฟล์ (ดูสรุป)
-
-- **2026-04-21**: 3 ไฟล์
+### 8-30 วันก่อน: 0 ไฟล์ (ดูสรุป)
 
 ## Source docs / config (อยู่ใน project)
 
@@ -32,5 +30,5 @@
 - [index.html](C:/inetpub/wwwroot/realtime/index.html) - last modified 2026-04-21 21:41
 
 ---
-*Auto-generated 2026-05-21 02:00 by `server-b/refresh-server-b.ps1` (disk scan)*
+*Auto-generated 2026-05-22 02:00 by `server-b/refresh-server-b.ps1` (disk scan)*
 

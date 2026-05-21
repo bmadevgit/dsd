@@ -11,22 +11,7 @@
 
 ## Activity (จากการสแกน file mtime)
 
-### AI Summary (24 ชั่วโมงล่าสุด)
-
-**สรุปการเปลี่ยนแปลง**  
-- อัปเดตไฟล์บันทึกการพัฒนา (`DEVLOG.md`, `devlog.html`) ซึ่งระบุฟีเจอร์ที่เสร็จสิ้นจนถึงวันที่ 11 พ.ค. 2026  
-- แก้ไขโค้ดใน `page.tsx` สำหรับหน้าแสดงข้อมูล datasets ของ Lake และ CKAN  
-- ปรับปรุงไฟล์ `jsonld.ts` ที่เกี่ยวข้องกับโครงสร้างข้อมูล JSON-LD  
-- อัปเดตไฟล์ `robots.ts` และ `sitemap.ts` สำหรับการตั้งค่า SEO  
-
-**ข้อควรระวัง**  
-- ตรวจสอบว่าการเปลี่ยนแปลงใน `page.tsx` ของ datasets ไม่ส่งผลต่อการแสดงข้อมูลเดิม  
-- ตรวจสอบความถูกต้องของ `jsonld.ts` ที่อาจส่งผลต่อการค้นหาผ่านเครื่องมือค้นหา  
-- ยืนยันว่า `robots.ts` และ `sitemap.ts` ถูกตั้งค่าให้สอดคล้องกับนโยบาย SEO ปัจจุบัน
-
-*(model: Qwen/Qwen3-14B, 8 files analyzed)*
-
-### วันนี้ (2026-05-21): 0 ไฟล์
+### วันนี้ (2026-05-22): 0 ไฟล์
 
   (ไม่มีไฟล์แก้ไขวันนี้)
 
@@ -75,5 +60,5 @@
 - [next.config.js](C:/inetpub/wwwroot/lake/next.config.js) - last modified 2026-05-12 05:22
 
 ---
-*Auto-generated 2026-05-21 02:00 by `server-b/refresh-server-b.ps1` (disk scan)*
+*Auto-generated 2026-05-22 02:00 by `server-b/refresh-server-b.ps1` (disk scan)*
 

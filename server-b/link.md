@@ -11,11 +11,11 @@
 
 ## Activity (จากการสแกน file mtime)
 
-### วันนี้ (2026-05-21): 0 ไฟล์
+### วันนี้ (2026-05-22): 0 ไฟล์
 
   (ไม่มีไฟล์แก้ไขวันนี้)
 
-### 7 วันล่าสุด (ไม่รวมวันนี้): 72 ไฟล์
+### 7 วันล่าสุด (ไม่รวมวันนี้): 60 ไฟล์
 
 - **2026-05-16** (52 ไฟล์):
   - 18:53 `public/assets/js/app.js`
@@ -36,19 +36,10 @@
   - 13:35 `admin/first_profile.php`
   - 13:35 `src/Auth.php`
   - 13:34 `database/migrations/019_first_login_profile_enforcement.sql`
-- **2026-05-14** (12 ไฟล์):
-  - 20:27 `database/migrations/018_remove_bma_po_workbook_artifacts.sql`
-  - 20:24 `src/bootstrap.php`
-  - 20:24 `admin/datasets.php`
-  - 14:03 `database/migrations/017_create_dataset_ai_analyses.sql`
-  - 10:41 `src/AuditLogger.php`
-  - 10:38 `admin/health_dict.php`
-  - 10:37 `public/api/v1/index.php`
-  - 10:37 `src/ApiGateway.php`
-  - ... (+4 more)
 
-### 8-30 วันก่อน: 76 ไฟล์ (ดูสรุป)
+### 8-30 วันก่อน: 88 ไฟล์ (ดูสรุป)
 
+- **2026-05-14**: 12 ไฟล์
 - **2026-05-13**: 13 ไฟล์
 - **2026-05-12**: 1 ไฟล์
 - **2026-05-01**: 1 ไฟล์
@@ -79,5 +70,5 @@
 - [src/bootstrap.php](C:/inetpub/wwwroot/link/src/bootstrap.php) - last modified 2026-05-14 20:24
 
 ---
-*Auto-generated 2026-05-21 02:00 by `server-b/refresh-server-b.ps1` (disk scan)*
+*Auto-generated 2026-05-22 02:00 by `server-b/refresh-server-b.ps1` (disk scan)*
 
