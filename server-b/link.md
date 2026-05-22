@@ -11,11 +11,11 @@
 
 ## Activity (จากการสแกน file mtime)
 
-### วันนี้ (2026-05-22): 0 ไฟล์
+### วันนี้ (2026-05-23): 0 ไฟล์
 
   (ไม่มีไฟล์แก้ไขวันนี้)
 
-### 7 วันล่าสุด (ไม่รวมวันนี้): 60 ไฟล์
+### 7 วันล่าสุด (ไม่รวมวันนี้): 52 ไฟล์
 
 - **2026-05-16** (52 ไฟล์):
   - 18:53 `public/assets/js/app.js`
@@ -27,18 +27,10 @@
   - 18:32 `admin/dataview.php`
   - 18:30 `tests-md/modules/admin-registries-crud.md`
   - ... (+44 more)
-- **2026-05-15** (8 ไฟล์):
-  - 14:26 `docs/SYSTEM_DIAGRAM_TH.html`
-  - 13:37 `admin/setup_admin.php`
-  - 13:36 `admin/users.php`
-  - 13:36 `admin/change_password.php`
-  - 13:35 `admin/login.php`
-  - 13:35 `admin/first_profile.php`
-  - 13:35 `src/Auth.php`
-  - 13:34 `database/migrations/019_first_login_profile_enforcement.sql`
 
-### 8-30 วันก่อน: 88 ไฟล์ (ดูสรุป)
+### 8-30 วันก่อน: 96 ไฟล์ (ดูสรุป)
 
+- **2026-05-15**: 8 ไฟล์
 - **2026-05-14**: 12 ไฟล์
 - **2026-05-13**: 13 ไฟล์
 - **2026-05-12**: 1 ไฟล์
@@ -70,5 +62,5 @@
 - [src/bootstrap.php](C:/inetpub/wwwroot/link/src/bootstrap.php) - last modified 2026-05-14 20:24
 
 ---
-*Auto-generated 2026-05-22 02:00 by `server-b/refresh-server-b.ps1` (disk scan)*
+*Auto-generated 2026-05-23 02:00 by `server-b/refresh-server-b.ps1` (disk scan)*
 
