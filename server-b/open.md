@@ -11,7 +11,7 @@
 
 ## Activity (จากการสแกน file mtime)
 
-### วันนี้ (2026-05-23): 0 ไฟล์
+### วันนี้ (2026-05-24): 0 ไฟล์
 
   (ไม่มีไฟล์แก้ไขวันนี้)
 
@@ -31,5 +31,5 @@
 - [install.php](C:/inetpub/wwwroot/open/install.php) - last modified 2026-04-16 09:14
 
 ---
-*Auto-generated 2026-05-23 02:00 by `server-b/refresh-server-b.ps1` (disk scan)*
+*Auto-generated 2026-05-24 02:00 by `server-b/refresh-server-b.ps1` (disk scan)*
 
