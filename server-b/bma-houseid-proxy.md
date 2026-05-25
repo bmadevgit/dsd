@@ -11,7 +11,7 @@
 
 ## Activity (จากการสแกน file mtime)
 
-### วันนี้ (2026-05-24): 0 ไฟล์
+### วันนี้ (2026-05-26): 0 ไฟล์
 
   (ไม่มีไฟล์แก้ไขวันนี้)
 
@@ -19,14 +19,12 @@
 
   (ไม่มีไฟล์แก้ไขในช่วง 7 วัน)
 
-### 8-30 วันก่อน: 1 ไฟล์ (ดูสรุป)
-
-- **2026-04-24**: 1 ไฟล์
+### 8-30 วันก่อน: 0 ไฟล์ (ดูสรุป)
 
 ## Source docs / config (อยู่ใน project)
 
 - [web.config](C:/inetpub/bma-houseid-proxy/web.config) - last modified 2026-04-24 22:16
 
 ---
-*Auto-generated 2026-05-24 02:00 by `server-b/refresh-server-b.ps1` (disk scan)*
+*Auto-generated 2026-05-26 02:00 by `server-b/refresh-server-b.ps1` (disk scan)*
 
