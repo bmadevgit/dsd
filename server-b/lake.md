@@ -11,11 +11,11 @@
 
 ## Activity (จากการสแกน file mtime)
 
-### วันนี้ (2026-05-26): 0 ไฟล์
+### วันนี้ (2026-05-27): 0 ไฟล์
 
   (ไม่มีไฟล์แก้ไขวันนี้)
 
-### 7 วันล่าสุด (ไม่รวมวันนี้): 22 ไฟล์
+### 7 วันล่าสุด (ไม่รวมวันนี้): 8 ไฟล์
 
 - **2026-05-20** (8 ไฟล์):
   - 09:50 `public/devlog.html`
@@ -26,19 +26,10 @@
   - 08:50 `src/lib/jsonld.ts`
   - 08:50 `src/app/robots.ts`
   - 08:50 `src/app/sitemap.ts`
-- **2026-05-19** (14 ไฟล์):
-  - 18:02 `src/app/(public)/page.tsx`
-  - 18:01 `src/components/HeroSearch.tsx`
-  - 18:01 `src/app/api/search/smart/route.ts`
-  - 18:00 `src/lib/dataset-search.ts`
-  - 16:54 `scripts/check-sources.mjs`
-  - 15:07 `src/components/admin/SourceChecksClient.tsx`
-  - 14:46 `src/components/DatasetChat.tsx`
-  - 14:46 `src/components/AIChat.tsx`
-  - ... (+6 more)
 
-### 8-30 วันก่อน: 90 ไฟล์ (ดูสรุป)
+### 8-30 วันก่อน: 104 ไฟล์ (ดูสรุป)
 
+- **2026-05-19**: 14 ไฟล์
 - **2026-05-13**: 8 ไฟล์
 - **2026-05-12**: 5 ไฟล์
 - **2026-05-11**: 18 ไฟล์
@@ -60,5 +51,5 @@
 - [next.config.js](C:/inetpub/wwwroot/lake/next.config.js) - last modified 2026-05-12 05:22
 
 ---
-*Auto-generated 2026-05-26 02:00 by `server-b/refresh-server-b.ps1` (disk scan)*
+*Auto-generated 2026-05-27 02:00 by `server-b/refresh-server-b.ps1` (disk scan)*
 
