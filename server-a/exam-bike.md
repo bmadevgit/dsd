@@ -1,4 +1,4 @@
-﻿# exam/bike — BMA Bikeshare Dashboard
+# exam/bike — BMA Bikeshare Dashboard
 
 **Path:** `C:\inetpub\wwwroot\exam\bike`
 **Stack:** PHP · MySQL · Google Maps API · JavaScript
@@ -22,13 +22,21 @@
 
 **Completed** — ใช้งานได้ ไม่มี active development
 
----
+<!-- AUTO_SECTION_START -->
 
-## Recent Activity
+## AI Dev Memory
 
-_auto-updated 
+_auto-updated 2026-05-26 20:18:09_
 
-### Files changed recently
+### Snapshot
+
+- Path: `C:\inetpub\wwwroot\exam\bike`
+- Stack: PHP
+- Entry points: index.php
+- Config files: config.php, schema.sql
+- DB hints: mysql/pdo
+
+### Recent Files
 
 - `config.php` 2026-03-08 00:43
 - `.claude\settings.local.json` 2026-03-08 00:39
@@ -38,3 +46,9 @@ _auto-updated
 - `schema.sql` 2026-03-07 17:19
 - `dashboard.php` 2026-03-07 17:02
 - `PHP 8.5.0 - phpinfo() exam.pdf` 2026-03-07 16:57
+
+### Git Commits
+
+- 2026-05-18 fb174d487 fix: restore history/ and wwwroot/ gitignore rules to hide IIS config snapshots
+
+<!-- AUTO_SECTION_END -->

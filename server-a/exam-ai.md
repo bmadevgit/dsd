@@ -1,4 +1,4 @@
-﻿# exam/ai — ASP.NET Core 8 RESTful API
+# exam/ai — ASP.NET Core 8 RESTful API
 
 **Path:** `C:\inetpub\wwwroot\exam\ai`
 **Stack:** ASP.NET Core 8 · C# · Entity Framework Core · SQLite · JWT · Swagger/OpenAPI
@@ -34,13 +34,21 @@ API นี้คือ compiled output ที่ publish มาจาก `vibe-i
 
 **Production** — deployed และ running อยู่
 
----
+<!-- AUTO_SECTION_START -->
 
-## Recent Activity
+## AI Dev Memory
 
-_auto-updated 
+_auto-updated 2026-05-26 20:18:09_
 
-### Files changed recently
+### Snapshot
+
+- Path: `C:\inetpub\wwwroot\exam\ai`
+- Stack: .NET
+- Entry points: (none)
+- Config files: web.config, appsettings.json
+- DB hints: (none)
+
+### Recent Files
 
 - `data\app.db` 2026-04-23 06:39
 - `my-ai-website\src\faq.html` 2026-04-23 06:33
@@ -50,3 +58,11 @@ _auto-updated
 - `wwwroot\assets\index-CVCaS-tg.js` 2026-04-23 04:58
 - `VibeCodingIde.Api.exe` 2026-04-23 04:58
 - `VibeCodingIde.Api.dll` 2026-04-23 04:58
+- `VibeCodingIde.Api.pdb` 2026-04-23 04:58
+- `my-ai-website\src\_includes\nav.html` 2026-04-23 04:57
+
+### Git Commits
+
+- 2026-05-18 fb174d487 fix: restore history/ and wwwroot/ gitignore rules to hide IIS config snapshots
+
+<!-- AUTO_SECTION_END -->

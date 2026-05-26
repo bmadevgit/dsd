@@ -1,4 +1,4 @@
-﻿# exam/a — BMA Alert Data Explorer
+# exam/a — BMA Alert Data Explorer
 
 **Path:** `C:\inetpub\wwwroot\exam\a`
 **Stack:** PHP · PDO · MySQL · Python (worker + scraper)
@@ -25,13 +25,21 @@
 
 **Active** — ใช้งานจริง ยังพัฒนาต่อ
 
----
+<!-- AUTO_SECTION_START -->
 
-## Recent Activity
+## AI Dev Memory
 
-_auto-updated 
+_auto-updated 2026-05-26 20:18:09_
 
-### Files changed recently
+### Snapshot
+
+- Path: `C:\inetpub\wwwroot\exam\a`
+- Stack: PHP
+- Entry points: index.php
+- Config files: web.config
+- DB hints: (none)
+
+### Recent Files
 
 - `worker\worker.log` 2026-05-05 06:56
 - `worker\ai_worker.py` 2026-05-04 13:59
@@ -41,3 +49,11 @@ _auto-updated
 - `index.php` 2026-04-11 10:56
 - `worker\install_task.ps1` 2026-04-03 19:55
 - `worker\requirements.txt` 2026-04-03 10:17
+- `worker\scraper.py` 2026-04-03 10:16
+- `worker\run_worker.bat` 2026-03-29 10:57
+
+### Git Commits
+
+- 2026-05-18 fb174d487 fix: restore history/ and wwwroot/ gitignore rules to hide IIS config snapshots
+
+<!-- AUTO_SECTION_END -->

@@ -1,4 +1,4 @@
-﻿# eva — Task Tracker (React SPA)
+# eva — Task Tracker (React SPA)
 
 **Path:** `C:\inetpub\wwwroot\eva`
 **Stack:** React 19 · Vite · Tailwind CSS · PHP backend · JSON storage
@@ -22,19 +22,30 @@
 
 **Active (archive/light use)** — ใช้สำหรับเก็บ task และ document ของทีม
 
----
+<!-- AUTO_SECTION_START -->
 
-## Recent Activity
+## AI Dev Memory
 
-_auto-updated 
+_auto-updated 2026-05-26 20:18:09_
 
-### Files changed recently
+### Snapshot
+
+- Path: `C:\inetpub\wwwroot\eva`
+- Stack: Unknown
+- Entry points: index.html
+- Config files: web.config
+- DB hints: (none)
+
+### Recent Files
 
 - `tasks_data.json` 2026-03-19 15:39
 - `assets\index-xea4QI_F.js` 2026-01-17 21:24
 - `index.html` 2026-01-17 21:23
-- `uploads\1768659598890_1768659599_0.png` 2026-01-17 21:19
-- `uploads\1768614925031_1768615129_0.jpg` 2026-01-17 08:58
-- `uploads\1767834724087_1768525047_2.xlsx` 2026-01-16 07:57
-- `uploads\1767834724087_1768525047_1.pdf` 2026-01-16 07:57
-- `uploads\1767834724087_1768525047_0.pdf` 2026-01-16 07:57
+- `api.php` 2026-01-07 17:49
+- `web.config` 2026-01-03 15:45
+
+### Git Commits
+
+- 2026-05-18 fb174d487 fix: restore history/ and wwwroot/ gitignore rules to hide IIS config snapshots
+
+<!-- AUTO_SECTION_END -->

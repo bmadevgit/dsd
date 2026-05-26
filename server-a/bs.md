@@ -1,4 +1,4 @@
-﻿# bs — LINE Chatbot (Hybrid RAG)
+# bs — LINE Chatbot (Hybrid RAG)
 
 **Path:** `C:\inetpub\wwwroot\bs`
 **Stack:** PHP 8 · Python 3.11 · MySQL · Qdrant · Ollama (Qwen) · Gemini API
@@ -29,19 +29,35 @@
 
 **Production** — ใช้งานจริง ส่งมอบแล้ว 2026-05-03
 
----
+<!-- AUTO_SECTION_START -->
 
-## Recent Activity
+## AI Dev Memory
 
-_auto-updated 
+_auto-updated 2026-05-26 20:18:09_
 
-### Files changed recently
+### Snapshot
 
-- `uploads\612445385515860160.pdf` 2026-05-04 13:46
-- `uploads\612418698602349173.jpg` 2026-05-04 09:21
-- `logs\worker.log` 2026-05-03 14:46
+- Path: `C:\inetpub\wwwroot\bs`
+- Stack: Unknown
+- Entry points: (none)
+- Config files: .env, .env.example, web.config, config.php, README.md
+- DB hints: (none)
+
+### Recent Files
+
+- `Dashboard_all.php` 2026-05-19 08:35
+- `.env.example` 2026-05-18 18:47
+- `.env` 2026-05-18 18:47
 - `rag-worker\app\secretary.py` 2026-05-03 14:33
 - `README_SECRETARY_COMMANDS.md` 2026-05-03 14:33
 - `migrations\20260503_secretary_schedules.sql` 2026-05-03 14:33
 - `webhook.php` 2026-05-03 14:32
 - `rag-worker\app\jobs.py` 2026-05-03 14:32
+- `mana\secretary.php` 2026-05-03 12:17
+- `migrations\20260503_secretary_teaching.sql` 2026-05-03 12:17
+
+### Git Commits
+
+- 2026-05-18 fb174d487 fix: restore history/ and wwwroot/ gitignore rules to hide IIS config snapshots
+
+<!-- AUTO_SECTION_END -->

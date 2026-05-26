@@ -1,4 +1,4 @@
-﻿# q — ระบบจองคิวแรงงานต่างด้าว + Email
+# q — ระบบจองคิวแรงงานต่างด้าว + Email
 
 **Path:** `C:\inetpub\wwwroot\q`
 **Stack:** PHP (legacy) · MySQL · PHPMailer · TCPDF · PHP_XLSXWriter · Bootstrap 3
@@ -29,13 +29,21 @@
 
 **Active (maintenance mode)** — ระบบเก่า ใช้งานจริง อยู่ระหว่าง maintain
 
----
+<!-- AUTO_SECTION_START -->
 
-## Recent Activity
+## AI Dev Memory
 
-_auto-updated 
+_auto-updated 2026-05-26 20:18:09_
 
-### Files changed recently
+### Snapshot
+
+- Path: `C:\inetpub\wwwroot\q`
+- Stack: PHP
+- Entry points: index.php
+- Config files: config.php
+- DB hints: (none)
+
+### Recent Files
 
 - `x.php` 2026-05-01 16:32
 - `locale.php` 2026-04-29 09:25
@@ -45,3 +53,11 @@ _auto-updated
 - `note4.pdf` 2025-02-11 17:15
 - `646483.jpg` 2025-02-06 17:16
 - `646482.jpg` 2025-02-06 17:16
+- `646481.jpg` 2025-02-06 17:16
+- `note3.jpg` 2024-11-03 20:19
+
+### Git Commits
+
+- 2026-05-18 fb174d487 fix: restore history/ and wwwroot/ gitignore rules to hide IIS config snapshots
+
+<!-- AUTO_SECTION_END -->

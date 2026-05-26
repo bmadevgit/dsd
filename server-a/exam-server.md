@@ -1,4 +1,4 @@
-﻿# exam/server — Server Analytics Dashboard
+# exam/server — Server Analytics Dashboard
 
 **Path:** `C:\inetpub\wwwroot\exam\server`
 **Stack:** Python 3.11 · Streamlit · Pandas · Plotly · MySQL · Qwen2.5-32B
@@ -31,19 +31,35 @@
 
 **Active** — Streamlit service กำลัง run อยู่, ต้องตั้ง IIS reverse proxy
 
----
+<!-- AUTO_SECTION_START -->
 
-## Recent Activity
+## AI Dev Memory
 
-_auto-updated 
+_auto-updated 2026-05-26 20:18:09_
 
-### Files changed recently
+### Snapshot
 
-- `streamlit.log` 2026-04-18 11:11
+- Path: `C:\inetpub\wwwroot\exam\server`
+- Stack: Python
+- Entry points: app.py
+- Config files: web.config
+- DB hints: (none)
+
+### Recent Files
+
+- `streamlit.log` 2026-05-24 14:40
+- `app.py` 2026-05-19 14:40
+- `run_streamlit.bat` 2026-05-19 13:38
 - `keep_streamlit_alive.sh` 2026-04-17 18:39
-- `app.py` 2026-04-17 18:29
 - `analyzer.py` 2026-04-17 18:29
 - `run_streamlit_monitor.bat` 2026-04-17 18:15
 - `keep_streamlit_alive.ps1` 2026-04-17 18:15
 - `db_update.py` 2026-04-04 14:55
 - `web.config` 2026-04-04 14:35
+- `run_analyzer.bat` 2026-04-04 14:32
+
+### Git Commits
+
+- 2026-05-18 fb174d487 fix: restore history/ and wwwroot/ gitignore rules to hide IIS config snapshots
+
+<!-- AUTO_SECTION_END -->

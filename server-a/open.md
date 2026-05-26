@@ -1,4 +1,4 @@
-﻿# open — Hospital Case Management Portal
+# open — Hospital Case Management Portal
 
 **Path:** `C:\inetpub\wwwroot\open`
 **Stack:** PHP 8 · MySQL · Qwen2.5-32B (OpenAI-compatible API)
@@ -25,13 +25,21 @@
 
 **Completed & Handed off** — ส่งมอบ 2026-04-14
 
----
+<!-- AUTO_SECTION_START -->
 
-## Recent Activity
+## AI Dev Memory
 
-_auto-updated 
+_auto-updated 2026-05-26 20:18:09_
 
-### Files changed recently
+### Snapshot
+
+- Path: `C:\inetpub\wwwroot\open`
+- Stack: PHP
+- Entry points: index.php
+- Config files: web.config
+- DB hints: (none)
+
+### Recent Files
 
 - `PROJECT_HANDOFF.md` 2026-04-14 21:05
 - `admin\index.php` 2026-04-11 13:48
@@ -41,3 +49,11 @@ _auto-updated
 - `sql\get_sample_cases.php` 2026-04-11 13:05
 - `web.config` 2026-04-11 13:02
 - `sql\schema.sql` 2026-04-11 13:01
+- `install.php` 2026-04-11 12:55
+- `assets\style.css` 2026-04-11 12:47
+
+### Git Commits
+
+- 2026-05-18 fb174d487 fix: restore history/ and wwwroot/ gitignore rules to hide IIS config snapshots
+
+<!-- AUTO_SECTION_END -->

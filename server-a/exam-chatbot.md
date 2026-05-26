@@ -1,4 +1,4 @@
-﻿# exam/chatbot — Multi-Tenant Chatbot Platform
+# exam/chatbot — Multi-Tenant Chatbot Platform
 
 **Path:** `C:\inetpub\wwwroot\exam\chatbot`
 **Stack:** PHP 8.1 · PSR-4 Autoload · Composer · MySQL · RAG
@@ -22,13 +22,21 @@
 
 **Completed** — โครงสร้างพร้อม ใช้เป็น base สำหรับ deploy หลาย tenant
 
----
+<!-- AUTO_SECTION_START -->
 
-## Recent Activity
+## AI Dev Memory
 
-_auto-updated 
+_auto-updated 2026-05-26 20:18:09_
 
-### Files changed recently
+### Snapshot
+
+- Path: `C:\inetpub\wwwroot\exam\chatbot`
+- Stack: PHP
+- Entry points: index.php
+- Config files: web.config, config.php, schema.sql, CLAUDE.md
+- DB hints: mysql/pdo
+
+### Recent Files
 
 - `CLAUDE.md` 2026-04-12 17:37
 - `api\chat.php` 2026-04-12 09:54
@@ -38,3 +46,11 @@ _auto-updated
 - `admin\chatbot-setup.html` 2026-04-12 09:43
 - `api\documents.php` 2026-04-12 09:42
 - `lib\doc_parser.php` 2026-04-12 09:42
+- `config.php` 2026-04-12 09:42
+- `lib\llm_client.php` 2026-04-12 09:30
+
+### Git Commits
+
+- 2026-05-18 fb174d487 fix: restore history/ and wwwroot/ gitignore rules to hide IIS config snapshots
+
+<!-- AUTO_SECTION_END -->

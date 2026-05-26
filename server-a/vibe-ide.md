@@ -1,4 +1,4 @@
-﻿# vibe-ide — AI-Powered Web IDE
+# vibe-ide — AI-Powered Web IDE
 
 **Path:** `C:\inetpub\vibe-ide`
 **Stack:** ASP.NET Core 8 · C# · EF Core · SQLite · React 19 · TypeScript · Vite · Monaco Editor · SignalR · JWT
@@ -49,19 +49,35 @@
 
 **Production (Phase 5)** — ใช้งานได้เต็มรูปแบบ
 
----
+<!-- AUTO_SECTION_START -->
 
-## Recent Activity
+## AI Dev Memory
 
-_auto-updated 
+_auto-updated 2026-05-26 20:18:09_
 
-### Files changed recently
+### Snapshot
 
-- `frontend\dist\index.html` 2026-04-23 05:59
-- `frontend\dist\assets\index-ANxN7sou.css` 2026-04-23 05:59
-- `frontend\dist\assets\index-CcUcVzAT.js` 2026-04-23 05:59
+- Path: `C:\inetpub\vibe-ide`
+- Stack: Unknown
+- Entry points: (none)
+- Config files: .env.example, README.md, AGENTS.md
+- DB hints: sqlite
+
+### Recent Files
+
 - `frontend\src\index.css` 2026-04-23 05:59
 - `frontend\src\pages\WorkspacePage.tsx` 2026-04-23 05:59
 - `frontend\src\components\WorkspaceStatusBanner.tsx` 2026-04-23 05:59
 - `frontend\src\hooks\useWorkspaceChat.ts` 2026-04-23 05:59
 - `frontend\src\hooks\useWorkspaceFiles.ts` 2026-04-23 05:59
+- `frontend\src\components\WorkspaceChatPanel.tsx` 2026-04-23 05:08
+- `frontend\src\components\WorkspaceEditorPanel.tsx` 2026-04-23 05:07
+- `frontend\src\hooks\useWorkspacePreview.ts` 2026-04-23 05:05
+- `frontend\src\types\workspace.ts` 2026-04-23 05:05
+- `frontend\src\components\WorkspacePreviewPanel.tsx` 2026-04-23 05:00
+
+### Git Commits
+
+- 2026-05-18 fb174d487 fix: restore history/ and wwwroot/ gitignore rules to hide IIS config snapshots
+
+<!-- AUTO_SECTION_END -->

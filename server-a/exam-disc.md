@@ -1,4 +1,4 @@
-﻿# exam/disc — Discipline Record Management
+# exam/disc — Discipline Record Management
 
 **Path:** `C:\inetpub\wwwroot\exam\disc`
 **Stack:** PHP · SQLite
@@ -23,13 +23,21 @@
 
 **Active** — ใช้งานจริง
 
----
+<!-- AUTO_SECTION_START -->
 
-## Recent Activity
+## AI Dev Memory
 
-_auto-updated 
+_auto-updated 2026-05-26 20:18:09_
 
-### Files changed recently
+### Snapshot
+
+- Path: `C:\inetpub\wwwroot\exam\disc`
+- Stack: PHP
+- Entry points: index.php
+- Config files: (none)
+- DB hints: (none)
+
+### Recent Files
 
 - `data\disc.db` 2026-05-12 16:17
 - `db.php` 2026-03-17 12:17
@@ -39,3 +47,11 @@ _auto-updated
 - `admin.php` 2026-03-17 12:17
 - `users.php` 2026-03-13 22:23
 - `profile.php` 2026-03-13 22:23
+- `logout.php` 2026-03-13 22:23
+- `login.php` 2026-03-13 22:23
+
+### Git Commits
+
+- 2026-05-18 fb174d487 fix: restore history/ and wwwroot/ gitignore rules to hide IIS config snapshots
+
+<!-- AUTO_SECTION_END -->

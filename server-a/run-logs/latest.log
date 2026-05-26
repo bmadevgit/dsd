@@ -1,0 +1,11 @@
+﻿2026-05-26 20:18:09 [INFO] update-projects started
+2026-05-26 20:18:09 [INFO] mode: DryRun=False, NoPush=True, WindowHours=24
+2026-05-26 20:18:10 [INFO] AI model requested=Qwen/Qwen3-14B resolved=Qwen/Qwen3-14B
+2026-05-26 20:18:11 [INFO] scan root: C:\inetpub\wwwroot
+2026-05-26 20:18:26 [INFO] scan root: C:\inetpub\apps
+2026-05-26 20:18:26 [INFO] scan root: C:\inetpub\vibe-ide
+2026-05-26 20:18:27 [INFO] discovered projects: 87
+2026-05-26 20:18:27 [WARN] discovery warnings: 4
+2026-05-26 20:20:02 [INFO] project notes updated: 87
+2026-05-26 20:20:02 [INFO] NoPush enabled: skip git commit/push
+

@@ -1,4 +1,4 @@
-﻿# exam/ar1 & exam/ar2 — Augmented Reality (Web AR)
+# exam/ar1 & exam/ar2 — Augmented Reality (Web AR)
 
 **Path:** `C:\inetpub\wwwroot\exam\ar1` / `ar2`
 **Stack:** JavaScript · WebGL · MindAR (ar1) · AR.js + NFT compiler (ar2)
@@ -27,14 +27,28 @@
 
 **Proof of Concept** — ทำงานได้ ยังไม่ผ่าน production deployment
 
----
+<!-- AUTO_SECTION_START -->
 
-## Recent Activity
+## AI Dev Memory
 
-_auto-updated 
+_auto-updated 2026-05-26 20:18:09_
 
-### Files changed recently
+### Snapshot
+
+- Path: `C:\inetpub\wwwroot\exam\ar1`
+- Stack: Unknown
+- Entry points: index.html
+- Config files: (none)
+- DB hints: (none)
+
+### Recent Files
 
 - `index.html` 2026-03-28 11:06
 - `target.mind` 2026-03-27 21:55
 - `compile.js` 2026-03-27 21:55
+
+### Git Commits
+
+- 2026-05-18 fb174d487 fix: restore history/ and wwwroot/ gitignore rules to hide IIS config snapshots
+
+<!-- AUTO_SECTION_END -->

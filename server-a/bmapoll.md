@@ -1,4 +1,4 @@
-﻿# bmapoll — Traffy Bangkok Data Explorer
+# bmapoll — Traffy Bangkok Data Explorer
 
 **Path:** `C:\inetpub\wwwroot\bmapoll`
 **Stack:** PHP 8 · MySQL · Tailwind CSS · Google Maps API · Ollama (Typhoon 2.5)
@@ -23,13 +23,21 @@
 
 **Production** — deployed ใช้งานจริง
 
----
+<!-- AUTO_SECTION_START -->
 
-## Recent Activity
+## AI Dev Memory
 
-_auto-updated 
+_auto-updated 2026-05-26 20:18:09_
 
-### Files changed recently
+### Snapshot
+
+- Path: `C:\inetpub\wwwroot\bmapoll`
+- Stack: PHP
+- Entry points: index.php
+- Config files: web.config, README.md
+- DB hints: mysql/pdo
+
+### Recent Files
 
 - `index.php` 2026-03-27 07:03
 - `includes\db.php` 2026-03-27 06:38
@@ -37,3 +45,9 @@ _auto-updated
 - `api\index.php` 2026-03-26 21:53
 - `includes\config.php` 2026-03-26 17:37
 - `README.md` 2026-03-26 17:04
+
+### Git Commits
+
+- 2026-05-18 fb174d487 fix: restore history/ and wwwroot/ gitignore rules to hide IIS config snapshots
+
+<!-- AUTO_SECTION_END -->

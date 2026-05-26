@@ -1,0 +1,14 @@
+{
+    "date":  "2026-05-26",
+    "generated_at":  "2026-05-26 20:18:09",
+    "projects":  87,
+    "warnings":  4,
+    "ai_enabled":  true,
+    "requested_model":  "Qwen/Qwen3-14B",
+    "resolved_model":  "Qwen/Qwen3-14B",
+    "ai_success":  5,
+    "ai_failed":  0,
+    "index_md":  "C:\\notes\\server-a\\index.md",
+    "brain_json":  "C:\\notes\\server-a\\brain.json",
+    "run_log":  "C:\\notes\\server-a\\run-logs\\latest.log"
+}

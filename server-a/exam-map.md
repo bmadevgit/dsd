@@ -1,4 +1,4 @@
-﻿# exam/map — Pin Survey & Location Mapping
+# exam/map — Pin Survey & Location Mapping
 
 **Path:** `C:\inetpub\wwwroot\exam\map`
 **Stack:** PHP · MySQL · Google Maps API · AI URL parser
@@ -25,13 +25,21 @@
 
 **Production** — deployed ใช้งานจริง
 
----
+<!-- AUTO_SECTION_START -->
 
-## Recent Activity
+## AI Dev Memory
 
-_auto-updated 
+_auto-updated 2026-05-26 20:18:09_
 
-### Files changed recently
+### Snapshot
+
+- Path: `C:\inetpub\wwwroot\exam\map`
+- Stack: PHP
+- Entry points: index.php
+- Config files: README.md
+- DB hints: (none)
+
+### Recent Files
 
 - `admin\index.php` 2026-04-12 13:21
 - `admin\login.php` 2026-04-12 13:16
@@ -41,3 +49,11 @@ _auto-updated
 - `api\import_sheet.php` 2026-04-12 09:21
 - `includes\bootstrap.php` 2026-04-12 09:20
 - `includes\auth.php` 2026-04-12 09:20
+- `index.php` 2026-04-11 17:29
+- `tools\stats_cli.php` 2026-04-11 17:14
+
+### Git Commits
+
+- 2026-05-18 fb174d487 fix: restore history/ and wwwroot/ gitignore rules to hide IIS config snapshots
+
+<!-- AUTO_SECTION_END -->

@@ -1,4 +1,4 @@
-﻿# now — Digital Bureau Task Tracker + Archive
+# now — Digital Bureau Task Tracker + Archive
 
 **Path:** `C:\inetpub\wwwroot\now`
 **Stack:** React 19 · Vite · Tailwind CSS · PHP backend · JSON storage
@@ -26,19 +26,33 @@
 
 **Archive/Light use** — ใช้เป็น file server และ task tracker ของทีม
 
----
+<!-- AUTO_SECTION_START -->
 
-## Recent Activity
+## AI Dev Memory
 
-_auto-updated 
+_auto-updated 2026-05-26 20:18:09_
 
-### Files changed recently
+### Snapshot
+
+- Path: `C:\inetpub\wwwroot\now`
+- Stack: Unknown
+- Entry points: index.html
+- Config files: web.config
+- DB hints: (none)
+
+### Recent Files
 
 - `car.rar` 2026-03-05 06:27
 - `dumps.rar` 2026-03-05 06:01
 - `org.rar` 2026-03-05 05:59
 - `tasks_data.json` 2026-02-20 11:51
-- `uploads\1767834724087_1771562960_0.pdf` 2026-02-20 11:49
-- `uploads\1767494490102_1769160705_1.pdf` 2026-01-23 16:31
-- `uploads\1767494490102_1769160705_0.pdf` 2026-01-23 16:31
-- `uploads\1767609352949_1769157795_0.pdf` 2026-01-23 15:43
+- `index.html` 2026-01-18 11:50
+- `assets\index-DsSRCpwU.js` 2026-01-18 11:50
+- `api.php` 2026-01-07 17:49
+- `web.config` 2026-01-03 15:45
+
+### Git Commits
+
+- 2026-05-18 fb174d487 fix: restore history/ and wwwroot/ gitignore rules to hide IIS config snapshots
+
+<!-- AUTO_SECTION_END -->

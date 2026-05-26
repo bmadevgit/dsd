@@ -1,4 +1,4 @@
-﻿# exam/vhv — ระบบจัดการอาสาสมัครสาธารณสุข (อสส.)
+# exam/vhv — ระบบจัดการอาสาสมัครสาธารณสุข (อสส.)
 
 **Path:** `C:\inetpub\wwwroot\exam\vhv`
 **Stack:** PHP 8 · MySQL 8 · Bootstrap 5 · Chart.js · jQuery · Composer
@@ -28,23 +28,35 @@
 
 **Active development** — ใช้งานจริง ยังพัฒนาต่อ
 
----
+<!-- AUTO_SECTION_START -->
 
-## Recent Activity
+## AI Dev Memory
 
-_auto-updated 
+_auto-updated 2026-05-26 20:18:09_
 
-### AI Summary
+### Snapshot
 
-(AI unavailable: The remote server returned an error: (400) Bad Request.)
+- Path: `C:\inetpub\wwwroot\exam\vhv`
+- Stack: PHP
+- Entry points: index.php
+- Config files: web.config, README.md
+- DB hints: mysql/pdo
 
-### Files changed recently
+### Recent Files
 
-- `sessions\sess_de7vi803rnoqvrnk7gh903a9f7` 2026-05-18 11:00
-- `sessions\sess_eompimhk4ig2dnthu3kp1nqi2r` 2026-05-18 11:00
-- `sessions\sess_1ob7it3ml3mf26irfet7rikgud` 2026-05-18 11:00
-- `uploads\photos\vhv_2688_1779076808.jpg` 2026-05-18 11:00
-- `sessions\sess_94jhdsmki0l97qtb2qf5jgs385` 2026-05-18 11:00
-- `sessions\sess_7mn8gkbmugi537ee29kd2pfatt` 2026-05-18 11:00
-- `uploads\photos\vhv_6736_1779076802.png` 2026-05-18 11:00
-- `sessions\sess_vav3slj62cantlq41dc0dtc1vc` 2026-05-18 10:59
+- `templates\layouts\main.php` 2026-05-20 10:37
+- `templates\admin\security_dashboard.php` 2026-05-20 10:37
+- `src\Controllers\SecurityController.php` 2026-05-20 10:36
+- `src\Controllers\ChatController.php` 2026-05-20 10:35
+- `src\Controllers\AuthController.php` 2026-05-20 10:35
+- `index.php` 2026-05-20 10:35
+- `config\app.php` 2026-04-09 09:41
+- `src\Auth.php` 2026-04-09 09:40
+- `scripts\test_query.php` 2026-04-09 09:27
+- `scripts\test_chat.php` 2026-04-09 09:24
+
+### Git Commits
+
+- 2026-05-18 fb174d487 fix: restore history/ and wwwroot/ gitignore rules to hide IIS config snapshots
+
+<!-- AUTO_SECTION_END -->
