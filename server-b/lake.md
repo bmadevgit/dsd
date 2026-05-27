@@ -11,24 +11,17 @@
 
 ## Activity (จากการสแกน file mtime)
 
-### วันนี้ (2026-05-27): 0 ไฟล์
+### วันนี้ (2026-05-28): 0 ไฟล์
 
   (ไม่มีไฟล์แก้ไขวันนี้)
 
-### 7 วันล่าสุด (ไม่รวมวันนี้): 8 ไฟล์
+### 7 วันล่าสุด (ไม่รวมวันนี้): 0 ไฟล์
 
-- **2026-05-20** (8 ไฟล์):
-  - 09:50 `public/devlog.html`
-  - 09:48 `public/DEVLOG.md`
-  - 09:48 `DEVLOG.md`
-  - 08:51 `src/app/(public)/datasets/lake/[name]/page.tsx`
-  - 08:51 `src/app/(public)/datasets/ckan/[name]/page.tsx`
-  - 08:50 `src/lib/jsonld.ts`
-  - 08:50 `src/app/robots.ts`
-  - 08:50 `src/app/sitemap.ts`
+  (ไม่มีไฟล์แก้ไขในช่วง 7 วัน)
 
-### 8-30 วันก่อน: 104 ไฟล์ (ดูสรุป)
+### 8-30 วันก่อน: 112 ไฟล์ (ดูสรุป)
 
+- **2026-05-20**: 8 ไฟล์
 - **2026-05-19**: 14 ไฟล์
 - **2026-05-13**: 8 ไฟล์
 - **2026-05-12**: 5 ไฟล์
@@ -51,5 +44,5 @@
 - [next.config.js](C:/inetpub/wwwroot/lake/next.config.js) - last modified 2026-05-12 05:22
 
 ---
-*Auto-generated 2026-05-27 02:00 by `server-b/refresh-server-b.ps1` (disk scan)*
+*Auto-generated 2026-05-28 02:00 by `server-b/refresh-server-b.ps1` (disk scan)*
 
