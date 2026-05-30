@@ -1,6 +1,6 @@
 ﻿# Log analysis: iis-shared
 
-> Snapshot: 2026-05-30 03:00  ·  log files modified in last 24h: **2**
+> Snapshot: 2026-05-31 03:00  ·  log files modified in last 24h: **2**
 
 ## AI Analysis
 
@@ -11,61 +11,85 @@ Here's a thinking process:
    - **Task:** Analyze web application logs
    - **Language:** Thai
    - **Format:** Concise, 3 sections: 1) Overall Status, 2) Errors/Warnings to Watch, 3) Initial Recommendations
-   - **Constraints:** No guessing beyond log evidence, state clearly if normal, markdown only, no preamble.
-   - **Input Data:** Two IIS log files (`u_ex260529.log` and `u_ex260528.log`) covering roughly May 28-29, 2026.
-   - **Key Log Patterns:**
-     - `GET /open/api.asp ... 502` occurs repeatedly, exactly once per hour (or close to it), from `127.0.0.1` on port 80. Time taken varies (e.g., 249ms, 352ms, 7718ms, 1999ms, 8239ms).
-     - `GET /s2t/login.php ... 200` from `172.27.15.6` (internal IP?) on port 443. Multiple requests in short bursts.
-     - `GET /apple-touch-icon-precomposed.png`, `/apple-touch-icon.png`, `/favicon.ico` returning `404`.
-     - `GET /s2t/` returning `302`.
-     - `GET /` and `/iisstart.png` returning `200`.
-     - Log format is standard IIS W3C.
-     - Dates are in the future (2026), but that's irrelevant for analysis.
-     - The `502` errors are consistent, hourly, from localhost (`127.0.0.1`), hitting `/open/api.asp` with specific query parameters. This strongly suggests a health check, monitoring script, or scheduled task/cron job calling an internal API that is failing or misconfigured.
-     - The `404`s for icons are normal browser behavior.
-     - The `200`s and `302`s for `/s2t/` and `/` are normal.
-     - High `time-taken` for some `502` requests (e.g., 7718ms, 8239ms) indicates timeouts or slow backend responses before failing.
+   - **Constraints:** No guessing beyond log evidence, if normal/no errors state it clearly, output only markdown, no preamble.
+   - **Input Data:** Two IIS log files (`u_ex260530.log` and `u_ex260529.log`) from `iis-shared` project. Contains HTTP request logs with timestamps, IPs, methods, URIs, status codes, bytes, time-taken, etc.
 
-2.  **Determine Overall Status (Section 1):**
-   - The system is mostly functional for user traffic (200/302 responses), but there's a persistent, recurring `502 Bad Gateway` error on an internal API endpoint (`/open/api.asp`) triggered hourly from localhost.
-   - Status: 🟡 Yellow (Warning) - System is operational for end-users, but internal API/health check is consistently failing.
+2.  **Scan Logs for Key Information:**
+   - *File 1 (`u_ex260530.log`):*
+     - Dates: 2026-05-30 19:49 to 19:59
+     - IPs: `172.27.15.6` (server IP?), `172.27.15.6` (client IP? Wait, IIS log format: `date time s-ip cs-method cs-uri-stem cs-uri-query s-port cs-username c-ip ...`)
+     - Let's parse a line: `2026-05-30 19:49:20 172.27.15.6 GET /s2t/api.php action=dashboard_data&job_page=1&job_q= 443 - 172.27.15.6 Mozilla/... https://... 200 0 0 43628 715 104`
+     - Status codes: All `200`
+     - Time-taken: ~7 to 128 ms (normal)
+     - Pattern: Polling every minute (`19:49:20`, `19:50:20`, etc.) for `/s2t/api.php` with `action=dashboard_data` and `action=changelog`. Likely a frontend dashboard auto-refresh.
+     - No errors/warnings here.
+   - *File 2 (`u_ex260529.log`):*
+     - Dates: 2026-05-29 12:58 to 23:00
+     - Contains some `200` status codes for `/s2t/login.php` and `/favicon.ico` (404).
+     - **Critical Pattern:** Repeated `502` status codes for `/open/api.asp` from `127.0.0.1` (localhost) on port `80`.
+     - Lines: `2026-05-29 13:00:01 127.0.0.1 GET /open/api.asp ... 80 - 127.0.0.1 - - 502 0 0 395 151 249`
+     - Occurs hourly from 13:00 to 23:00 on May 29.
+     - Status `502` = Bad Gateway. IIS is acting as a reverse proxy or forwarding to a backend, and the backend is failing/unreachable.
+     - Time-taken varies: 249ms to 7718ms (one spike at 17:00:08).
+     - Client IP is `127.0.0.1`, suggesting a local scheduled task, health check, or internal service calling this endpoint.
+     - Also a `404` for `/favicon.ico` at 13:26:49 (minor, usually ignorable).
 
-3.  **Identify Errors/Warnings (Section 2):**
-   - `502 Bad Gateway` on `/open/api.asp` from `127.0.0.1` (Port 80). Occurs hourly (e.g., `2026-05-29 13:00:01`, `14:00:01`, etc.). Risk: High/Medium. Indicates backend service, reverse proxy, or API endpoint is unreachable/misconfigured. High latency on some calls (up to ~8s) suggests timeout/connection issues.
-   - `404 Not Found` on `/favicon.ico`, `/apple-touch-icon*.png`. Occurs sporadically from browsers. Risk: Low. Cosmetic issue, standard browser behavior.
-   - Note: I'll stick to the most critical one as per SRE focus, but mention the 404s briefly if needed. The prompt asks for bullet list of errors/warnings found. I'll list the 502 and the 404s.
+3.  **Synthesize Findings (Mental Draft in Thai):**
+   - **สถานะรวม:** ระบบทำงานปกติสำหรับส่วน Dashboard (`/s2t/`) โดยไม่มี Error แต่พบปัญหา Backend ล้มเหลวต่อเนื่องที่ endpoint `/open/api.asp` ทำให้สถานะรวมเป็น **เหลือง/แดง** (ขึ้นกับผลกระทบ)
+   - **Error/Warning ที่ต้องสนใจ:**
+     - `502 Bad Gateway` ที่ `/open/api.asp` (Port 80) จาก `127.0.0.1` เกิดขึ้นทุกชั่วโมงระหว่าง 13:00-23:00 ของวันที่ 29 พ.ค. 2026 บ่งชี้ว่า IIS ส่งต่อคำขอไปยัง Backend ไม่ได้ หรือ Backend ล้มเหลว/Timeout
+     - `404 Not Found` ที่ `/favicon.ico` (13:26:49) เป็นเรื่องปกติของเบราว์เซอร์ ไม่กระทบการทำงาน
+   - **คำแนะนำเบื้องต้น:**
+     - ตรวจสอบสถานะของ Backend/Service ที่รองรับ `/open/api.asp` (เช่น App Pool, Process, หรือ Upstream Server) ว่าทำงานอยู่หรือไม่
+     - ตรวจสอบ IIS Application Request Routing (ARR) หรือ Proxy Configuration ว่าตั้งค่าถูกต้องและ Backend ตอบกลับได้
+     - ตรวจสอบ Log ของ Backend หรือ Windows Event Viewer (Source: WAS, W3SVC) เพื่อหาสาเหตุของ 502
+     - หากเป็น Health Check/Internal Task ที่ไม่จำเป็น อาจพิจารณาปรับ Schedule หรือเพิ่ม Retry/Timeout Logic
 
-4.  **Formulate Recommendations (Section 3):**
-   - Investigate the `/open/api.asp` endpoint and its backend dependency. Check if the target service is running, reachable, or if IIS/ARR configuration is correct.
-   - Verify the source of the hourly `127.0.0.1` request (likely a scheduled task, monitoring agent, or cron job). Check if it's a health check that needs fixing or can be disabled/redirected.
-   - For 404s: Add placeholder icons or configure IIS to return 200/304 for missing favicons to clean up logs (optional, low priority).
-   - Check IIS Failed Request Tracing or Windows Event Viewer for detailed 502 root cause.
-
-5.  **Draft Response (Mental Refinement in Thai):**
-   **1) สถานะรวม** 🟡 เหลือง - ระบบหลักทำงานปกติ (ผู้ใช้เข้าถึงหน้าเว็บได้ 200/302) แต่พบ Error 502 ซ้ำๆ ทุกชั่วโมงที่ endpoint ภายใน `/open/api.asp` ซึ่งบ่งชี้ว่าบริการหลังบ้านหรือการตั้งค่า Proxy/Health Check มีปัญหา
-   **2) Error/Warning ที่ต้องสนใจ**
-   - `502 Bad Gateway` ที่ `/open/api.asp` (Port 80) จาก IP `127.0.0.1` เกิดขึ้นทุกชั่วโมง (เช่น 13:00, 14:00, 15:0
+4.  **Refine according to Constraints:**
+   - Must be concise, Thai
 
 *(model: Qwen/Qwen3-14B, 2 log files analyzed)*
 
 ## Log files seen (24h)
 
-- `C:\inetpub\logs\LogFiles\W3SVC1\u_ex260529.log` (2026-05-30 02:00, 459,123 bytes)
-- `C:\inetpub\logs\LogFiles\W3SVC1\u_ex260528.log` (2026-05-29 06:58, 185,178 bytes)
+- `C:\inetpub\logs\LogFiles\W3SVC1\u_ex260530.log` (2026-05-31 00:59, 672,200 bytes)
+- `C:\inetpub\logs\LogFiles\W3SVC1\u_ex260529.log` (2026-05-30 06:00, 460,903 bytes)
 
 ## Raw log excerpts
+
+### `C:\inetpub\logs\LogFiles\W3SVC1\u_ex260530.log`
+
+```
+... [truncated head]
+(Windows+NT+10.0;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/148.0.0.0+Safari/537.36 https://onedata.bangkok.go.th/s2t/dashboard.php 200 0 0 27574 692 7
+2026-05-30 19:49:20 172.27.15.6 GET /s2t/api.php action=dashboard_data&job_page=1&job_q= 443 - 172.27.15.6 Mozilla/5.0+(Windows+NT+10.0;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/148.0.0.0+Safari/537.36 https://onedata.bangkok.go.th/s2t/dashboard.php 200 0 0 43628 715 104
+2026-05-30 19:50:20 172.27.15.6 GET /s2t/api.php action=changelog 443 - 172.27.15.6 Mozilla/5.0+(Windows+NT+10.0;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/148.0.0.0+Safari/537.36 https://onedata.bangkok.go.th/s2t/dashboard.php 200 0 0 27574 692 8
+2026-05-30 19:50:20 172.27.15.6 GET /s2t/api.php action=dashboard_data&job_page=1&job_q= 443 - 172.27.15.6 Mozilla/5.0+(Windows+NT+10.0;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/148.0.0.0+Safari/537.36 https://onedata.bangkok.go.th/s2t/dashboard.php 200 0 0 43628 715 127
+2026-05-30 19:51:20 172.27.15.6 GET /s2t/api.php action=dashboard_data&job_page=1&job_q= 443 - 172.27.15.6 Mozilla/5.0+(Windows+NT+10.0;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/148.0.0.0+Safari/537.36 https://onedata.bangkok.go.th/s2t/dashboard.php 200 0 0 43628 715 112
+2026-05-30 19:51:20 172.27.15.6 GET /s2t/api.php action=changelog 443 - 172.27.15.6 Mozilla/5.0+(Windows+NT+10.0;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/148.0.0.0+Safari/537.36 https://onedata.bangkok.go.th/s2t/dashboard.php 200 0 0 27574 692 115
+2026-05-30 19:52:20 172.27.15.6 GET /s2t/api.php action=changelog 443 - 172.27.15.6 Mozilla/5.0+(Windows+NT+10.0;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/148.0.0.0+Safari/537.36 https://onedata.bangkok.go.th/s2t/dashboard.php 200 0 0 27574 692 8
+2026-05-30 19:52:20 172.27.15.6 GET /s2t/api.php action=dashboard_data&job_page=1&job_q= 443 - 172.27.15.6 Mozilla/5.0+(Windows+NT+10.0;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/148.0.0.0+Safari/537.36 https://onedata.bangkok.go.th/s2t/dashboard.php 200 0 0 43628 715 119
+2026-05-30 19:53:20 172.27.15.6 GET /s2t/api.php action=dashboard_data&job_page=1&job_q= 443 - 172.27.15.6 Mozilla/5.0+(Windows+NT+10.0;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/148.0.0.0+Safari/537.36 https://onedata.bangkok.go.th/s2t/dashboard.php 200 0 0 43628 715 109
+2026-05-30 19:53:20 172.27.15.6 GET /s2t/api.php action=changelog 443 - 172.27.15.6 Mozilla/5.0+(Windows+NT+10.0;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/148.0.0.0+Safari/537.36 https://onedata.bangkok.go.th/s2t/dashboard.php 200 0 0 27574 692 111
+2026-05-30 19:54:20 172.27.15.6 GET /s2t/api.php action=dashboard_data&job_page=1&job_q= 443 - 172.27.15.6 Mozilla/5.0+(Windows+NT+10.0;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/148.0.0.0+Safari/537.36 https://onedata.bangkok.go.th/s2t/dashboard.php 200 0 0 43628 715 126
+2026-05-30 19:54:20 172.27.15.6 GET /s2t/api.php action=changelog 443 - 172.27.15.6 Mozilla/5.0+(Windows+NT+10.0;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/148.0.0.0+Safari/537.36 https://onedata.bangkok.go.th/s2t/dashboard.php 200 0 0 27574 692 128
+2026-05-30 19:55:20 172.27.15.6 GET /s2t/api.php action=dashboard_data&job_page=1&job_q= 443 - 172.27.15.6 Mozilla/5.0+(Windows+NT+10.0;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/148.0.0.0+Safari/537.36 https://onedata.bangkok.go.th/s2t/dashboard.php 200 0 0 43628 715 100
+2026-05-30 19:55:20 172.27.15.6 GET /s2t/api.php action=changelog 443 - 172.27.15.6 Mozilla/5.0+(Windows+NT+10.0;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/148.0.0.0+Safari/537.36 https://onedata.bangkok.go.th/s2t/dashboard.php 200 0 0 27574 692 101
+2026-05-30 19:56:20 172.27.15.6 GET /s2t/api.php action=dashboard_data&job_page=1&job_q= 443 - 172.27.15.6 Mozilla/5.0+(Windows+NT+10.0;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/148.0.0.0+Safari/537.36 https://onedata.bangkok.go.th/s2t/dashboard.php 200 0 0 43628 715 112
+2026-05-30 19:56:20 172.27.15.6 GET /s2t/api.php action=changelog 443 - 172.27.15.6 Mozilla/5.0+(Windows+NT+10.0;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/148.0.0.0+Safari/537.36 https://onedata.bangkok.go.th/s2t/dashboard.php 200 0 0 27574 692 112
+2026-05-30 19:57:20 172.27.15.6 GET /s2t/api.php action=dashboard_data&job_page=1&job_q= 443 - 172.27.15.6 Mozilla/5.0+(Windows+NT+10.0;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/148.0.0.0+Safari/537.36 https://onedata.bangkok.go.th/s2t/dashboard.php 200 0 0 43628 715 111
+2026-05-30 19:57:20 172.27.15.6 GET /s2t/api.php action=changelog 443 - 172.27.15.6 Mozilla/5.0+(Windows+NT+10.0;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/148.0.0.0+Safari/537.36 https://onedata.bangkok.go.th/s2t/dashboard.php 200 0 0 27574 692 115
+2026-05-30 19:58:20 172.27.15.6 GET /s2t/api.php action=dashboard_data&job_page=1&job_q= 443 - 172.27.15.6 Mozilla/5.0+(Windows+NT+10.0;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/148.0.0.0+Safari/537.36 https://onedata.bangkok.go.th/s2t/dashboard.php 200 0 0 43628 715 118
+2026-05-30 19:58:20 172.27.15.6 GET /s2t/api.php action=changelog 443 - 172.27.15.6 Mozilla/5.0+(Windows+NT+10.0;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/148.0.0.0+Safari/537.36 https://onedata.bangkok.go.th/s2t/dashboard.php 200 0 0 27574 692 119
+2026-05-30 19:59:20 172.27.15.6 GET /s2t/api.php action=changelog 443 - 172.27.15.6 Mozilla/5.0+(Windows+NT+10.0;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/148.0.0.0+Safari/537.36 https://onedata.bangkok.go.th/s2t/dashboard.php 200 0 0 27574 692 7
+2026-05-30 19:59:20 172.27.15.6 GET /s2t/api.php action=dashboard_data&job_page=1&job_q= 443 - 172.27.15.6 Mozilla/5.0+(Windows+NT+10.0;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/148.0.0.0+Safari/537.36 https://onedata.bangkok.go.th/s2t/dashboard.php 200 0 0 43628 715 104
+```
 
 ### `C:\inetpub\logs\LogFiles\W3SVC1\u_ex260529.log`
 
 ```
 ... [truncated head]
-7)+AppleWebKit/605.1.15+(KHTML,+like+Gecko)+Version/26.3.1+Safari/605.1.15 https://onedata.bangkok.go.th/s2t/ 200 0 0 33614 2886 15
-2026-05-29 12:57:38 172.27.15.6 GET /apple-touch-icon-precomposed.png - 443 - 172.19.244.96 com.apple.WebKit.Networking/21623.2.7.111.2+Network/5569.81.5+macOS/26.3.1 - 404 0 2 1402 2644 8
-2026-05-29 12:57:38 172.27.15.6 GET /apple-touch-icon.png - 443 - 172.19.244.96 com.apple.WebKit.Networking/21623.2.7.111.2+Network/5569.81.5+macOS/26.3.1 - 404 0 2 1402 2632 8
-2026-05-29 12:57:38 172.27.15.6 GET /favicon.ico - 443 - 172.19.244.96 com.apple.WebKit.Networking/21623.2.7.111.2+Network/5569.81.5+macOS/26.3.1 - 404 0 2 1402 2623 7
-2026-05-29 12:57:55 172.27.15.6 GET /s2t/ - 443 - 172.19.244.96 Mozilla/5.0+(Macintosh;+Intel+Mac+OS+X+10_15_7)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/148.0.0.0+Safari/537.36 - 302 0 0 341 2797 12
-2026-05-29 12:57:55 172.27.15.6 GET /s2t/login.php next=%2Fs2t%2F 443 - 172.19.244.96 Mozilla/5.0+(Macintosh;+Intel+Mac+OS+X+10_15_7)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/148.0.0.0+Safari/537.36 - 200 0 0 8161 2821 20
-2026-05-29 12:58:02 172.27.15.6 GET /s2t/login.php next=%2Fs2t%2F 443 - 172.19.244.96 Mozilla/5.0+(Macintosh;+Intel+Mac+OS+X+10_15_7)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/148.0.0.0+Safari/537.36 - 200 0 0 8161 2821 35
+ 35
 2026-05-29 12:58:04 172.27.15.6 GET /s2t/login.php next=%2Fs2t%2F 443 - 172.19.244.96 Mozilla/5.0+(Macintosh;+Intel+Mac+OS+X+10_15_7)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/148.0.0.0+Safari/537.36 - 200 0 0 8161 2847 19
 2026-05-29 12:58:04 172.27.15.6 GET /s2t/login.php next=%2Fs2t%2F 443 - 172.19.244.96 Mozilla/5.0+(Macintosh;+Intel+Mac+OS+X+10_15_7)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/148.0.0.0+Safari/537.36 - 200 0 0 8161 2847 24
 2026-05-29 12:58:04 172.27.15.6 GET /s2t/login.php next=%2Fs2t%2F 443 - 172.19.244.96 Mozilla/5.0+(Macintosh;+Intel+Mac+OS+X+10_15_7)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/148.0.0.0+Safari/537.36 - 200 0 0 8161 2847 109
@@ -112,78 +136,23 @@ Here's a thinking process:
 #Date: 2026-05-29 20:00:01
 #Fields: date time s-ip cs-method cs-uri-stem cs-uri-query s-port cs-username c-ip cs(User-Agent) cs(Referer) sc-status sc-substatus sc-win32-status sc-bytes cs-bytes time-taken
 2026-05-29 20:00:01 127.0.0.1 GET /open/api.asp source_id=01&book_id=0&fiscal_year=69&department_id=07000000&exp_object_id=03 80 - 127.0.0.1 - - 502 0 0 395 151 334
-```
-
-### `C:\inetpub\logs\LogFiles\W3SVC1\u_ex260528.log`
-
-```
-... [truncated head]
-c-substatus sc-win32-status sc-bytes cs-bytes time-taken
-2026-05-28 12:00:01 127.0.0.1 GET /open/api.asp source_id=01&book_id=0&fiscal_year=69&department_id=07000000&exp_object_id=03 80 - 127.0.0.1 - - 502 0 0 395 151 599
 #Software: Microsoft Internet Information Services 10.0
 #Version: 1.0
-#Date: 2026-05-28 13:00:01
+#Date: 2026-05-29 21:00:01
 #Fields: date time s-ip cs-method cs-uri-stem cs-uri-query s-port cs-username c-ip cs(User-Agent) cs(Referer) sc-status sc-substatus sc-win32-status sc-bytes cs-bytes time-taken
-2026-05-28 13:00:01 127.0.0.1 GET /open/api.asp source_id=01&book_id=0&fiscal_year=69&department_id=07000000&exp_object_id=03 80 - 127.0.0.1 - - 502 0 0 395 151 662
+2026-05-29 21:00:01 127.0.0.1 GET /open/api.asp source_id=01&book_id=0&fiscal_year=69&department_id=07000000&exp_object_id=03 80 - 127.0.0.1 - - 502 0 0 395 151 298
 #Software: Microsoft Internet Information Services 10.0
 #Version: 1.0
-#Date: 2026-05-28 14:00:01
+#Date: 2026-05-29 22:00:01
 #Fields: date time s-ip cs-method cs-uri-stem cs-uri-query s-port cs-username c-ip cs(User-Agent) cs(Referer) sc-status sc-substatus sc-win32-status sc-bytes cs-bytes time-taken
-2026-05-28 14:00:01 127.0.0.1 GET /open/api.asp source_id=01&book_id=0&fiscal_year=69&department_id=07000000&exp_object_id=03 80 - 127.0.0.1 - - 502 0 0 395 151 462
+2026-05-29 22:00:01 127.0.0.1 GET /open/api.asp source_id=01&book_id=0&fiscal_year=69&department_id=07000000&exp_object_id=03 80 - 127.0.0.1 - - 502 0 0 395 151 327
 #Software: Microsoft Internet Information Services 10.0
 #Version: 1.0
-#Date: 2026-05-28 15:00:01
+#Date: 2026-05-29 23:00:01
 #Fields: date time s-ip cs-method cs-uri-stem cs-uri-query s-port cs-username c-ip cs(User-Agent) cs(Referer) sc-status sc-substatus sc-win32-status sc-bytes cs-bytes time-taken
-2026-05-28 15:00:01 127.0.0.1 GET /open/api.asp source_id=01&book_id=0&fiscal_year=69&department_id=07000000&exp_object_id=03 80 - 127.0.0.1 - - 502 0 0 395 151 690
-#Software: Microsoft Internet Information Services 10.0
-#Version: 1.0
-#Date: 2026-05-28 16:00:02
-#Fields: date time s-ip cs-method cs-uri-stem cs-uri-query s-port cs-username c-ip cs(User-Agent) cs(Referer) sc-status sc-substatus sc-win32-status sc-bytes cs-bytes time-taken
-2026-05-28 16:00:02 127.0.0.1 GET /open/api.asp source_id=01&book_id=0&fiscal_year=69&department_id=07000000&exp_object_id=03 80 - 127.0.0.1 - - 502 0 0 395 151 1999
-#Software: Microsoft Internet Information Services 10.0
-#Version: 1.0
-#Date: 2026-05-28 17:00:09
-#Fields: date time s-ip cs-method cs-uri-stem cs-uri-query s-port cs-username c-ip cs(User-Agent) cs(Referer) sc-status sc-substatus sc-win32-status sc-bytes cs-bytes time-taken
-2026-05-28 17:00:09 127.0.0.1 GET /open/api.asp source_id=01&book_id=0&fiscal_year=69&department_id=07000000&exp_object_id=03 80 - 127.0.0.1 - - 502 0 0 395 151 8239
-#Software: Microsoft Internet Information Services 10.0
-#Version: 1.0
-#Date: 2026-05-28 18:00:01
-#Fields: date time s-ip cs-method cs-uri-stem cs-uri-query s-port cs-username c-ip cs(User-Agent) cs(Referer) sc-status sc-substatus sc-win32-status sc-bytes cs-bytes time-taken
-2026-05-28 18:00:01 127.0.0.1 GET /open/api.asp source_id=01&book_id=0&fiscal_year=69&department_id=07000000&exp_object_id=03 80 - 127.0.0.1 - - 502 0 0 395 151 546
-#Software: Microsoft Internet Information Services 10.0
-#Version: 1.0
-#Date: 2026-05-28 19:00:01
-#Fields: date time s-ip cs-method cs-uri-stem cs-uri-query s-port cs-username c-ip cs(User-Agent) cs(Referer) sc-status sc-substatus sc-win32-status sc-bytes cs-bytes time-taken
-2026-05-28 19:00:01 127.0.0.1 GET /open/api.asp source_id=01&book_id=0&fiscal_year=69&department_id=07000000&exp_object_id=03 80 - 127.0.0.1 - - 502 0 0 395 151 864
-#Software: Microsoft Internet Information Services 10.0
-#Version: 1.0
-#Date: 2026-05-28 20:00:01
-#Fields: date time s-ip cs-method cs-uri-stem cs-uri-query s-port cs-username c-ip cs(User-Agent) cs(Referer) sc-status sc-substatus sc-win32-status sc-bytes cs-bytes time-taken
-2026-05-28 20:00:01 127.0.0.1 GET /open/api.asp source_id=01&book_id=0&fiscal_year=69&department_id=07000000&exp_object_id=03 80 - 127.0.0.1 - - 502 0 0 395 151 833
-#Software: Microsoft Internet Information Services 10.0
-#Version: 1.0
-#Date: 2026-05-28 21:00:01
-#Fields: date time s-ip cs-method cs-uri-stem cs-uri-query s-port cs-username c-ip cs(User-Agent) cs(Referer) sc-status sc-substatus sc-win32-status sc-bytes cs-bytes time-taken
-2026-05-28 21:00:01 127.0.0.1 GET /open/api.asp source_id=01&book_id=0&fiscal_year=69&department_id=07000000&exp_object_id=03 80 - 127.0.0.1 - - 502 0 0 395 151 618
-#Software: Microsoft Internet Information Services 10.0
-#Version: 1.0
-#Date: 2026-05-28 22:00:01
-#Fields: date time s-ip cs-method cs-uri-stem cs-uri-query s-port cs-username c-ip cs(User-Agent) cs(Referer) sc-status sc-substatus sc-win32-status sc-bytes cs-bytes time-taken
-2026-05-28 22:00:01 127.0.0.1 GET /open/api.asp source_id=01&book_id=0&fiscal_year=69&department_id=07000000&exp_object_id=03 80 - 127.0.0.1 - - 502 0 0 395 151 802
-#Software: Microsoft Internet Information Services 10.0
-#Version: 1.0
-#Date: 2026-05-28 23:00:01
-#Fields: date time s-ip cs-method cs-uri-stem cs-uri-query s-port cs-username c-ip cs(User-Agent) cs(Referer) sc-status sc-substatus sc-win32-status sc-bytes cs-bytes time-taken
-2026-05-28 23:00:01 127.0.0.1 GET /open/api.asp source_id=01&book_id=0&fiscal_year=69&department_id=07000000&exp_object_id=03 80 - 127.0.0.1 - - 502 0 0 395 151 707
-#Software: Microsoft Internet Information Services 10.0
-#Version: 1.0
-#Date: 2026-05-28 23:58:01
-#Fields: date time s-ip cs-method cs-uri-stem cs-uri-query s-port cs-username c-ip cs(User-Agent) cs(Referer) sc-status sc-substatus sc-win32-status sc-bytes cs-bytes time-taken
-2026-05-28 23:58:01 172.27.15.6 GET / - 80 - 172.31.90.244 Mozilla/5.0+(Windows+NT+10.0;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/148.0.0.0+Safari/537.36 - 200 0 0 928 1467 127
-2026-05-28 23:58:01 172.27.15.6 GET /iisstart.png - 80 - 172.31.90.244 Mozilla/5.0+(Windows+NT+10.0;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/148.0.0.0+Safari/537.36 http://onedata.bangkok.go.th/ 200 0 0 99937 1418 11
-2026-05-28 23:58:01 172.27.15.6 GET /favicon.ico - 80 - 172.31.90.244 Mozilla/5.0+(Windows+NT+10.0;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/148.0.0.0+Safari/537.36 http://onedata.bangkok.go.th/ 404 0 2 1383 1417 29
+2026-05-29 23:00:01 127.0.0.1 GET /open/api.asp source_id=01&book_id=0&fiscal_year=69&department_id=07000000&exp_object_id=03 80 - 127.0.0.1 - - 502 0 0 395 151 392
 ```
 
 ---
-*Auto-generated 2026-05-30 03:00 by `server-b/refresh-server-b-logs.ps1`*
+*Auto-generated 2026-05-31 03:00 by `server-b/refresh-server-b-logs.ps1`*
 
