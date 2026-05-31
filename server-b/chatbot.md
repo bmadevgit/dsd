@@ -11,7 +11,7 @@
 
 ## Activity (จากการสแกน file mtime)
 
-### วันนี้ (2026-05-31): 0 ไฟล์
+### วันนี้ (2026-06-01): 0 ไฟล์
 
   (ไม่มีไฟล์แก้ไขวันนี้)
 
@@ -19,9 +19,7 @@
 
   (ไม่มีไฟล์แก้ไขในช่วง 7 วัน)
 
-### 8-30 วันก่อน: 1 ไฟล์ (ดูสรุป)
-
-- **2026-05-01**: 1 ไฟล์
+### 8-30 วันก่อน: 0 ไฟล์ (ดูสรุป)
 
 ## Source docs / config (อยู่ใน project)
 
@@ -38,5 +36,5 @@
 - [todo.md](../apps/bma-chatbot/todo.md) - last modified 2026-05-07 13:04
 
 ---
-*Auto-generated 2026-05-31 02:00 by `server-b/refresh-server-b.ps1` (disk scan)*
+*Auto-generated 2026-06-01 02:00 by `server-b/refresh-server-b.ps1` (disk scan)*
 
