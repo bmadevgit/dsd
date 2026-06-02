@@ -11,7 +11,7 @@
 
 ## Activity (จากการสแกน file mtime)
 
-### วันนี้ (2026-06-02): 0 ไฟล์
+### วันนี้ (2026-06-03): 0 ไฟล์
 
   (ไม่มีไฟล์แก้ไขวันนี้)
 
@@ -51,5 +51,5 @@
 - [src/bootstrap.php](C:/inetpub/wwwroot/link/src/bootstrap.php) - last modified 2026-05-14 20:24
 
 ---
-*Auto-generated 2026-06-02 02:00 by `server-b/refresh-server-b.ps1` (disk scan)*
+*Auto-generated 2026-06-03 02:00 by `server-b/refresh-server-b.ps1` (disk scan)*
 
