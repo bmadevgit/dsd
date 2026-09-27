@@ -11,7 +11,7 @@ const ROUTES = new Set(['home', 'map', 'help', 'shelters']);
 const state = {
   route: 'home', point: null, radius: 10, filter: 'all', boundaries: null, rain: null,
   shelters: null, road: null, cctv: null, canal: null, map: null, pin: null, circle: null,
-  clusterer: null, markers: [], geocoder: null, autocomplete: null
+  clusterer: null, markers: [], geocoder: null, autocompletes: []
 };
 
 const thaiTime = (value) => value ? new Intl.DateTimeFormat('th-TH', { dateStyle: 'short', timeStyle: 'short', timeZone: 'Asia/Bangkok' }).format(new Date(value)) : 'ไม่ทราบเวลา';
@@ -75,15 +75,17 @@ function renderHome() {
 }
 
 function renderRoadSummary() {
-  const root = clear('roadSummary');
-  if (!state.point) { root.append(node('p', 'loading', 'เลือกพิกัดเพื่อดูข้อมูลใกล้คุณ')); return; }
-  const rows = roadRows();
-  const heavy = rows.filter((row) => row.viewState === 'flooding').length;
-  const watch = rows.filter((row) => ['minor_flood', 'reported'].includes(row.viewState)).length;
-  for (const [count, label, style] of [[heavy, 'จุดน้ำท่วม', 'danger'], [watch, 'จุดเฝ้าระวัง', 'warning']]) {
-    const metric = node('div', `metric ${style}`); metric.append(node('strong', '', String(count)), node('span', '', label)); root.append(metric);
+  for (const id of ['roadSummary', 'mapRoadSummary']) {
+    const root = clear(id);
+    if (!state.point) { root.append(node('p', 'loading', 'เลือกพิกัดเพื่อดูข้อมูลใกล้คุณ')); continue; }
+    const rows = roadRows();
+    const heavy = rows.filter((row) => row.viewState === 'flooding').length;
+    const watch = rows.filter((row) => ['minor_flood', 'reported'].includes(row.viewState)).length;
+    for (const [count, label, style] of [[heavy, 'จุดน้ำท่วม', 'danger'], [watch, 'จุดเฝ้าระวัง', 'warning']]) {
+      const metric = node('div', `metric ${style}`); metric.append(node('strong', '', String(count)), node('span', '', label)); root.append(metric);
+    }
+    if (!rows.length) root.append(node('p', 'loading', `ไม่พบข้อมูลน้ำท่วมถนนในรัศมี ${state.radius} กม.`));
   }
-  if (!rows.length) root.append(node('p', 'loading', `ไม่พบข้อมูลน้ำท่วมถนนในรัศมี ${state.radius} กม.`));
 }
 
 function renderRainSummary() {
@@ -209,13 +211,14 @@ function usePlace(place) {
   const lat = typeof location.lat === 'function' ? location.lat() : location.lat;
   const lng = typeof location.lng === 'function' ? location.lng() : location.lng;
   if (!Number.isFinite(lat) || !Number.isFinite(lng)) return false;
-  $('placeSearch').value = place.name || place.formatted_address || $('placeSearch').value;
+  const label = place.name || place.formatted_address;
+  if (label) ['placeSearch', 'mapPlaceSearch'].forEach((id) => { $(id).value = label; });
   selectPoint({ lat, lng });
   return true;
 }
 
-async function searchPlace() {
-  const input = $('placeSearch'); const button = $('placeSearchBtn'); const query = input.value.trim();
+async function searchPlace(inputId = 'placeSearch', buttonId = 'placeSearchBtn') {
+  const input = $(inputId); const button = $(buttonId); const query = input.value.trim();
   if (!query) { setMessage('กรุณาพิมพ์ชื่อถนน เขต หรือสถานที่ที่ต้องการค้นหา'); input.focus(); return; }
   if (!state.geocoder) { setMessage('ระบบค้นหาสถานที่ยังไม่พร้อม กรุณาลองใหม่อีกครั้ง'); return; }
   button.disabled = true; setMessage('กำลังค้นหาสถานที่…');
@@ -233,8 +236,11 @@ async function initPlaceSearch() {
   } catch (error) { console.error('Geocoder load failed', error); }
   try {
     const { Autocomplete } = await importLibrary('places');
-    state.autocomplete = new Autocomplete($('placeSearch'), { componentRestrictions: { country: 'th' }, fields: ['geometry', 'name', 'formatted_address'] });
-    state.autocomplete.addListener('place_changed', () => { if (!usePlace(state.autocomplete.getPlace())) void searchPlace(); });
+    for (const [inputId, buttonId] of [['placeSearch', 'placeSearchBtn'], ['mapPlaceSearch', 'mapPlaceSearchBtn']]) {
+      const autocomplete = new Autocomplete($(inputId), { componentRestrictions: { country: 'th' }, fields: ['geometry', 'name', 'formatted_address'] });
+      autocomplete.addListener('place_changed', () => { if (!usePlace(autocomplete.getPlace())) void searchPlace(inputId, buttonId); });
+      state.autocompletes.push(autocomplete);
+    }
   } catch (error) { console.warn('Place autocomplete unavailable; text search remains active', error); }
 }
 
@@ -273,8 +279,10 @@ async function initMap() {
 document.addEventListener('click', (event) => { const route = event.target.closest('[data-route]')?.dataset.route; if (route) go(route); });
 document.querySelectorAll('input[name="radius"]').forEach((input) => input.addEventListener('change', () => { state.radius = Number(input.value); if (state.circle) { state.circle.setRadius(state.radius * 1000); state.map.fitBounds(state.circle.getBounds(), 28); } render(); }));
 [$('locateBtn'), $('mapLocateBtn'), $('shelterLocateBtn')].forEach((button) => button.addEventListener('click', locate));
-$('placeSearchBtn').addEventListener('click', searchPlace);
+$('placeSearchBtn').addEventListener('click', () => searchPlace());
 $('placeSearch').addEventListener('keydown', (event) => { if (event.key === 'Enter') { event.preventDefault(); void searchPlace(); } });
+$('mapPlaceSearchBtn').addEventListener('click', () => searchPlace('mapPlaceSearch', 'mapPlaceSearchBtn'));
+$('mapPlaceSearch').addEventListener('keydown', (event) => { if (event.key === 'Enter') { event.preventDefault(); void searchPlace('mapPlaceSearch', 'mapPlaceSearchBtn'); } });
 $('mapFilters').addEventListener('click', (event) => { const button = event.target.closest('[data-filter]'); if (!button) return; state.filter = button.dataset.filter; document.querySelectorAll('[data-filter]').forEach((item) => item.classList.toggle('active', item === button)); renderMapResults(); });
 window.addEventListener('hashchange', applyRoute); window.gm_authFailure = () => { $('mapState').hidden = false; };
 if (!location.hash) history.replaceState(null, '', '#home'); applyRoute(); void initMap(); void loadData();
