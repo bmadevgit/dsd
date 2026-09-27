@@ -271,10 +271,10 @@ async function initPlaceSearch() {
   } catch (error) { console.warn('Place autocomplete unavailable; text search remains active', error); }
 }
 
-function go(route) { if (!ROUTES.has(route)) route = 'home'; if (location.hash !== `#${route}`) location.hash = route; else applyRoute(); }
+function go(route) { if (!ROUTES.has(route)) route = 'map'; if (location.hash !== `#${route}`) location.hash = route; else applyRoute(); }
 
 function applyRoute() {
-  state.route = ROUTES.has(location.hash.slice(1)) ? location.hash.slice(1) : 'home';
+  state.route = ROUTES.has(location.hash.slice(1)) ? location.hash.slice(1) : 'map';
   document.querySelectorAll('[data-view]').forEach((view) => { const active = view.dataset.view === state.route; view.hidden = !active; view.classList.toggle('active', active); });
   document.querySelectorAll('.bottom-nav [data-route]').forEach((button) => button.classList.toggle('active', button.dataset.route === state.route || (state.route === 'shelters' && button.dataset.route === 'help')));
   if (state.route === 'shelters') $('shelterMapMount').append($('map')); else if (state.route === 'map') $('mapMount').append($('map')); else $('mapPreview').append($('map'));
@@ -328,5 +328,5 @@ $('placeSearch').addEventListener('keydown', (event) => { if (event.key === 'Ent
 $('mapPlaceSearchBtn').addEventListener('click', () => searchPlace('mapPlaceSearch', 'mapPlaceSearchBtn'));
 $('mapPlaceSearch').addEventListener('keydown', (event) => { if (event.key === 'Enter') { event.preventDefault(); void searchPlace('mapPlaceSearch', 'mapPlaceSearchBtn'); } });
 window.addEventListener('hashchange', applyRoute); window.gm_authFailure = () => { setMessage('ระบบค้นหาสถานที่ไม่พร้อม กรุณาแตะแผนที่เพื่อเลือกจุด'); };
-if (!location.hash) history.replaceState(null, '', '#home'); applyRoute(); void initMap(); void loadData();
+if (!location.hash) history.replaceState(null, '', '#map'); applyRoute(); void initMap(); void loadData();
 setInterval(loadData, 5 * 60 * 1000);
