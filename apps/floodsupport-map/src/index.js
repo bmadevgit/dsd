@@ -8,7 +8,7 @@ import { CANAL_COLORS, canalState, isCanalStationVisible } from './canal.mjs';
 const $ = (id) => document.getElementById(id);
 const ROUTES = new Set(['home', 'map', 'help', 'shelters']);
 const state = {
-  route: 'home', point: null, radius: 10, filter: 'all', boundaries: null, rain: null,
+  route: 'home', point: null, radius: 3, filter: 'all', boundaries: null, rain: null,
   shelters: null, road: null, cctv: null, canal: null, map: null, pin: null, circle: null,
   markers: [], geocoder: null, autocompletes: []
 };
@@ -80,10 +80,18 @@ function renderRoadSummary() {
     const rows = roadRows();
     const heavy = rows.filter((row) => row.viewState === 'flooding').length;
     const watch = rows.filter((row) => ['minor_flood', 'reported'].includes(row.viewState)).length;
-    for (const [count, label, style] of [[heavy, 'จุดน้ำท่วม', 'danger'], [watch, 'จุดเฝ้าระวัง', 'warning']]) {
-      const metric = node('div', `metric ${style}`); metric.append(node('strong', '', String(count)), node('span', '', label)); root.append(metric);
+    for (const [count, label, style, detail] of [[heavy, 'หนัก', 'danger', 'น้ำ > 25 ซม. / รถเล็กผ่านไม่ได้ / ปิดถนน'], [watch, 'ปานกลาง', 'warning', 'น้ำ 11–24 ซม. / ชะลอความเร็ว']]) {
+      const metric = node('div', `metric ${style}`); metric.append(node('strong', '', `${count} เส้น`), node('span', '', label), node('small', '', detail)); root.append(metric);
     }
     if (!rows.length) root.append(node('p', 'loading', `ไม่พบข้อมูลน้ำท่วมถนนในรัศมี ${state.radius} กม.`));
+  }
+  const canalRoot = clear('mapCanalSummary');
+  if (!state.point) { canalRoot.append(node('p', 'loading', 'เลือกพิกัดเพื่อดูข้อมูลใกล้คุณ')); return; }
+  const canals = canalRows();
+  const critical = canals.filter((row) => row.viewState === 'critical').length;
+  const warning = canals.filter((row) => row.viewState === 'warning').length;
+  for (const [count, label, style, detail] of [[critical, 'หนัก', 'danger', 'ระดับน้ำสูงกว่าค่าปลอดภัย'], [warning, 'ปานกลาง', 'warning', 'ระดับน้ำอยู่ในช่วงเฝ้าระวัง']]) {
+    const metric = node('div', `metric ${style}`); metric.append(node('strong', '', `${count} คลอง`), node('span', '', label), node('small', '', detail)); canalRoot.append(metric);
   }
 }
 
@@ -142,15 +150,16 @@ function renderNearestShelter() {
 
 function renderMapResults() {
   const root = clear('mapResults'); $('mapUpdated').textContent = state.point ? `รัศมี ${state.radius} กม.` : '';
-  if (!state.point) { root.append(node('p', 'loading', 'แตะแผนที่หรือใช้ตำแหน่งปัจจุบัน')); renderMarkers(); return; }
-  const groups = [];
-  if (['all', 'road'].includes(state.filter)) groups.push(...roadRows());
-  if (['all', 'canal'].includes(state.filter)) groups.push(...canalRows());
-  if (['all', 'shelter'].includes(state.filter)) groups.push(...shelterRows());
-  groups.sort((a, b) => a.km - b.km);
-  if (!groups.length) root.append(node('p', 'loading', 'ไม่พบข้อมูลประเภทที่เลือกในรัศมีนี้'));
-  groups.slice(0, 20).forEach((row) => root.append(row.kind === 'canal' ? makeCanalCard(row) : row.kind === 'shelter' ? makeShelterCard(row) : makeRoadCard(row)));
-  if (groups.length > 20) root.append(node('p', 'muted', `แสดง 20 จาก ${groups.length} รายการ ดูจุดทั้งหมดได้บนแผนที่`)); renderMarkers();
+  if (!state.point) { root.append(node('p', 'loading', 'ค้นหาพื้นที่หรือแตะแผนที่เพื่อเลือกพิกัด')); renderMarkers(); return; }
+  const rows = roadRows().filter((row) => row.viewState !== 'normal');
+  if (!rows.length) root.append(node('p', 'loading', `ไม่พบถนนน้ำท่วมในรัศมี ${state.radius} กม.`));
+  for (const [kind, title, updated] of [['road', '⚙ จาก Sensor ระบบตรวจวัดน้ำท่วมถนน', state.road?.lastFetchedAt], ['cctv', '▣ จาก CCTV', state.cctv?.source?.reportedAt]]) {
+    const sourceRows = rows.filter((row) => row.kind === kind);
+    if (!sourceRows.length) continue;
+    const group = node('section', 'source-group'); group.append(node('h3', '', title), node('p', 'muted', `ข้อมูลล่าสุด ${thaiTime(updated)}`));
+    sourceRows.slice(0, 10).forEach((row) => group.append(makeRoadCard(row))); root.append(group);
+  }
+  if (rows.length > 20) root.append(node('p', 'muted', `แสดง 20 จาก ${rows.length} รายการ ดูจุดทั้งหมดได้บนแผนที่`)); renderMarkers();
 }
 
 function renderShelters() {
@@ -207,7 +216,7 @@ function selectPoint(point, moveMap = true) {
 }
 
 function locate() {
-  const buttons = [$('locateBtn'), $('mapLocateBtn'), $('shelterLocateBtn')];
+  const buttons = [$('locateBtn'), $('mapLocateBtn'), $('shelterLocateBtn')].filter(Boolean);
   if (!navigator.geolocation) { setMessage('อุปกรณ์ไม่รองรับตำแหน่ง กรุณาแตะแผนที่'); return; }
   buttons.forEach((button) => { button.disabled = true; });
   navigator.geolocation.getCurrentPosition(({ coords }) => { buttons.forEach((button) => { button.disabled = false; }); selectPoint({ lat: coords.latitude, lng: coords.longitude }); }, () => { buttons.forEach((button) => { button.disabled = false; }); setMessage('ไม่สามารถใช้ตำแหน่งได้ กรุณาแตะแผนที่เพื่อเลือกจุด'); }, { enableHighAccuracy: false, timeout: 10000 });
@@ -286,12 +295,11 @@ async function initMap() {
 
 document.addEventListener('click', (event) => { const route = event.target.closest('[data-route]')?.dataset.route; if (route) go(route); });
 document.querySelectorAll('input[name="radius"]').forEach((input) => input.addEventListener('change', () => { state.radius = Number(input.value); if (state.circle) { state.circle.setRadius(state.radius * 1000); state.map.fitBounds(state.circle.getBounds(), 28); } render(); }));
-[$('locateBtn'), $('mapLocateBtn'), $('shelterLocateBtn')].forEach((button) => button.addEventListener('click', locate));
+[$('locateBtn'), $('mapLocateBtn'), $('shelterLocateBtn')].filter(Boolean).forEach((button) => button.addEventListener('click', locate));
 $('placeSearchBtn').addEventListener('click', () => searchPlace());
 $('placeSearch').addEventListener('keydown', (event) => { if (event.key === 'Enter') { event.preventDefault(); void searchPlace(); } });
 $('mapPlaceSearchBtn').addEventListener('click', () => searchPlace('mapPlaceSearch', 'mapPlaceSearchBtn'));
 $('mapPlaceSearch').addEventListener('keydown', (event) => { if (event.key === 'Enter') { event.preventDefault(); void searchPlace('mapPlaceSearch', 'mapPlaceSearchBtn'); } });
-$('mapFilters').addEventListener('click', (event) => { const button = event.target.closest('[data-filter]'); if (!button) return; state.filter = button.dataset.filter; document.querySelectorAll('[data-filter]').forEach((item) => item.classList.toggle('active', item === button)); renderMapResults(); });
 window.addEventListener('hashchange', applyRoute); window.gm_authFailure = () => { $('mapState').hidden = false; };
 if (!location.hash) history.replaceState(null, '', '#home'); applyRoute(); void initMap(); void loadData();
 setInterval(loadData, 5 * 60 * 1000);
