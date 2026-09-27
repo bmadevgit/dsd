@@ -67,7 +67,9 @@ function statusLabel(value) {
 
 function renderHome() {
   const district = selectedDistrict();
-  $('selectedName').textContent = state.point ? (district ? `พิกัดในเขต${districtName(district)}` : 'พิกัดที่เลือก') : 'ยังไม่ได้เลือกพิกัด';
+  const selectedLabel = state.point ? (district ? `พิกัดในเขต${districtName(district)}` : 'พิกัดที่เลือก') : 'ยังไม่ได้เลือกพิกัด';
+  $('selectedName').textContent = selectedLabel;
+  $('mapSelectedName').textContent = state.point ? `${selectedLabel} · รัศมี ${state.radius} กม.` : selectedLabel;
   $('selectedCoords').textContent = state.point ? `${state.point.lat.toFixed(5)}, ${state.point.lng.toFixed(5)} · รัศมี ${state.radius} กม.` : 'แตะแผนที่หรือใช้ตำแหน่งปัจจุบัน';
   renderRoadSummary(); renderRainSummary(); renderCanalSummary(); renderNearbyRoads(); renderNearestShelter();
 }
@@ -207,8 +209,8 @@ function applyRoute() {
   state.route = ROUTES.has(location.hash.slice(1)) ? location.hash.slice(1) : 'home';
   document.querySelectorAll('[data-view]').forEach((view) => { const active = view.dataset.view === state.route; view.hidden = !active; view.classList.toggle('active', active); });
   document.querySelectorAll('.bottom-nav [data-route]').forEach((button) => button.classList.toggle('active', button.dataset.route === state.route || (state.route === 'shelters' && button.dataset.route === 'help')));
-  if (state.route === 'shelters') $('shelterMapMount').append($('map')); else if (state.route === 'map') $('mapMount').append($('map'));
-  if (state.map && ['map', 'shelters'].includes(state.route)) { google.maps.event.trigger(state.map, 'resize'); if (state.circle) state.map.fitBounds(state.circle.getBounds(), 28); renderMarkers(); }
+  if (state.route === 'shelters') $('shelterMapMount').append($('map')); else if (state.route === 'map') $('mapMount').append($('map')); else $('mapPreview').append($('map'));
+  if (state.map && ['home', 'map', 'shelters'].includes(state.route)) { google.maps.event.trigger(state.map, 'resize'); if (state.circle) state.map.fitBounds(state.circle.getBounds(), 28); renderMarkers(); }
   window.scrollTo({ top: 0, behavior: 'instant' });
 }
 
