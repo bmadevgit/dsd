@@ -45,7 +45,7 @@ function canalRows() {
   const priority = { critical: 0, warning: 1, normal: 2, unavailable: 3 };
   return (state.canal?.stations || []).filter((row) => isCanalStationVisible(row) && Number.isFinite(row.lat) && Number.isFinite(row.lng))
     .map((row) => ({ ...row, kind: 'canal', km: distanceKm(state.point, row), viewState: canalState(row) }))
-    .filter((row) => row.km <= state.radius).sort((a, b) => priority[a.viewState] - priority[b.viewState] || a.km - b.km);
+    .filter((row) => row.viewState !== 'unavailable' && row.km <= state.radius).sort((a, b) => priority[a.viewState] - priority[b.viewState] || a.km - b.km);
 }
 
 function shelterRows() {
