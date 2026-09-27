@@ -114,9 +114,9 @@ function makeRoadCard(row) {
 }
 
 function makeCanalCard(row) {
-  const card = node('article', 'item'); card.append(node('h3', '', row.name || row.river || `สถานี ${row.code}`), node('span', `badge ${row.viewState}`, statusLabel(row.viewState)));
-  if (row.river) card.append(node('p', '', `คลอง: ${row.river}`));
-  card.append(node('p', '', `${row.km.toFixed(1)} กม. · ${Number.isFinite(row.levelM) ? `ระดับน้ำ ${row.levelM.toFixed(2)} ม.` : 'ไม่มีค่าระดับน้ำ'}`), node('p', 'muted', `${row.code} · ${thaiTime(row.observedAt)}`)); return card;
+  const canalName = row.river?.trim() || 'ไม่ระบุชื่อคลอง';
+  const card = node('article', 'item'); card.append(node('h3', '', `คลอง: ${canalName}`), node('span', `badge ${row.viewState}`, statusLabel(row.viewState)));
+  card.append(node('p', '', `${row.km.toFixed(1)} กม. · ${Number.isFinite(row.levelM) ? `ระดับน้ำ ${row.levelM.toFixed(2)} ม.` : 'ไม่มีค่าระดับน้ำ'}`), node('p', 'muted', `อ่านค่าล่าสุด ${thaiTime(row.observedAt)}`)); return card;
 }
 
 function makeShelterCard(row) {
@@ -177,7 +177,7 @@ function renderMarkers() {
   clearMarkers(); if (!state.map || !state.point) return;
   const filter = state.route === 'shelters' ? 'shelter' : state.filter;
   if (['all', 'road'].includes(filter)) roadRows().forEach((row) => addMarker(row, row.kind === 'cctv' ? '#7547a8' : ROAD_COLORS[row.viewState], row.kind === 'cctv' ? `${row.road} ${row.section}` : (row.name || row.code), row.kind === 'cctv' ? 'M 0,-8 8,0 0,8 -8,0 z' : google.maps.SymbolPath.CIRCLE));
-  if (['all', 'canal'].includes(filter)) canalRows().forEach((row) => addMarker(row, CANAL_COLORS[row.viewState], `${row.river || row.name || row.code} (${row.code})`));
+  if (['all', 'canal'].includes(filter)) canalRows().forEach((row) => addMarker(row, CANAL_COLORS[row.viewState], `คลอง: ${row.river?.trim() || 'ไม่ระบุชื่อคลอง'}`));
   if (['all', 'shelter'].includes(filter)) shelterRows().forEach((row) => addMarker(row, '#087f59', row.name));
   state.clusterer?.addMarkers(state.markers);
 }
