@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "scripts": {
     "build": "esbuild src/main.js --bundle --minify --format=esm --target=es2020 --outfile=../../wwwroot/now/floodsupport-app.js",
-    "build:home": "esbuild src/index.js --bundle --minify --format=esm --target=es2020 --outfile=../../wwwroot/now/index-app.js",
+    "build:home": "esbuild src/index.js --bundle --minify --format=esm --target=es2020 --external:/Font/* --outfile=../../wwwroot/now/index-app.js",
     "build:data": "esbuild src/data.js --bundle --minify --format=esm --target=es2020 --outfile=../../wwwroot/now/data-app.js",
     "build:pages": "npm run build:data && npm run build:home"
   },
