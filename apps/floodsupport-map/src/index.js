@@ -11,7 +11,7 @@ const ROUTES = new Set(['home', 'map', 'help', 'shelters']);
 const state = {
   route: 'home', point: null, radius: 10, filter: 'all', boundaries: null, rain: null,
   shelters: null, road: null, cctv: null, canal: null, map: null, pin: null, circle: null,
-  clusterer: null, markers: []
+  clusterer: null, markers: [], geocoder: null, autocomplete: null
 };
 
 const thaiTime = (value) => value ? new Intl.DateTimeFormat('th-TH', { dateStyle: 'short', timeStyle: 'short', timeZone: 'Asia/Bangkok' }).format(new Date(value)) : 'ไม่ทราบเวลา';
@@ -203,6 +203,41 @@ function locate() {
   navigator.geolocation.getCurrentPosition(({ coords }) => { buttons.forEach((button) => { button.disabled = false; }); selectPoint({ lat: coords.latitude, lng: coords.longitude }); }, () => { buttons.forEach((button) => { button.disabled = false; }); setMessage('ไม่สามารถใช้ตำแหน่งได้ กรุณาแตะแผนที่เพื่อเลือกจุด'); }, { enableHighAccuracy: false, timeout: 10000 });
 }
 
+function usePlace(place) {
+  const location = place?.geometry?.location;
+  if (!location) return false;
+  const lat = typeof location.lat === 'function' ? location.lat() : location.lat;
+  const lng = typeof location.lng === 'function' ? location.lng() : location.lng;
+  if (!Number.isFinite(lat) || !Number.isFinite(lng)) return false;
+  $('placeSearch').value = place.name || place.formatted_address || $('placeSearch').value;
+  selectPoint({ lat, lng });
+  return true;
+}
+
+async function searchPlace() {
+  const input = $('placeSearch'); const button = $('placeSearchBtn'); const query = input.value.trim();
+  if (!query) { setMessage('กรุณาพิมพ์ชื่อถนน เขต หรือสถานที่ที่ต้องการค้นหา'); input.focus(); return; }
+  if (!state.geocoder) { setMessage('ระบบค้นหาสถานที่ยังไม่พร้อม กรุณาลองใหม่อีกครั้ง'); return; }
+  button.disabled = true; setMessage('กำลังค้นหาสถานที่…');
+  try {
+    const response = await state.geocoder.geocode({ address: `${query}, กรุงเทพมหานคร`, region: 'TH', componentRestrictions: { country: 'TH' } });
+    const result = response.results?.[0];
+    if (!result || !usePlace({ ...result, name: result.formatted_address })) setMessage('ไม่พบสถานที่ กรุณาลองระบุชื่อถนนหรือเขตให้ละเอียดขึ้น');
+  } catch (error) { console.error('Place search failed', error); setMessage('ค้นหาสถานที่ไม่สำเร็จ กรุณาลองใหม่อีกครั้ง'); }
+  finally { button.disabled = false; }
+}
+
+async function initPlaceSearch() {
+  try {
+    const { Geocoder } = await importLibrary('geocoding'); state.geocoder = new Geocoder();
+  } catch (error) { console.error('Geocoder load failed', error); }
+  try {
+    const { Autocomplete } = await importLibrary('places');
+    state.autocomplete = new Autocomplete($('placeSearch'), { componentRestrictions: { country: 'th' }, fields: ['geometry', 'name', 'formatted_address'] });
+    state.autocomplete.addListener('place_changed', () => { if (!usePlace(state.autocomplete.getPlace())) void searchPlace(); });
+  } catch (error) { console.warn('Place autocomplete unavailable; text search remains active', error); }
+}
+
 function go(route) { if (!ROUTES.has(route)) route = 'home'; if (location.hash !== `#${route}`) location.hash = route; else applyRoute(); }
 
 function applyRoute() {
@@ -231,12 +266,15 @@ async function initMap() {
     state.map = new Map($('map'), { center: { lat: 13.7563, lng: 100.5018 }, zoom: 10, minZoom: 8, maxZoom: 19, renderingType: google.maps.RenderingType.RASTER, mapTypeId: google.maps.MapTypeId.ROADMAP, gestureHandling: 'cooperative', mapTypeControl: false, streetViewControl: false, fullscreenControl: false });
     state.clusterer = new MarkerClusterer({ map: state.map, markers: [] }); state.map.addListener('click', (event) => selectPoint({ lat: event.latLng.lat(), lng: event.latLng.lng() }, false));
     state.map.addListener('tilesloaded', () => { $('mapState').hidden = true; }); applyRoute();
+    void initPlaceSearch();
   } catch (error) { console.error('Map load failed', error); $('mapState').hidden = false; }
 }
 
 document.addEventListener('click', (event) => { const route = event.target.closest('[data-route]')?.dataset.route; if (route) go(route); });
 document.querySelectorAll('input[name="radius"]').forEach((input) => input.addEventListener('change', () => { state.radius = Number(input.value); if (state.circle) { state.circle.setRadius(state.radius * 1000); state.map.fitBounds(state.circle.getBounds(), 28); } render(); }));
 [$('locateBtn'), $('mapLocateBtn'), $('shelterLocateBtn')].forEach((button) => button.addEventListener('click', locate));
+$('placeSearchBtn').addEventListener('click', searchPlace);
+$('placeSearch').addEventListener('keydown', (event) => { if (event.key === 'Enter') { event.preventDefault(); void searchPlace(); } });
 $('mapFilters').addEventListener('click', (event) => { const button = event.target.closest('[data-filter]'); if (!button) return; state.filter = button.dataset.filter; document.querySelectorAll('[data-filter]').forEach((item) => item.classList.toggle('active', item === button)); renderMapResults(); });
 window.addEventListener('hashchange', applyRoute); window.gm_authFailure = () => { $('mapState').hidden = false; };
 if (!location.hash) history.replaceState(null, '', '#home'); applyRoute(); void initMap(); void loadData();

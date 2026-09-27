@@ -18,7 +18,9 @@
         <header class="hero"><p>กรุงเทพมหานคร</p><h1 id="homeTitle">เช็กถนนน้ำท่วมใกล้คุณ</h1></header>
         <div class="page-body">
           <section class="card location-card" aria-label="เลือกพื้นที่">
-            <h2>จะตรวจถนนเส้นไหน?</h2><p id="selectedName">ยังไม่ได้เลือกพิกัด</p>
+            <h2>จะตรวจถนนเส้นไหน?</h2>
+            <div class="place-search"><input id="placeSearch" type="search" placeholder="ค้นหาถนน เขต หรือสถานที่" autocomplete="off" aria-label="ค้นหาถนน เขต หรือสถานที่" aria-describedby="selectedName"><button id="placeSearchBtn" type="button">ค้นหา</button></div>
+            <p id="selectedName" class="selected-place">ยังไม่ได้เลือกพิกัด</p>
             <button id="locateBtn" class="primary wide" type="button">⌖ ใช้ตำแหน่งปัจจุบัน</button>
             <fieldset class="radius-pills"><legend>รัศมี</legend><div>
               <label><input type="radio" name="radius" value="3"><span>3 กม.</span></label><label><input type="radio" name="radius" value="5"><span>5 กม.</span></label>
