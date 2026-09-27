@@ -1,6 +1,5 @@
 import './index.css';
 import { setOptions, importLibrary } from '@googlemaps/js-api-loader';
-import { MarkerClusterer } from '@googlemaps/markerclusterer';
 import { GOOGLE_MAPS_KEY } from './maps-config.js';
 import { circleIntersectsFeature, distanceKm, pointInFeature } from './geo.mjs';
 import { isRoadSensorVisible, ROAD_COLORS, roadState } from './road.mjs';
@@ -11,7 +10,7 @@ const ROUTES = new Set(['home', 'map', 'help', 'shelters']);
 const state = {
   route: 'home', point: null, radius: 10, filter: 'all', boundaries: null, rain: null,
   shelters: null, road: null, cctv: null, canal: null, map: null, pin: null, circle: null,
-  clusterer: null, markers: [], geocoder: null, autocompletes: []
+  markers: [], geocoder: null, autocompletes: []
 };
 
 const thaiTime = (value) => value ? new Intl.DateTimeFormat('th-TH', { dateStyle: 'short', timeStyle: 'short', timeZone: 'Asia/Bangkok' }).format(new Date(value)) : 'ไม่ทราบเวลา';
@@ -168,7 +167,7 @@ function renderShelters() {
 }
 
 function clearMarkers() {
-  state.clusterer?.clearMarkers(); state.markers.forEach((marker) => marker.setMap(null)); state.markers = [];
+  state.markers.forEach((marker) => marker.setMap(null)); state.markers = [];
 }
 
 function pinIcon(kind, color) {
@@ -182,7 +181,7 @@ function pinIcon(kind, color) {
 }
 
 function addMarker(row, color, title, kind) {
-  const marker = new google.maps.Marker({ position: { lat: row.lat, lng: row.lng }, title, icon: pinIcon(kind, color) }); state.markers.push(marker);
+  const marker = new google.maps.Marker({ map: state.map, position: { lat: row.lat, lng: row.lng }, title, icon: pinIcon(kind, color) }); state.markers.push(marker);
 }
 
 function renderMarkers() {
@@ -191,7 +190,6 @@ function renderMarkers() {
   if (['all', 'road'].includes(filter)) roadRows().forEach((row) => addMarker(row, row.kind === 'cctv' ? '#7547a8' : ROAD_COLORS[row.viewState], row.kind === 'cctv' ? `${row.road} ${row.section}` : (row.name || row.code), 'road'));
   if (['all', 'canal'].includes(filter)) canalRows().forEach((row) => addMarker(row, CANAL_COLORS[row.viewState], `คลอง: ${row.river?.trim() || 'ไม่ระบุชื่อคลอง'}`, 'canal'));
   if (['all', 'shelter'].includes(filter)) shelterRows().forEach((row) => addMarker(row, '#087f59', row.name, 'shelter'));
-  state.clusterer?.addMarkers(state.markers);
 }
 
 function render() { renderHome(); renderMapResults(); renderShelters(); }
@@ -280,7 +278,7 @@ async function initMap() {
     setOptions({ key: GOOGLE_MAPS_KEY, v: 'weekly', language: 'th', region: 'TH', authReferrerPolicy: 'origin' });
     const { Map } = await importLibrary('maps');
     state.map = new Map($('map'), { center: { lat: 13.7563, lng: 100.5018 }, zoom: 10, minZoom: 8, maxZoom: 19, renderingType: google.maps.RenderingType.RASTER, mapTypeId: google.maps.MapTypeId.ROADMAP, gestureHandling: 'cooperative', mapTypeControl: false, streetViewControl: false, fullscreenControl: false });
-    state.clusterer = new MarkerClusterer({ map: state.map, markers: [] }); state.map.addListener('click', (event) => selectPoint({ lat: event.latLng.lat(), lng: event.latLng.lng() }, false));
+    state.map.addListener('click', (event) => selectPoint({ lat: event.latLng.lat(), lng: event.latLng.lng() }, false));
     state.map.addListener('tilesloaded', () => { $('mapState').hidden = true; }); applyRoute();
     void initPlaceSearch();
   } catch (error) { console.error('Map load failed', error); $('mapState').hidden = false; }
