@@ -1,4 +1,6 @@
 import './index.css';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 import { setOptions, importLibrary } from '@googlemaps/js-api-loader';
 import { GOOGLE_MAPS_KEY } from './maps-config.js';
 import { circleIntersectsFeature, distanceKm, pointInFeature } from './geo.mjs';
@@ -176,7 +178,7 @@ function renderShelters() {
 }
 
 function clearMarkers() {
-  state.markers.forEach((marker) => marker.setMap(null)); state.markers = [];
+  state.markers.forEach((marker) => marker.remove()); state.markers = [];
 }
 
 function pinIcon(kind, color) {
@@ -186,11 +188,19 @@ function pinIcon(kind, color) {
       ? '<path d="M5 10l5-4.2 5 4.2v5h-3.4v-3.5H8.4V15H5z" fill="#fff"/>'
       : '<path d="M7.2 15l1.3-10h3l1.3 10M10 5.8v2.5m0 2.2V14" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/>';
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="10" r="9" fill="${color}" stroke="#fff" stroke-width="2"/>${glyph}</svg>`;
-  return { url: `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`, scaledSize: new google.maps.Size(18, 18), anchor: new google.maps.Point(9, 9) };
+  return L.icon({ iconUrl: `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`, iconSize: [18, 18], iconAnchor: [9, 9], tooltipAnchor: [0, -8], className: 'data-marker-icon' });
 }
 
 function addMarker(row, color, title, kind) {
-  const marker = new google.maps.Marker({ map: state.map, position: { lat: row.lat, lng: row.lng }, title, icon: pinIcon(kind, color) }); state.markers.push(marker);
+  const marker = L.marker([row.lat, row.lng], { title, icon: pinIcon(kind, color), keyboard: true })
+    .addTo(state.map)
+    .bindTooltip(title, { direction: 'top', offset: [0, -8] });
+  state.markers.push(marker);
+}
+
+function selectedPointIcon() {
+  const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22"><circle cx="11" cy="11" r="10" fill="#1478b8" stroke="#fff" stroke-width="2"/><circle cx="11" cy="11" r="3.2" fill="#fff"/></svg>';
+  return L.icon({ iconUrl: `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`, iconSize: [22, 22], iconAnchor: [11, 11], className: 'selected-point-icon' });
 }
 
 function renderMarkers() {
@@ -207,10 +217,10 @@ function selectPoint(point, moveMap = true) {
   if (!Number.isFinite(point.lat) || !Number.isFinite(point.lng) || Math.abs(point.lat) > 90 || Math.abs(point.lng) > 180) return;
   state.point = point; setMessage('');
   if (state.map) {
-    if (!state.pin) state.pin = new google.maps.Marker({ map: state.map, title: 'ตำแหน่งที่เลือก', zIndex: 1000 });
-    if (!state.circle) state.circle = new google.maps.Circle({ map: state.map, fillColor: '#168bb2', fillOpacity: .1, strokeColor: '#0c799d', strokeOpacity: .8, strokeWeight: 2, clickable: false });
-    state.pin.setPosition(point); state.circle.setCenter(point); state.circle.setRadius(state.radius * 1000);
-    if (moveMap) state.map.fitBounds(state.circle.getBounds(), 28);
+    if (!state.pin) state.pin = L.marker([point.lat, point.lng], { icon: selectedPointIcon(), title: 'ตำแหน่งที่เลือก', zIndexOffset: 1000 }).addTo(state.map);
+    if (!state.circle) state.circle = L.circle([point.lat, point.lng], { radius: state.radius * 1000, fillColor: '#168bb2', fillOpacity: .1, color: '#0c799d', opacity: .8, weight: 2, interactive: false }).addTo(state.map);
+    state.pin.setLatLng([point.lat, point.lng]); state.circle.setLatLng([point.lat, point.lng]).setRadius(state.radius * 1000);
+    if (moveMap) state.map.fitBounds(state.circle.getBounds(), { padding: [28, 28], maxZoom: 15 });
   }
   render();
 }
@@ -268,7 +278,13 @@ function applyRoute() {
   document.querySelectorAll('[data-view]').forEach((view) => { const active = view.dataset.view === state.route; view.hidden = !active; view.classList.toggle('active', active); });
   document.querySelectorAll('.bottom-nav [data-route]').forEach((button) => button.classList.toggle('active', button.dataset.route === state.route || (state.route === 'shelters' && button.dataset.route === 'help')));
   if (state.route === 'shelters') $('shelterMapMount').append($('map')); else if (state.route === 'map') $('mapMount').append($('map')); else $('mapPreview').append($('map'));
-  if (state.map && ['home', 'map', 'shelters'].includes(state.route)) { google.maps.event.trigger(state.map, 'resize'); if (state.circle) state.map.fitBounds(state.circle.getBounds(), 28); renderMarkers(); }
+  if (state.map && ['home', 'map', 'shelters'].includes(state.route)) {
+    requestAnimationFrame(() => {
+      state.map.invalidateSize();
+      if (state.circle) state.map.fitBounds(state.circle.getBounds(), { padding: [28, 28], maxZoom: 15 });
+      renderMarkers();
+    });
+  }
   window.scrollTo({ top: 0, behavior: 'instant' });
 }
 
@@ -284,22 +300,33 @@ async function loadData() {
 
 async function initMap() {
   try {
+    state.map = L.map($('map'), { center: [13.7563, 100.5018], zoom: 10, minZoom: 8, maxZoom: 19, zoomControl: true, attributionControl: true, scrollWheelZoom: false });
+    const tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(state.map);
+    tiles.on('load', () => { $('mapState').hidden = true; });
+    tiles.on('tileerror', () => { $('mapState').textContent = 'แผนที่ OpenStreetMap โหลดไม่ได้ กรุณาลองใหม่ภายหลัง'; $('mapState').hidden = false; });
+    state.map.on('click', (event) => selectPoint({ lat: event.latlng.lat, lng: event.latlng.lng }, false));
+    applyRoute();
+  } catch (error) {
+    console.error('Map load failed', error);
+    $('mapState').textContent = 'แผนที่ OpenStreetMap โหลดไม่ได้ กรุณาลองใหม่ภายหลัง';
+    $('mapState').hidden = false;
+  }
+  try {
     setOptions({ key: GOOGLE_MAPS_KEY, v: 'weekly', language: 'th', region: 'TH', authReferrerPolicy: 'origin' });
-    const { Map } = await importLibrary('maps');
-    state.map = new Map($('map'), { center: { lat: 13.7563, lng: 100.5018 }, zoom: 10, minZoom: 8, maxZoom: 19, renderingType: google.maps.RenderingType.RASTER, mapTypeId: google.maps.MapTypeId.ROADMAP, gestureHandling: 'cooperative', mapTypeControl: false, streetViewControl: false, fullscreenControl: false });
-    state.map.addListener('click', (event) => selectPoint({ lat: event.latLng.lat(), lng: event.latLng.lng() }, false));
-    state.map.addListener('tilesloaded', () => { $('mapState').hidden = true; }); applyRoute();
     void initPlaceSearch();
-  } catch (error) { console.error('Map load failed', error); $('mapState').hidden = false; }
+  } catch (error) { console.error('Place search setup failed', error); }
 }
 
 document.addEventListener('click', (event) => { const route = event.target.closest('[data-route]')?.dataset.route; if (route) go(route); });
-document.querySelectorAll('input[name="radius"]').forEach((input) => input.addEventListener('change', () => { state.radius = Number(input.value); if (state.circle) { state.circle.setRadius(state.radius * 1000); state.map.fitBounds(state.circle.getBounds(), 28); } render(); }));
+document.querySelectorAll('input[name="radius"]').forEach((input) => input.addEventListener('change', () => { state.radius = Number(input.value); if (state.circle) { state.circle.setRadius(state.radius * 1000); state.map.fitBounds(state.circle.getBounds(), { padding: [28, 28], maxZoom: 15 }); } render(); }));
 [$('locateBtn'), $('mapLocateBtn'), $('shelterLocateBtn')].filter(Boolean).forEach((button) => button.addEventListener('click', locate));
 $('placeSearchBtn').addEventListener('click', () => searchPlace());
 $('placeSearch').addEventListener('keydown', (event) => { if (event.key === 'Enter') { event.preventDefault(); void searchPlace(); } });
 $('mapPlaceSearchBtn').addEventListener('click', () => searchPlace('mapPlaceSearch', 'mapPlaceSearchBtn'));
 $('mapPlaceSearch').addEventListener('keydown', (event) => { if (event.key === 'Enter') { event.preventDefault(); void searchPlace('mapPlaceSearch', 'mapPlaceSearchBtn'); } });
-window.addEventListener('hashchange', applyRoute); window.gm_authFailure = () => { $('mapState').hidden = false; };
+window.addEventListener('hashchange', applyRoute); window.gm_authFailure = () => { setMessage('ระบบค้นหาสถานที่ไม่พร้อม กรุณาแตะแผนที่เพื่อเลือกจุด'); };
 if (!location.hash) history.replaceState(null, '', '#home'); applyRoute(); void initMap(); void loadData();
 setInterval(loadData, 5 * 60 * 1000);

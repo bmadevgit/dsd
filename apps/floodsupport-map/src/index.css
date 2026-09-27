@@ -68,6 +68,10 @@ button,a{cursor:pointer}
 .text-button{border:0;background:transparent;color:#087695;padding:3px 0;font-size:13.2px;font-weight:800;text-decoration:none;white-space:nowrap}
 .map-preview{height:205px;border-radius:9px;background:#dce8e4;overflow:hidden;position:relative;margin-top:7px}
 .map-preview #map,.map-card #map{width:100%;height:100%;background:#dce8e4}
+.leaflet-container{font-family:inherit;background:#dce8e4}
+.leaflet-control-attribution{font-size:10px}
+.leaflet-tooltip{font-family:inherit;font-size:12px;font-weight:700;color:#173c34;border:1px solid #dfe8e3;border-radius:7px;box-shadow:0 2px 8px #173e2d1a}
+.data-marker-icon,.selected-point-icon{background:transparent;border:0}
 .map-legend{color:#788983!important;font-size:11.4px!important;margin:7px 1px 0!important}
 .stack{display:grid;gap:7px}
 .near-roads-section .item,.source-group{box-shadow:0 3px 12px #173e2d08}
