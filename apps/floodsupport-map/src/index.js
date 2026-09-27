@@ -172,12 +172,12 @@ function clearMarkers() {
 
 function pinIcon(kind, color) {
   const glyph = kind === 'canal'
-    ? '<path d="M9 14c2.2-2.2 4.3-2.2 6.5 0s4.3 2.2 6.5 0M9 18c2.2-2.2 4.3-2.2 6.5 0s4.3 2.2 6.5 0M9 22c2.2-2.2 4.3-2.2 6.5 0s4.3 2.2 6.5 0" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"/>'
+    ? '<path d="M4.5 7.5c1.2-1.1 2.4-1.1 3.6 0s2.4 1.1 3.6 0 2.4-1.1 3.8 0M4.5 11c1.2-1.1 2.4-1.1 3.6 0s2.4 1.1 3.6 0 2.4-1.1 3.8 0M4.5 14.5c1.2-1.1 2.4-1.1 3.6 0s2.4 1.1 3.6 0 2.4-1.1 3.8 0" fill="none" stroke="#fff" stroke-width="1.4" stroke-linecap="round"/>'
     : kind === 'shelter'
-      ? '<path d="M10 17l7-6 7 6v7h-5v-5h-4v5h-5z" fill="#fff"/>'
-      : '<path d="M13 24l2-15h4l2 15M17 10v4m0 3v5" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"/>';
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="34" height="42" viewBox="0 0 34 42"><path d="M17 1C8.7 1 2 7.7 2 16c0 11.3 15 25 15 25s15-13.7 15-25C32 7.7 25.3 1 17 1z" fill="${color}" stroke="#fff" stroke-width="2"/><circle cx="17" cy="17" r="10.5" fill="${color}"/>${glyph}</svg>`;
-  return { url: `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`, scaledSize: new google.maps.Size(34, 42), anchor: new google.maps.Point(17, 42) };
+      ? '<path d="M5 10l5-4.2 5 4.2v5h-3.4v-3.5H8.4V15H5z" fill="#fff"/>'
+      : '<path d="M7.2 15l1.3-10h3l1.3 10M10 5.8v2.5m0 2.2V14" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/>';
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="10" r="9" fill="${color}" stroke="#fff" stroke-width="2"/>${glyph}</svg>`;
+  return { url: `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`, scaledSize: new google.maps.Size(18, 18), anchor: new google.maps.Point(9, 9) };
 }
 
 function addMarker(row, color, title, kind) {
