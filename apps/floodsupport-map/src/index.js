@@ -171,16 +171,26 @@ function clearMarkers() {
   state.clusterer?.clearMarkers(); state.markers.forEach((marker) => marker.setMap(null)); state.markers = [];
 }
 
-function addMarker(row, color, title, shape = google.maps.SymbolPath.CIRCLE) {
-  const marker = new google.maps.Marker({ position: { lat: row.lat, lng: row.lng }, title, icon: { path: shape, scale: shape === google.maps.SymbolPath.CIRCLE ? 7 : 1, fillColor: color, fillOpacity: 1, strokeColor: '#fff', strokeWeight: 2 } }); state.markers.push(marker);
+function pinIcon(kind, color) {
+  const glyph = kind === 'canal'
+    ? '<path d="M9 14c2.2-2.2 4.3-2.2 6.5 0s4.3 2.2 6.5 0M9 18c2.2-2.2 4.3-2.2 6.5 0s4.3 2.2 6.5 0M9 22c2.2-2.2 4.3-2.2 6.5 0s4.3 2.2 6.5 0" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"/>'
+    : kind === 'shelter'
+      ? '<path d="M10 17l7-6 7 6v7h-5v-5h-4v5h-5z" fill="#fff"/>'
+      : '<path d="M13 24l2-15h4l2 15M17 10v4m0 3v5" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"/>';
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="34" height="42" viewBox="0 0 34 42"><path d="M17 1C8.7 1 2 7.7 2 16c0 11.3 15 25 15 25s15-13.7 15-25C32 7.7 25.3 1 17 1z" fill="${color}" stroke="#fff" stroke-width="2"/><circle cx="17" cy="17" r="10.5" fill="${color}"/>${glyph}</svg>`;
+  return { url: `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`, scaledSize: new google.maps.Size(34, 42), anchor: new google.maps.Point(17, 42) };
+}
+
+function addMarker(row, color, title, kind) {
+  const marker = new google.maps.Marker({ position: { lat: row.lat, lng: row.lng }, title, icon: pinIcon(kind, color) }); state.markers.push(marker);
 }
 
 function renderMarkers() {
   clearMarkers(); if (!state.map || !state.point) return;
   const filter = state.route === 'shelters' ? 'shelter' : state.filter;
-  if (['all', 'road'].includes(filter)) roadRows().forEach((row) => addMarker(row, row.kind === 'cctv' ? '#7547a8' : ROAD_COLORS[row.viewState], row.kind === 'cctv' ? `${row.road} ${row.section}` : (row.name || row.code), row.kind === 'cctv' ? 'M 0,-8 8,0 0,8 -8,0 z' : google.maps.SymbolPath.CIRCLE));
-  if (['all', 'canal'].includes(filter)) canalRows().forEach((row) => addMarker(row, CANAL_COLORS[row.viewState], `คลอง: ${row.river?.trim() || 'ไม่ระบุชื่อคลอง'}`));
-  if (['all', 'shelter'].includes(filter)) shelterRows().forEach((row) => addMarker(row, '#087f59', row.name));
+  if (['all', 'road'].includes(filter)) roadRows().forEach((row) => addMarker(row, row.kind === 'cctv' ? '#7547a8' : ROAD_COLORS[row.viewState], row.kind === 'cctv' ? `${row.road} ${row.section}` : (row.name || row.code), 'road'));
+  if (['all', 'canal'].includes(filter)) canalRows().forEach((row) => addMarker(row, CANAL_COLORS[row.viewState], `คลอง: ${row.river?.trim() || 'ไม่ระบุชื่อคลอง'}`, 'canal'));
+  if (['all', 'shelter'].includes(filter)) shelterRows().forEach((row) => addMarker(row, '#087f59', row.name, 'shelter'));
   state.clusterer?.addMarkers(state.markers);
 }
 
