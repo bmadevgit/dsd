@@ -80,8 +80,8 @@ function renderRoadSummary() {
     const rows = roadRows();
     const heavy = rows.filter((row) => row.viewState === 'flooding').length;
     const watch = rows.filter((row) => ['minor_flood', 'reported'].includes(row.viewState)).length;
-    for (const [count, label, style, detail] of [[heavy, 'หนัก', 'danger', 'น้ำ > 25 ซม. / รถเล็กผ่านไม่ได้ / ปิดถนน'], [watch, 'ปานกลาง', 'warning', 'น้ำ 11–24 ซม. / ชะลอความเร็ว']]) {
-      const metric = node('div', `metric ${style}`); metric.append(node('strong', '', `${count} เส้น`), node('span', '', label), node('small', '', detail)); root.append(metric);
+    for (const [count, label, style] of [[heavy, 'หนัก', 'danger'], [watch, 'ปานกลาง', 'warning']]) {
+      const metric = node('div', `metric ${style}`); metric.append(node('strong', '', `${count} เส้น`), node('span', '', label)); root.append(metric);
     }
     if (!rows.length) root.append(node('p', 'loading', `ไม่พบข้อมูลน้ำท่วมถนนในรัศมี ${state.radius} กม.`));
   }
@@ -90,8 +90,8 @@ function renderRoadSummary() {
   const canals = canalRows();
   const critical = canals.filter((row) => row.viewState === 'critical').length;
   const warning = canals.filter((row) => row.viewState === 'warning').length;
-  for (const [count, label, style, detail] of [[critical, 'หนัก', 'danger', 'ระดับน้ำสูงกว่าค่าปลอดภัย'], [warning, 'ปานกลาง', 'warning', 'ระดับน้ำอยู่ในช่วงเฝ้าระวัง']]) {
-    const metric = node('div', `metric ${style}`); metric.append(node('strong', '', `${count} คลอง`), node('span', '', label), node('small', '', detail)); canalRoot.append(metric);
+  for (const [count, label, style] of [[critical, 'หนัก', 'danger'], [warning, 'ปานกลาง', 'warning']]) {
+    const metric = node('div', `metric ${style}`); metric.append(node('strong', '', `${count} คลอง`), node('span', '', label)); canalRoot.append(metric);
   }
 }
 

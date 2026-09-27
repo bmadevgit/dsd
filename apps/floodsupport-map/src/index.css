@@ -57,7 +57,6 @@ button,a{cursor:pointer}
 .summary-grid .metric{border-radius:9px;padding:10px}
 .metric strong{display:block;font-size:21px;line-height:1.1}
 .metric span{display:block;margin-top:3px;font-size:10px;font-weight:800;color:#263f38}
-.metric small{display:block;margin-top:2px;color:#60736d;font-size:7.5px;line-height:1.35}
 .metric.danger{background:#fff0ec;color:#d43d35}
 .metric.warning{background:#fff4dc;color:#a56400}
 .metric.safe{background:#e9f5f1;color:#087958}
