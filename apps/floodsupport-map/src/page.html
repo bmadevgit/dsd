@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#07385b">
+  <link rel="icon" type="image/svg+xml" href="./floodsupport-icon.svg">
+  <meta name="description" content="ค้นหาศูนย์พักพิงและที่จอดรถใกล้ตัวจากข้อมูลกรุงเทพมหานคร">
+  <title>แผนที่ช่วยเหลือน้ำท่วม | กรุงเทพมหานคร</title>
+  <link rel="stylesheet" href="./floodsupport-app.css">
+  <script type="module" src="./floodsupport-app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#results">ข้ามไปยังรายการสถานที่</a>
+  <header class="topbar">
+    <div class="brand-mark" aria-hidden="true">กทม.</div>
+    <div class="brand-copy">
+      <p class="eyebrow">กรุงเทพมหานคร · ข้อมูลช่วยเหลือน้ำท่วม</p>
+      <h1>แผนที่ช่วยเหลือน้ำท่วม</h1>
+      <p>ค้นหาศูนย์พักพิงและที่จอดรถใกล้ตัว</p>
+    </div>
+    <a class="source-head" href="https://floodsupport.awarehouse.tech/" target="_blank" rel="noopener noreferrer">Flood Support ↗</a>
+  </header>
+
+  <nav class="view-tabs" aria-label="เลือกมุมมอง">
+    <button id="publicTab" type="button" class="view-tab active" aria-current="page">สำหรับประชาชน</button>
+    <button id="staffTab" type="button" class="view-tab">สำหรับเจ้าหน้าที่ กทม.</button>
+  </nav>
+
+  <div id="publicView">
+
+  <div id="notice" class="notice" role="status" hidden></div>
+  <section class="summary" aria-label="สถานะข้อมูล">
+    <div class="summary-main">
+      <span class="live-dot" aria-hidden="true"></span>
+      <span id="freshness">กำลังโหลดข้อมูลจากสองแหล่ง…</span>
+    </div>
+    <div class="summary-stats">
+      <span><strong id="totalCount">–</strong> รายการ</span>
+      <span><strong id="mappedCount">–</strong> มีพิกัดยืนยัน</span>
+      <span><strong id="unmappedCount">–</strong> รอตรวจพิกัด</span>
+    </div>
+    <button type="button" id="refreshBtn" class="text-button">รีเฟรช</button>
+  </section>
+  <div id="sourceHealth" class="source-health" role="status"></div>
+
+  <section class="nearby-banner" aria-label="ค้นหาความช่วยเหลือใกล้ฉัน">
+    <div><strong>ใกล้ฉันมีอะไรบ้าง?</strong><span id="nearestState">ใช้ตำแหน่งของคุณเพื่อเรียงสถานที่ที่อยู่ใกล้ที่สุด</span></div>
+    <button type="button" id="nearbyBtn">ค้นหาใกล้ฉัน</button>
+  </section>
+
+  <section class="filters" aria-label="ตัวกรองสถานที่">
+    <div class="filter-top">
+      <label class="search-box">
+        <span class="sr-only">ค้นหาชื่อสถานที่หรือเขต</span>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m16 16 5 5"></path></svg>
+        <input id="searchInput" type="search" placeholder="ค้นหาชื่อสถานที่หรือเขต" autocomplete="off">
+      </label>
+      <label class="select-box"><span>เขต</span><select id="districtSelect"><option value="">ทุกเขต</option></select></label>
+      <label class="select-box"><span>สถานะ</span><select id="statusSelect"><option value="">ทุกสถานะ</option></select></label>
+    </div>
+    <div id="categoryChips" class="category-chips" role="group" aria-label="เลือกประเภทสถานที่"></div>
+    <div id="shelterSourceSummary" class="shelter-source-summary" role="status" hidden>
+      <strong>ศูนย์พักพิงรวม <span id="shelterTotal">0</span> แห่ง</strong>
+      <span>Flood Support <b id="shelterFloodCount">0</b></span>
+      <span>Google Sheets <b id="shelterSheetCount">0</b></span>
+      <small>พบทั้งสองแหล่ง <b id="shelterBothCount">0</b> แห่ง (นับในยอดของทั้งสองแหล่ง)</small>
+    </div>
+  </section>
+
+  <main class="workspace">
+    <section class="map-pane" aria-label="แผนที่สถานที่ช่วยเหลือ">
+      <div id="map" class="map" role="application" aria-label="แผนที่กรุงเทพมหานคร"></div>
+      <div id="mapError" class="map-error" role="status" hidden>แผนที่พื้นหลังโหลดไม่ได้ รายการสถานที่ยังค้นหาและเปิดนำทางได้</div>
+      <div class="map-actions">
+        <button type="button" id="locateBtn" class="round-button" aria-label="แสดงตำแหน่งของฉัน" title="ตำแหน่งของฉัน">◎</button>
+        <button type="button" id="fitBtn" class="round-button" aria-label="แสดงหมุดทั้งหมด" title="แสดงหมุดทั้งหมด">⌖</button>
+      </div>
+      <div class="map-legend"><span class="legend-pin"></span>แตะหมุดเพื่อดูรายละเอียด · ตัวเลขคือหมุดที่อยู่ใกล้กัน</div>
+      <article id="placeDetail" class="place-detail" hidden aria-live="polite"></article>
+    </section>
+
+    <section class="results-pane" id="results" aria-label="รายการสถานที่ช่วยเหลือ">
+      <div class="ai-box">
+        <div class="ai-heading"><span class="ai-icon" aria-hidden="true">✦</span><div><h2>ถาม AI เพื่อค้นหา</h2><p>ลองพิมพ์ “ศูนย์พักพิงในจตุจักรที่ยังว่าง”</p></div></div>
+        <form id="aiForm" class="ai-form">
+          <label class="sr-only" for="aiQuery">คำถามค้นหาสถานที่</label>
+          <input id="aiQuery" maxlength="300" autocomplete="off" placeholder="ต้องการความช่วยเหลือที่ไหน?">
+          <button type="submit" id="aiSubmit">ค้นหา</button>
+        </form>
+        <div id="aiState" class="ai-state" role="status" hidden></div>
+        <button type="button" id="clearAi" class="clear-ai" hidden>ล้างผลค้นหา AI ×</button>
+      </div>
+      <div class="results-header"><div><h2>ศูนย์พักพิงและที่จอดรถ</h2><p id="resultCount">กำลังโหลด…</p></div><span id="pinCount" class="pin-count"></span></div>
+      <div id="resultList" class="result-list" aria-live="polite"></div>
+    </section>
+  </main>
+
+  </div>
+
+  <section id="staffView" class="staff-view" hidden aria-label="ข้อมูลสำหรับเจ้าหน้าที่ กทม.">
+    <div class="staff-intro"><div><p class="eyebrow">สำหรับเจ้าหน้าที่ กทม.</p><h2>ความต้องการการสนับสนุน</h2><p>ข้อมูลความต้องการจาก Google Sheets · บันทึกผลดำเนินการและหมายเหตุในระบบนี้</p></div><button id="staffLogout" type="button" class="text-button" hidden>ออกจากระบบ</button></div>
+    <form id="staffLogin" class="staff-login">
+      <label for="staffPin">รหัสเจ้าหน้าที่ 4 หลัก</label>
+      <div><input id="staffPin" type="password" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" autocomplete="off" required><button type="submit">เข้าสู่ระบบ</button></div>
+      <p id="staffLoginMessage" role="status"></p>
+    </form>
+    <div id="staffDashboard" hidden>
+      <div class="staff-meta"><span id="staffFreshness"></span><button id="staffRefresh" type="button" class="text-button">รีเฟรชข้อมูล</button></div>
+      <div id="staffStats" class="staff-stats"></div>
+      <div class="staff-filters">
+        <label>เขต <select id="staffDistrict"><option value="">ทุกเขต</option></select></label>
+        <label>ประเภทความต้องการ <select id="staffNeedType"><option value="">ทุกประเภท</option></select></label>
+        <label>สถานะ <select id="staffStatus"><option value="">ทุกสถานะ</option><option value="need">มีความต้องการ</option><option value="none">ไม่มีรายงานความต้องการ</option></select></label>
+        <label>ผลดำเนินการ <select id="staffCompletion"><option value="">ทั้งหมด</option><option value="pending">ยังไม่ดำเนินการ</option><option value="done">ดำเนินการแล้ว</option></select></label>
+      </div>
+      <div class="staff-columns">
+        <section><h3>ความต้องการรายเขต</h3><div id="districtNeeds" class="staff-card-list"></div></section>
+        <section><h3>ความต้องการรายศูนย์พักพิง</h3><div id="shelterNeeds" class="staff-card-list"></div></section>
+      </div>
+      <details class="staff-extra"><summary>ศูนย์ที่ยังไม่เปิด ศูนย์เข้าพักตั้งแต่ 80% และสถานะประกาศพื้นที่</summary><div id="staffClosed"></div><div id="staffDensity"></div><div id="staffDeclarations"></div></details>
+    </div>
+  </section>
+
+  <footer>แผนที่พื้นหลัง: Google Maps · ข้อมูล: <a href="https://floodsupport.awarehouse.tech/" target="_blank" rel="noopener noreferrer">Flood Support</a> และ <a href="https://docs.google.com/spreadsheets/d/1S3mDcZisdLkcIFbv996xKo1G6-E2KVEt1d8lyz-gR_U/edit" target="_blank" rel="noopener noreferrer">Google Sheets</a> · รายการที่ยังไม่ยืนยันพิกัดจะไม่มีหมุด</footer>
+</body>
+</html>

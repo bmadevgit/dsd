@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "source": {
+    "title": "อัพเดทจุดที่มีน้ำท่วมขัง จาก CCTV 1732",
+    "url": "https://bangkok365-my.sharepoint.com/:w:/r/personal/bma02277_bangkok365_onmicrosoft_com/_layouts/15/doc2.aspx?sourcedoc=%7BD3BD7A26-9EFA-4588-A328-4A162D9BB8E5%7D&file=%E0%B8%AD%E0%B8%B1%E0%B8%9E%E0%B9%80%E0%B8%94%E0%B8%97%E0%B8%88%E0%B8%B8%E0%B8%94%E0%B8%97%E0%B8%B5%E0%B9%88%E0%B8%A1%E0%B8%B5%E0%B8%99%E0%B9%89%E0%B8%B3%E0%B8%97%E0%B9%88%E0%B8%A7%E0%B8%A1%E0%B8%82%E0%B8%B1%E0%B8%87%20%E0%B8%88%E0%B8%B2%E0%B8%81%20CCTV%201732.docx&action=default",
+    "reportedAt": "2026-09-27T10:32:00Z",
+    "importedAt": "2026-09-27T11:20:00Z",
+    "note": "เวลา 17:32 น. อ้างอิงจากชื่อเอกสาร ตำแหน่งเป็นพิกัดตัวแทนของจุดหรือช่วงถนน"
+  },
+  "locations": [
+    {"id":"cctv-01","road":"ถนนรามคำแหง","section":"ช่วงตัดถนนพระราม 9 – แยกลำสาลี","severity":"high","passability":null,"lat":13.7472919,"lng":100.6055037},
+    {"id":"cctv-02","road":"ถนนรามคำแหง","section":"ช่วงแยกลำสาลี – ซอยรามคำแหง 129/4","severity":"minor","passability":"vehicle","lat":13.7775017,"lng":100.6716466},
+    {"id":"cctv-03","road":"ถนนรามคำแหง","section":"ภายในซอยรามคำแหง 24","severity":"high","passability":null,"lat":13.7549381,"lng":100.6140485},
+    {"id":"cctv-04","road":"ถนนเสนานิคม","section":"น้ำท่วมขังสูงทั้งเส้น","severity":"high","passability":null,"lat":13.8265045,"lng":100.6085031},
+    {"id":"cctv-05","road":"ถนนศรีนครินทร์","section":"ช่วงแยกลำสาลี – ตัดถนนพัฒนาการ","severity":"high","passability":null,"lat":13.7487000,"lng":100.6433000},
+    {"id":"cctv-06","road":"ถนนศรีนครินทร์","section":"ช่วงถนนพัฒนาการ – ถนนสุขุมวิท 77","severity":"reported","passability":"small_vehicle","lat":13.7240000,"lng":100.6420000},
+    {"id":"cctv-07","road":"ถนนเพชรบุรี","section":"ช่วงปากซอยเพชรบุรี 39","severity":"minor","passability":null,"lat":13.7504363,"lng":100.5565744},
+    {"id":"cctv-08","road":"ถนนเพชรบุรี","section":"ขาออก ปากซอยเพชรบุรี 36 ก่อนถึงแยกมิตรสัมพันธ์","severity":"minor","passability":null,"lat":13.7490974,"lng":100.5553755},
+    {"id":"cctv-09","road":"ถนนเพชรบุรี","section":"ช่วงปากซอยเพชรบุรี 49","severity":"high","passability":null,"lat":13.7450688,"lng":100.5845667},
+    {"id":"cctv-10","road":"ถนนเพชรบุรี","section":"ช่วงตัดถนนประดิษฐ์มนูธรรม","severity":"high","passability":null,"lat":13.7421000,"lng":100.5879000},
+    {"id":"cctv-11","road":"ถนนเพชรบุรี","section":"ช่วงสะพานคลองตัน","severity":"high","passability":null,"lat":13.7419120,"lng":100.5982639},
+    {"id":"cctv-12","road":"ถนนนวมินทร์","section":"ช่วงนวมินทร์ 135","severity":"minor","passability":null,"lat":13.8206269,"lng":100.6518372},
+    {"id":"cctv-13","road":"ถนนนวมินทร์","section":"ช่วงแยกนวมินทร์-รัชดา-รามอินทรา ถึงถนนรามอินทรา","severity":"minor","passability":null,"lat":13.8197000,"lng":100.6673000},
+    {"id":"cctv-14","road":"ถนนนวมินทร์","section":"ช่วงแยกนวมินทร์-รัชดา-รามอินทรา ถึงแยกประเสริฐมนูกิจ","severity":"minor","passability":"small_vehicle","lat":13.8179000,"lng":100.6487000},
+    {"id":"cctv-15","road":"ถนนนวมินทร์","section":"ช่วงแยกประเสริฐมนูกิจ – แยกบางกะปิ","severity":"high","passability":null,"lat":13.7915000,"lng":100.6456000},
+    {"id":"cctv-16","road":"ถนนสุวินทวงศ์","section":"ช่วงมีนบุรี – วัดแสนสุข","severity":"high","passability":null,"lat":13.8165000,"lng":100.7360000},
+    {"id":"cctv-17","road":"ถนนลาดพร้าว","section":"ตัดถนนประดิษฐ์มนูธรรม","severity":"high","passability":null,"lat":13.7864182,"lng":100.6087692},
+    {"id":"cctv-18","road":"ถนนลาดพร้าว","section":"แยกแฮปปี้แลนด์","severity":"high","passability":null,"lat":13.7678587,"lng":100.6419523},
+    {"id":"cctv-19","road":"ถนนลาดพร้าว","section":"แยกบางกะปิ","severity":"high","passability":null,"lat":13.7663637,"lng":100.6478851},
+    {"id":"cctv-20","road":"ถนนลาดพร้าว","section":"ภายในซอยลาดพร้าว 101/1","severity":"high","passability":null,"lat":13.7769604,"lng":100.6310191},
+    {"id":"cctv-21","road":"ถนนงามวงศ์วาน","section":"ช่วงหน้าเรือนจำคลองเปรม","severity":"high","passability":null,"lat":13.8488240,"lng":100.5555516},
+    {"id":"cctv-22","road":"ถนนงามวงศ์วาน","section":"ช่วงหน้าซอยชินเขต","severity":"high","passability":null,"lat":13.8556587,"lng":100.5485632},
+    {"id":"cctv-23","road":"ถนนงามวงศ์วาน","section":"ขาออกช่วงแยกพงษ์เพชร","severity":"high","passability":null,"lat":13.8528925,"lng":100.5462869},
+    {"id":"cctv-24","road":"ถนนแจ้งวัฒนะ","section":"ซอย 5 – กรมการกงสุล (หน้าศูนย์ราชการ)","severity":"reported","passability":"passable","lat":13.8898800,"lng":100.5669587},
+    {"id":"cctv-25","road":"ถนนแจ้งวัฒนะ","section":"ช่วงสถานีหลักสี่ – วงเวียนบางเขน (หน้ามหาวิทยาลัยราชภัฏพระนคร)","severity":"minor","passability":"passable","lat":13.8764744,"lng":100.5898564},
+    {"id":"cctv-26","road":"ถนนพหลโยธิน","section":"วงเวียนบางเขน – หน้ากรมทหารราบที่ 11","severity":"minor","passability":"passable","lat":13.8675280,"lng":100.5919400},
+    {"id":"cctv-27","road":"ถนนวิภาวดีรังสิต","section":"แยกหลักสี่","severity":"high","passability":null,"lat":13.8841934,"lng":100.5816608},
+    {"id":"cctv-28","road":"ถนนร่มเกล้า","section":"ซอยร่มเกล้า 24","severity":"reported","passability":null,"lat":13.7735900,"lng":100.7458410}
+  ]
+}

@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#07516b">
+  <meta name="description" content="ดูพยากรณ์ฝนและศูนย์พักพิงใกล้ตัวในกรุงเทพมหานคร">
+  <title>แผนที่สถานการณ์น้ำใกล้ตัว | กรุงเทพมหานคร</title>
+  <link rel="icon" type="image/svg+xml" href="./floodsupport-icon.svg">
+  <link rel="stylesheet" href="./data-app.css">
+  <script type="module" src="./data-app.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#results">ข้ามไปยังผลการค้นหา</a>
+  <header class="topbar">
+    <div class="brand">กทม.</div>
+    <div><p class="eyebrow">กรุงเทพมหานคร</p><h1>สถานการณ์น้ำใกล้ตัว</h1><p>เลือกจุดบนแผนที่ เพื่อดูข้อมูลในพื้นที่ใกล้เคียง</p></div>
+  </header>
+  <main>
+    <section class="intro" aria-label="เลือกตำแหน่ง">
+      <div><strong id="selectedName">ยังไม่ได้เลือกพิกัด</strong><span id="selectedCoords">แตะแผนที่หรือใช้ตำแหน่งปัจจุบัน</span></div>
+      <button type="button" id="locateBtn" class="primary">◎ ใช้ตำแหน่งของฉัน</button>
+    </section>
+    <div id="locationState" class="message" role="status" hidden></div>
+    <section class="controls" aria-label="กำหนดพื้นที่ค้นหา">
+      <label for="radius">รัศมีใกล้เคียง</label>
+      <select id="radius"><option value="3">3 กม.</option><option value="5">5 กม.</option><option value="10" selected>10 กม.</option><option value="20">20 กม.</option></select>
+    </section>
+    <section class="map-card" aria-label="แผนที่สถานการณ์น้ำ">
+      <div id="map" role="application" aria-label="แผนที่กรุงเทพมหานคร แตะเพื่อเลือกพิกัด"></div>
+      <div id="mapState" class="map-state" role="status" hidden>แผนที่โหลดไม่ได้ กรุณาใช้ตำแหน่งของฉันเพื่อดูข้อมูลใกล้ตัว</div>
+    </section>
+    <div id="results" class="results">
+      <section class="panel rain-panel" aria-labelledby="rainTitle"><div class="panel-head"><span class="icon rain">☂</span><div><h2 id="rainTitle">พยากรณ์ฝน</h2><p id="rainTime">กำลังโหลดข้อมูล</p></div></div><p class="context">พยากรณ์ระดับเขต ไม่ใช่ค่าฝน ณ พิกัดที่เลือก</p><div id="rainResults" class="list" aria-live="polite"><p class="empty">เลือกพิกัดเพื่อดูเขตใกล้เคียง</p></div></section>
+      <section class="panel" aria-labelledby="shelterTitle"><div class="panel-head"><span class="icon shelter">⌂</span><div><h2 id="shelterTitle">ศูนย์พักพิง</h2><p id="shelterTime">กำลังโหลดข้อมูล</p></div></div><div id="shelterResults" class="list" aria-live="polite"><p class="empty">เลือกพิกัดเพื่อดูศูนย์พักพิงใกล้เคียง</p></div><a class="more" href="./floodsupport.html">ดูข้อมูลศูนย์พักพิงทั้งหมด ↗</a></section>
+      <section class="panel road-panel" aria-labelledby="roadTitle"><div class="panel-head"><span class="icon road">≈</span><div><h2 id="roadTitle">น้ำท่วมถนน</h2><p id="roadTime">กำลังโหลดข้อมูล</p></div></div><p class="context">รวมค่าจากเซ็นเซอร์เฉพาะจุดและรายงานจาก CCTV โดยหมุดของช่วงถนนเป็นพิกัดตัวแทน</p><div id="roadResults" class="list" aria-live="polite"><p class="empty">เลือกพิกัดเพื่อดูข้อมูลน้ำท่วมถนนใกล้เคียง</p></div></section>
+      <section class="panel canal-panel" aria-labelledby="canalTitle"><div class="panel-head"><span class="icon canal">◉</span><div><h2 id="canalTitle">ระดับน้ำในคลอง</h2><p id="canalTime">กำลังโหลดข้อมูล</p></div></div><p class="context">ระดับน้ำเป็นค่าจากสถานีตรวจวัดเฉพาะจุด หน่วยเป็นเมตร</p><div id="canalResults" class="list" aria-live="polite"><p class="empty">เลือกพิกัดเพื่อดูระดับน้ำในคลองใกล้เคียง</p></div></section>
+    </div>
+  </main>
+  <footer>ระยะทางเป็นระยะเส้นตรง · <a href="https://nowcast.bangkok.go.th/api/zonal">ข้อมูลพยากรณ์ฝน</a> · <a href="https://floodbangkok.bangkok.go.th/">จุดตรวจวัดน้ำท่วมถนน</a> · <a href="https://dds.bangkok.go.th/">ระดับน้ำในคลอง</a> · <a href="./floodsupport.html">ข้อมูลศูนย์พักพิง</a> · ขอบเขตเขต: <a href="https://data.go.th/th/dataset/50">กรุงเทพมหานคร</a> · แผนที่พื้นหลัง: Google Maps</footer>
+</body>
+</html>

@@ -1,0 +1,10 @@
+node_modules/
+.venv/
+dist/
+tmp/
+tmp-assets/
+tmp-*
+water-levels-page.html
+*.log
+__pycache__/
+*.pyc
